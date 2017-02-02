@@ -175,10 +175,6 @@ class Tab implements PictureListener {
     private String mAppId;
     // flag to indicate if tab should be closed on back
     private boolean mCloseOnBack;
-    // Keep the original url around to avoid killing the old WebView if the url
-    // has not changed.
-    // Error console for the tab
-    private ErrorConsoleView mErrorConsole;
     // The listener that gets invoked when a download is started from the
     // mMainView
     private final BrowserDownloadListener mDownloadListener;
@@ -363,14 +359,6 @@ class Tab implements PictureListener {
             if (mTouchIconLoader != null) {
                 mTouchIconLoader.mTab = null;
                 mTouchIconLoader = null;
-            }
-
-            // reset the error console
-            if (mErrorConsole != null) {
-                mErrorConsole.clearErrorMessages();
-                if (mWebViewController.shouldShowErrorConsole()) {
-                    mErrorConsole.showConsole(ErrorConsoleView.SHOW_NONE);
-                }
             }
 
             // Cancel the auto-login process.
@@ -959,42 +947,6 @@ class Tab implements PictureListener {
          */
         @Override
         public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-            if (mInForeground) {
-                // call getErrorConsole(true) so it will create one if needed
-                ErrorConsoleView errorConsole = getErrorConsole(true);
-                errorConsole.addErrorMessage(consoleMessage);
-                if (mWebViewController.shouldShowErrorConsole()
-                        && errorConsole.getShowState() !=
-                            ErrorConsoleView.SHOW_MAXIMIZED) {
-                    errorConsole.showConsole(ErrorConsoleView.SHOW_MINIMIZED);
-                }
-            }
-
-            // Don't log console messages in private browsing mode
-            if (isPrivateBrowsingEnabled()) return true;
-
-            String message = "Console: " + consoleMessage.message() + " "
-                    + consoleMessage.sourceId() +  ":"
-                    + consoleMessage.lineNumber();
-
-            switch (consoleMessage.messageLevel()) {
-                case TIP:
-                    Log.v(CONSOLE_LOGTAG, message);
-                    break;
-                case LOG:
-                    Log.i(CONSOLE_LOGTAG, message);
-                    break;
-                case WARNING:
-                    Log.w(CONSOLE_LOGTAG, message);
-                    break;
-                case ERROR:
-                    Log.e(CONSOLE_LOGTAG, message);
-                    break;
-                case DEBUG:
-                    Log.d(CONSOLE_LOGTAG, message);
-                    break;
-            }
-
             return true;
         }
 
@@ -1664,21 +1616,6 @@ class Tab implements PictureListener {
         return mCurrentState.mIsBookmarkedSite;
     }
 
-    /**
-     * Return the tab's error console. Creates the console if createIfNEcessary
-     * is true and we haven't already created the console.
-     * @param createIfNecessary Flag to indicate if the console should be
-     *            created if it has not been already.
-     * @return The tab's error console, or null if one has not been created and
-     *         createIfNecessary is false.
-     */
-    ErrorConsoleView getErrorConsole(boolean createIfNecessary) {
-        if (createIfNecessary && mErrorConsole == null) {
-            mErrorConsole = new ErrorConsoleView(mContext);
-            mErrorConsole.setWebView(mMainView);
-        }
-        return mErrorConsole;
-    }
 
     /**
      * Sets the security state, clears the SSL certificate error and informs
