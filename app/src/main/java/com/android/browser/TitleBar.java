@@ -100,22 +100,22 @@ public class TitleBar extends RelativeLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mIsFixedTitleBar) {
-            int margin = getMeasuredHeight() - calculateEmbeddedHeight();
-            mBaseUi.setContentViewMarginTop(-margin);
-        } else {
-            mBaseUi.setContentViewMarginTop(0);
-        }
+//        if (mIsFixedTitleBar) {
+//            int margin = getMeasuredHeight() - calculateEmbeddedHeight();
+//            mBaseUi.setContentViewMarginTop(-margin);
+//        } else {
+//            mBaseUi.setContentViewMarginTop(0);
+//        }
     }
 
     private void setFixedTitleBar() {
-        boolean isFixed = !mUseQuickControls
-                && !getContext().getResources().getBoolean(R.bool.hide_title);
-        isFixed |= mAccessibilityManager.isEnabled();
+//        boolean isFixed = !mUseQuickControls
+//                && !getContext().getResources().getBoolean(R.bool.hide_title);
+//        isFixed |= mAccessibilityManager.isEnabled();
         // If getParent() returns null, we are initializing
         ViewGroup parent = (ViewGroup)getParent();
-        if (mIsFixedTitleBar == isFixed && parent != null) return;
-        mIsFixedTitleBar = isFixed;
+        if (mIsFixedTitleBar && parent != null) return;
+        mIsFixedTitleBar = true;
         setSkipTitleBarAnimations(true);
         show();
         setSkipTitleBarAnimations(false);
