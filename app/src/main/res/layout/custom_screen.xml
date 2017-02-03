@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
     />
-    <com.android.browser.view.CustomScreenLinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:id="@+id/vertical_layout"
         android:layout_width="match_parent"
@@ -31,12 +31,14 @@
         <FrameLayout android:id="@+id/fixed_titlebar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
         />
 
         <FrameLayout android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/fixed_titlebar_container"
         />
-    </com.android.browser.view.CustomScreenLinearLayout>
+    </RelativeLayout>
 </merge>
 
