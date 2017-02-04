@@ -33,7 +33,6 @@ import android.util.Log;
 import android.util.Patterns;
 
 import com.sabaibrowser.UI.ComboViews;
-import com.sabaibrowser.os.BrowserConstants;
 import com.sabaibrowser.os.Search;
 import com.sabaibrowser.search.SearchEngine;
 
@@ -303,7 +302,7 @@ public class IntentHandler {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... unused) {
-                        BrowserConstants.addSearchUrl(cr, newUrl);
+                        //BrowserConstants.addSearchUrl(cr, newUrl);
                     return null;
                 }
             }.execute();

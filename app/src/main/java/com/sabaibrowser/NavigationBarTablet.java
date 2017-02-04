@@ -163,10 +163,10 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
         } else if ((mForwardButton == v)  && (mUiController.getCurrentTab() != null)) {
             mUiController.getCurrentTab().goForward();
         } else if (mStar == v) {
-            Intent intent = mUiController.createBookmarkCurrentPageIntent(true);
-            if (intent != null) {
-                getContext().startActivity(intent);
-            }
+//            Intent intent = mUiController.createBookmarkCurrentPageIntent(true);
+//            if (intent != null) {
+//                getContext().startActivity(intent);
+//            }
         } else if (mAllButton == v) {
             mUiController.bookmarksOrHistoryPicker(ComboViews.Bookmarks);
         } else if (mSearchButton == v) {

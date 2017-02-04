@@ -16,7 +16,6 @@
 
 package com.sabaibrowser;
 
-import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,9 +24,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Message;
 import android.preference.PreferenceManager;
-import android.provider.Browser;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.webkit.CookieManager;
@@ -42,9 +39,6 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 
-import com.sabaibrowser.homepages.HomeProvider;
-import com.sabaibrowser.os.BrowserConstants;
-import com.sabaibrowser.provider.BrowserProvider;
 import com.sabaibrowser.search.SearchEngine;
 import com.sabaibrowser.search.SearchEngines;
 
@@ -220,10 +214,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
             }
 
             sFactoryResetUrl = mContext.getResources().getString(R.string.homepage_base);
-            if (sFactoryResetUrl.indexOf("{CID}") != -1) {
-                sFactoryResetUrl = sFactoryResetUrl.replace("{CID}",
-                    BrowserProvider.getClientId(mContext.getContentResolver()));
-            }
+//            if (sFactoryResetUrl.indexOf("{CID}") != -1) {
+//                sFactoryResetUrl = sFactoryResetUrl.replace("{CID}",
+//                    BrowserProvider.getClientId(mContext.getContentResolver()));
+//            }
 
             synchronized (BrowserSettings.class) {
                 sInitialized = true;
@@ -438,8 +432,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     public void clearHistory() {
         ContentResolver resolver = mContext.getContentResolver();
-        BrowserConstants.clearHistory(resolver);
-        BrowserConstants.clearSearches(resolver);
+//        BrowserConstants.clearHistory(resolver);
+//        BrowserConstants.clearSearches(resolver);
     }
 
     public void clearFormData() {
@@ -773,7 +767,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     }
 
     public boolean useMostVisitedHomepage() {
-        return HomeProvider.MOST_VISITED.equals(getHomePage());
+        //return HomeProvider.MOST_VISITED.equals(getHomePage());
+        return false;
     }
 
     public boolean useFullscreen() {

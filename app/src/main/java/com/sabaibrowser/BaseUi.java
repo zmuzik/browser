@@ -498,14 +498,7 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showComboView(ComboViews startingView, Bundle extras) {
-        Intent intent = new Intent(mActivity, ComboViewActivity.class);
-        intent.putExtra(ComboViewActivity.EXTRA_INITIAL_VIEW, startingView.name());
-        intent.putExtra(ComboViewActivity.EXTRA_COMBO_ARGS, extras);
-        Tab t = getActiveTab();
-        if (t != null) {
-            intent.putExtra(ComboViewActivity.EXTRA_CURRENT_URL, t.getUrl());
-        }
-        mActivity.startActivityForResult(intent, Controller.COMBO_VIEW);
+
     }
 
     @Override

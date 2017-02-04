@@ -28,8 +28,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
-import com.sabaibrowser.os.BrowserContract;
-import com.sabaibrowser.os.BrowserContract.Images;
+
 import android.webkit.WebView;
 
 import java.io.ByteArrayOutputStream;
@@ -90,57 +89,57 @@ class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
 
     @Override
     public Void doInBackground(String... values) {
-        if (mContentResolver != null) {
-            mCursor = Bookmarks.queryCombinedForUrl(mContentResolver,
-                    mOriginalUrl, mUrl);
-        }
-
-        boolean inDatabase = mCursor != null && mCursor.getCount() > 0;
-
-        if (inDatabase || mMessage != null) {
-            HttpURLConnection connection = null;
-            try {
-                URL url = new URL(values[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                if (mUserAgent != null) {
-                    connection.addRequestProperty("User-Agent", mUserAgent);
-                }
-
-                if (connection.getResponseCode() == 200) {
-                    InputStream content = connection.getInputStream();
-                    Bitmap icon = null;
-                    try {
-                        icon = BitmapFactory.decodeStream(
-                                content, null, null);
-                    } finally {
-                        try {
-                            content.close();
-                        } catch (IOException ignored) {
-                        }
-                    }
-
-                    if (inDatabase) {
-                        storeIcon(icon);
-                    } else if (mMessage != null) {
-                        Bundle b = mMessage.getData();
-                        b.putParcelable(BrowserContract.Bookmarks.TOUCH_ICON, icon);
-                    }
-                }
-            } catch (IOException ignored) {
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-        }
-
-        if (mCursor != null) {
-            mCursor.close();
-        }
-
-        if (mMessage != null) {
-            mMessage.sendToTarget();
-        }
+//        if (mContentResolver != null) {
+//            mCursor = Bookmarks.queryCombinedForUrl(mContentResolver,
+//                    mOriginalUrl, mUrl);
+//        }
+//
+//        boolean inDatabase = mCursor != null && mCursor.getCount() > 0;
+//
+//        if (inDatabase || mMessage != null) {
+//            HttpURLConnection connection = null;
+//            try {
+//                URL url = new URL(values[0]);
+//                connection = (HttpURLConnection) url.openConnection();
+//                if (mUserAgent != null) {
+//                    connection.addRequestProperty("User-Agent", mUserAgent);
+//                }
+//
+//                if (connection.getResponseCode() == 200) {
+//                    InputStream content = connection.getInputStream();
+//                    Bitmap icon = null;
+//                    try {
+//                        icon = BitmapFactory.decodeStream(
+//                                content, null, null);
+//                    } finally {
+//                        try {
+//                            content.close();
+//                        } catch (IOException ignored) {
+//                        }
+//                    }
+//
+//                    if (inDatabase) {
+//                        storeIcon(icon);
+//                    } else if (mMessage != null) {
+//                        Bundle b = mMessage.getData();
+//                        b.putParcelable(BrowserContract.Bookmarks.TOUCH_ICON, icon);
+//                    }
+//                }
+//            } catch (IOException ignored) {
+//            } finally {
+//                if (connection != null) {
+//                    connection.disconnect();
+//                }
+//            }
+//        }
+//
+//        if (mCursor != null) {
+//            mCursor.close();
+//        }
+//
+//        if (mMessage != null) {
+//            mMessage.sendToTarget();
+//        }
 
         return null;
     }
@@ -153,27 +152,27 @@ class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
     }
 
     private void storeIcon(Bitmap icon) {
-        // Do this first in case the download failed.
-        if (mTab != null) {
-            // Remove the touch icon loader from the BrowserActivity.
-            mTab.mTouchIconLoader = null;
-        }
-
-        if (icon == null || mCursor == null || isCancelled()) {
-            return;
-        }
-
-        if (mCursor.moveToFirst()) {
-            final ByteArrayOutputStream os = new ByteArrayOutputStream();
-            icon.compress(Bitmap.CompressFormat.PNG, 100, os);
-
-            ContentValues values = new ContentValues();
-            values.put(Images.TOUCH_ICON, os.toByteArray());
-
-            do {
-                values.put(Images.URL, mCursor.getString(0));
-                mContentResolver.update(Images.CONTENT_URI, values, null, null);
-            } while (mCursor.moveToNext());
-        }
+//        // Do this first in case the download failed.
+//        if (mTab != null) {
+//            // Remove the touch icon loader from the BrowserActivity.
+//            mTab.mTouchIconLoader = null;
+//        }
+//
+//        if (icon == null || mCursor == null || isCancelled()) {
+//            return;
+//        }
+//
+//        if (mCursor.moveToFirst()) {
+//            final ByteArrayOutputStream os = new ByteArrayOutputStream();
+//            icon.compress(Bitmap.CompressFormat.PNG, 100, os);
+//
+//            ContentValues values = new ContentValues();
+//            values.put(Images.TOUCH_ICON, os.toByteArray());
+//
+//            do {
+//                values.put(Images.URL, mCursor.getString(0));
+//                mContentResolver.update(Images.CONTENT_URI, values, null, null);
+//            } while (mCursor.moveToNext());
+//        }
     }
 }

@@ -17,23 +17,10 @@
 
 package com.sabaibrowser;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-
-import com.sabaibrowser.os.BrowserConstants;
-import com.sabaibrowser.os.BrowserContract;
-import com.sabaibrowser.os.BrowserContract.History;
-import android.util.Log;
-
-import com.sabaibrowser.provider.BrowserProvider2.Thumbnails;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
@@ -182,12 +169,12 @@ public class DataController {
                 doLoadThumbnail((Tab) msg.obj);
                 break;
             case TAB_DELETE_THUMBNAIL:
-                ContentResolver cr = mContext.getContentResolver();
-                try {
-                    cr.delete(ContentUris.withAppendedId(
-                            Thumbnails.CONTENT_URI, (Long)msg.obj),
-                            null, null);
-                } catch (Throwable t) {}
+//                ContentResolver cr = mContext.getContentResolver();
+//                try {
+//                    cr.delete(ContentUris.withAppendedId(
+//                            Thumbnails.CONTENT_URI, (Long)msg.obj),
+//                            null, null);
+//                } catch (Throwable t) {}
                 break;
             case TAB_SAVE_THUMBNAIL:
                 doSaveThumbnail((Tab)msg.obj);
@@ -215,90 +202,66 @@ public class DataController {
             if (blob == null) {
                 return;
             }
-            ContentResolver cr = mContext.getContentResolver();
-            ContentValues values = new ContentValues();
-            values.put(Thumbnails._ID, tab.getId());
-            values.put(Thumbnails.THUMBNAIL, blob);
-            cr.insert(Thumbnails.CONTENT_URI, values);
+//            ContentResolver cr = mContext.getContentResolver();
+//            ContentValues values = new ContentValues();
+//            values.put(Thumbnails._ID, tab.getId());
+//            values.put(Thumbnails.THUMBNAIL, blob);
+//            cr.insert(Thumbnails.CONTENT_URI, values);
         }
 
         private void doLoadThumbnail(Tab tab) {
-            ContentResolver cr = mContext.getContentResolver();
-            Cursor c = null;
-            try {
-                Uri uri = ContentUris.withAppendedId(Thumbnails.CONTENT_URI, tab.getId());
-                c = cr.query(uri, new String[] {Thumbnails._ID,
-                        Thumbnails.THUMBNAIL}, null, null, null);
-                if (c.moveToFirst()) {
-                    byte[] data = c.getBlob(1);
-                    if (data != null && data.length > 0) {
-                        tab.updateCaptureFromBlob(data);
-                    }
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
+//            ContentResolver cr = mContext.getContentResolver();
+//            Cursor c = null;
+//            try {
+//                Uri uri = ContentUris.withAppendedId(Thumbnails.CONTENT_URI, tab.getId());
+//                c = cr.query(uri, new String[] {Thumbnails._ID,
+//                        Thumbnails.THUMBNAIL}, null, null, null);
+//                if (c.moveToFirst()) {
+//                    byte[] data = c.getBlob(1);
+//                    if (data != null && data.length > 0) {
+//                        tab.updateCaptureFromBlob(data);
+//                    }
+//                }
+//            } finally {
+//                if (c != null) {
+//                    c.close();
+//                }
+//            }
         }
 
         private void doUpdateVisitedHistory(String url) {
-            ContentResolver cr = mContext.getContentResolver();
-            Cursor c = null;
-            try {
-                c = cr.query(History.CONTENT_URI, new String[] { History._ID, History.VISITS },
-                        History.URL + "=?", new String[] { url }, null);
-                if (c.moveToFirst()) {
-                    ContentValues values = new ContentValues();
-                    values.put(History.VISITS, c.getInt(1) + 1);
-                    values.put(History.DATE_LAST_VISITED, System.currentTimeMillis());
-                    cr.update(ContentUris.withAppendedId(History.CONTENT_URI, c.getLong(0)),
-                            values, null, null);
-                } else {
-                    BrowserConstants.truncateHistory(cr);
-                    ContentValues values = new ContentValues();
-                    values.put(History.URL, url);
-                    values.put(History.VISITS, 1);
-                    values.put(History.DATE_LAST_VISITED, System.currentTimeMillis());
-                    values.put(History.TITLE, url);
-                    values.put(History.DATE_CREATED, 0);
-                    values.put(History.USER_ENTERED, 0);
-                    cr.insert(History.CONTENT_URI, values);
-                }
-            } finally {
-                if (c != null) c.close();
-            }
+
         }
 
         private void doQueryBookmarkStatus(String url, Object replyTo) {
-            // Check to see if the site is bookmarked
-            Cursor cursor = null;
-            boolean isBookmark = false;
-            try {
-                cursor = mContext.getContentResolver().query(
-                        BookmarkUtils.getBookmarksUri(mContext),
-                        new String[] { BrowserContract.Bookmarks.URL },
-                        BrowserContract.Bookmarks.URL + " == ?",
-                        new String[] { url },
-                        null);
-                isBookmark = cursor.moveToFirst();
-            } catch (SQLiteException e) {
-                Log.e(LOGTAG, "Error checking for bookmark: " + e);
-            } finally {
-                if (cursor != null) cursor.close();
-            }
-            CallbackContainer cc = new CallbackContainer();
-            cc.replyTo = replyTo;
-            cc.args = new Object[] { url, isBookmark };
-            mCbHandler.obtainMessage(QUERY_URL_IS_BOOKMARK, cc).sendToTarget();
+//            // Check to see if the site is bookmarked
+//            Cursor cursor = null;
+//            boolean isBookmark = false;
+//            try {
+//                cursor = mContext.getContentResolver().query(
+//                        BookmarkUtils.getBookmarksUri(mContext),
+//                        new String[] { BrowserContract.Bookmarks.URL },
+//                        BrowserContract.Bookmarks.URL + " == ?",
+//                        new String[] { url },
+//                        null);
+//                isBookmark = cursor.moveToFirst();
+//            } catch (SQLiteException e) {
+//                Log.e(LOGTAG, "Error checking for bookmark: " + e);
+//            } finally {
+//                if (cursor != null) cursor.close();
+//            }
+//            CallbackContainer cc = new CallbackContainer();
+//            cc.replyTo = replyTo;
+//            cc.args = new Object[] { url, isBookmark };
+//            mCbHandler.obtainMessage(QUERY_URL_IS_BOOKMARK, cc).sendToTarget();
         }
 
         private void doUpdateHistoryTitle(String url, String title) {
-            ContentResolver cr = mContext.getContentResolver();
-            ContentValues values = new ContentValues();
-            values.put(History.TITLE, title);
-            cr.update(History.CONTENT_URI, values, History.URL + "=?",
-                    new String[] { url });
+//            ContentResolver cr = mContext.getContentResolver();
+//            ContentValues values = new ContentValues();
+//            values.put(History.TITLE, title);
+//            cr.update(History.CONTENT_URI, values, History.URL + "=?",
+//                    new String[] { url });
         }
     }
 }

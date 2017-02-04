@@ -17,25 +17,16 @@
 package com.sabaibrowser;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.ClipboardManager;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -47,22 +38,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.preference.PreferenceActivity;
 import android.provider.Browser;
 
-import com.sabaibrowser.os.BrowserConstants;
-import com.sabaibrowser.os.BrowserContract;
-import com.sabaibrowser.os.BrowserContract.Images;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Intents.Insert;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,18 +64,11 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebIconDatabase;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.sabaibrowser.IntentHandler.UrlData;
 import com.sabaibrowser.UI.ComboViews;
-import com.sabaibrowser.provider.BrowserProvider2.Thumbnails;
-import com.sabaibrowser.provider.SnapshotProvider.Snapshots;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -257,8 +235,6 @@ public class Controller
             }
 
         };
-        browser.getContentResolver().registerContentObserver(
-                BrowserContract.Bookmarks.CONTENT_URI, true, mBookmarksObserver);
 
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
         // Start watching the default geolocation permissions
@@ -312,7 +288,6 @@ public class Controller
     private void onPreloginFinished(Bundle icicle, Intent intent, long currentTabId,
             boolean restoreIncognitoTabs) {
         if (currentTabId == -1) {
-            BackgroundHandler.execute(new PruneThumbnails(mActivity, null));
             if (intent == null) {
                 // This won't happen under common scenarios. The icicle is
                 // not null, but there aren't any tabs to restore.
@@ -350,7 +325,6 @@ public class Controller
             for (Tab t : tabs) {
                 restoredTabs.add(t.getId());
             }
-            BackgroundHandler.execute(new PruneThumbnails(mActivity, restoredTabs));
             if (tabs.size() == 0) {
                 openTabToHomePage();
             }
@@ -371,37 +345,6 @@ public class Controller
             bookmarksOrHistoryPicker(ComboViews.Bookmarks);
         }
 
-    }
-
-    private static class PruneThumbnails implements Runnable {
-        private Context mContext;
-        private List<Long> mIds;
-
-        PruneThumbnails(Context context, List<Long> preserveIds) {
-            mContext = context.getApplicationContext();
-            mIds = preserveIds;
-        }
-
-        @Override
-        public void run() {
-            ContentResolver cr = mContext.getContentResolver();
-            if (mIds == null || mIds.size() == 0) {
-                cr.delete(Thumbnails.CONTENT_URI, null, null);
-            } else {
-                int length = mIds.size();
-                StringBuilder where = new StringBuilder();
-                where.append(Thumbnails._ID);
-                where.append(" not in (");
-                for (int i = 0; i < length; i++) {
-                    where.append(mIds.get(i));
-                    if (i < (length - 1)) {
-                        where.append(",");
-                    }
-                }
-                where.append(")");
-                cr.delete(Thumbnails.CONTENT_URI, where.toString(), null);
-            }
-        }
     }
 
     @Override
@@ -598,8 +541,8 @@ public class Controller
         send.setType("text/plain");
         send.putExtra(Intent.EXTRA_TEXT, url);
         send.putExtra(Intent.EXTRA_SUBJECT, title);
-        send.putExtra(BrowserConstants.EXTRA_SHARE_FAVICON, favicon);
-        send.putExtra(BrowserConstants.EXTRA_SHARE_SCREENSHOT, screenshot);
+        send.putExtra("share_favicon", favicon);
+        send.putExtra("share_screenshot", screenshot);
         try {
             c.startActivity(Intent.createChooser(send, c.getString(
                     R.string.choosertitle_sharevia)));
@@ -984,7 +927,8 @@ public class Controller
                 new AsyncTask<Void, Void, String[]>() {
             @Override
             public String[] doInBackground(Void... unused) {
-                return BrowserConstants.getVisitedHistory(mActivity.getContentResolver());
+                //return BrowserConstants.getVisitedHistory(mActivity.getContentResolver());
+                return null;
             }
             @Override
             public void onPostExecute(String[] result) {
@@ -1084,10 +1028,10 @@ public class Controller
         if (favicon == null) {
             return;
         }
-        if (!tab.isPrivateBrowsingEnabled()) {
-            Bookmarks.updateFavicon(mActivity
-                    .getContentResolver(), originalUrl, url, favicon);
-        }
+//        if (!tab.isPrivateBrowsingEnabled()) {
+//            Bookmarks.updateFavicon(mActivity
+//                    .getContentResolver(), originalUrl, url, favicon);
+//        }
     }
 
     @Override
@@ -1160,30 +1104,6 @@ public class Controller
                 mUploadHandler.onResult(resultCode, intent);
                 break;
             case COMBO_VIEW:
-                if (intent == null || resultCode != Activity.RESULT_OK) {
-                    break;
-                }
-                mUi.showWeb(false);
-                if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-                    Tab t = getCurrentTab();
-                    Uri uri = intent.getData();
-                    loadUrl(t, uri.toString());
-                } else if (intent.hasExtra(ComboViewActivity.EXTRA_OPEN_ALL)) {
-                    String[] urls = intent.getStringArrayExtra(
-                            ComboViewActivity.EXTRA_OPEN_ALL);
-                    Tab parent = getCurrentTab();
-                    for (String url : urls) {
-                        parent = openTab(url, parent,
-                                !mSettings.openInBackground(), true);
-                    }
-                } else if (intent.hasExtra(ComboViewActivity.EXTRA_OPEN_SNAPSHOT)) {
-                    long id = intent.getLongExtra(
-                            ComboViewActivity.EXTRA_OPEN_SNAPSHOT, -1);
-                    if (id >= 0) {
-                        Toast.makeText(mActivity, "Snapshot Tab no longer supported",
-                            Toast.LENGTH_LONG).show();
-                    }
-                }
                 break;
             case VOICE_RESULT:
                 if (resultCode == Activity.RESULT_OK && intent != null) {
@@ -1207,18 +1127,18 @@ public class Controller
      */
     @Override
     public void bookmarksOrHistoryPicker(ComboViews startView) {
-        if (mTabControl.getCurrentWebView() == null) {
-            return;
-        }
-        // clear action mode
-        if (isInCustomActionMode()) {
-            endActionMode();
-        }
-        Bundle extras = new Bundle();
-        // Disable opening in a new window if we have maxed out the windows
-        extras.putBoolean(BrowserBookmarksPage.EXTRA_DISABLE_WINDOW,
-                !mTabControl.canCreateNewTab());
-        mUi.showComboView(startView, extras);
+//        if (mTabControl.getCurrentWebView() == null) {
+//            return;
+//        }
+//        // clear action mode
+//        if (isInCustomActionMode()) {
+//            endActionMode();
+//        }
+//        Bundle extras = new Bundle();
+//        // Disable opening in a new window if we have maxed out the windows
+//        extras.putBoolean(BrowserBookmarksPage.EXTRA_DISABLE_WINDOW,
+//                !mTabControl.canCreateNewTab());
+//        mUi.showComboView(startView, extras);
     }
 
     // combo view callbacks
@@ -1758,10 +1678,7 @@ public class Controller
 
     @Override
     public void bookmarkCurrentPage() {
-        Intent bookmarkIntent = createBookmarkCurrentPageIntent(false);
-        if (bookmarkIntent != null) {
-            mActivity.startActivity(bookmarkIntent);
-        }
+
     }
 
     private void goLive() {
@@ -1945,34 +1862,7 @@ public class Controller
      */
     @Override
     public Intent createBookmarkCurrentPageIntent(boolean editExisting) {
-        WebView w = getCurrentTopWebView();
-        if (w == null) {
-            return null;
-        }
-        Intent i = new Intent(mActivity,
-                AddBookmarkPage.class);
-        i.putExtra(BrowserContract.Bookmarks.URL, w.getUrl());
-        i.putExtra(BrowserContract.Bookmarks.TITLE, w.getTitle());
-        String touchIconUrl = getTouchIconUrl(w);
-        if (touchIconUrl != null) {
-            i.putExtra(AddBookmarkPage.TOUCH_ICON_URL, touchIconUrl);
-            WebSettings settings = w.getSettings();
-            if (settings != null) {
-                i.putExtra(AddBookmarkPage.USER_AGENT,
-                        settings.getUserAgentString());
-            }
-        }
-        i.putExtra(BrowserContract.Bookmarks.THUMBNAIL,
-                createScreenshot(w, getDesiredThumbnailWidth(mActivity),
-                getDesiredThumbnailHeight(mActivity)));
-        i.putExtra(BrowserContract.Bookmarks.FAVICON, w.getFavicon());
-        if (editExisting) {
-            i.putExtra(AddBookmarkPage.CHECK_FOR_DUPE, true);
-        }
-        // Put the dialog at the upper right of the screen, covering the
-        // star on the title bar.
-        i.putExtra("gravity", Gravity.RIGHT | Gravity.TOP);
-        return i;
+        return null;
     }
 
     static String getTouchIconUrl(WebView wv) {
@@ -2074,68 +1964,7 @@ public class Controller
     }
 
     private void updateScreenshot(Tab tab) {
-        // If this is a bookmarked site, add a screenshot to the database.
-        // FIXME: Would like to make sure there is actually something to
-        // draw, but the API for that (WebViewCore.pictureReady()) is not
-        // currently accessible here.
 
-        WebView view = tab.getWebView();
-        if (view == null) {
-            // Tab was destroyed
-            return;
-        }
-        final String url = tab.getUrl();
-        final String originalUrl = view.getOriginalUrl();
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
-
-        // Only update thumbnails for web urls (http(s)://), not for
-        // about:, javascript:, data:, etc...
-        // Unless it is a bookmarked site, then always update
-        if (!Patterns.WEB_URL.matcher(url).matches() && !tab.isBookmarkedSite()) {
-            return;
-        }
-
-        final Bitmap bm = createScreenshot(view, getDesiredThumbnailWidth(mActivity),
-                getDesiredThumbnailHeight(mActivity));
-        if (bm == null) {
-            return;
-        }
-
-        final ContentResolver cr = mActivity.getContentResolver();
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... unused) {
-                Cursor cursor = null;
-                try {
-                    // TODO: Clean this up
-                    cursor = Bookmarks.queryCombinedForUrl(cr, originalUrl, url);
-                    if (cursor != null && cursor.moveToFirst()) {
-                        final ByteArrayOutputStream os =
-                                new ByteArrayOutputStream();
-                        bm.compress(Bitmap.CompressFormat.PNG, 100, os);
-
-                        ContentValues values = new ContentValues();
-                        values.put(Images.THUMBNAIL, os.toByteArray());
-
-                        do {
-                            values.put(Images.URL, cursor.getString(0));
-                            cr.update(Images.CONTENT_URI, values, null, null);
-                        } while (cursor.moveToNext());
-                    }
-                } catch (IllegalStateException e) {
-                    // Ignore
-                } catch (SQLiteException s) {
-                    // Added for possible error when user tries to remove the same bookmark
-                    // that is being updated with a screen shot
-                    Log.w(LOGTAG, "Error when running updateScreenshot ", s);
-                } finally {
-                    if (cursor != null) cursor.close();
-                }
-                return null;
-            }
-        }.execute();
     }
 
     private class Copy implements OnMenuItemClickListener {

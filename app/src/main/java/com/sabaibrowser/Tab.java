@@ -72,8 +72,6 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
-import com.sabaibrowser.homepages.HomeProvider;
-import com.sabaibrowser.provider.SnapshotProvider.Snapshots;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -388,15 +386,15 @@ class Tab implements PictureListener {
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
 
-            if (mCurrentState.mUrl.equals(HomeProvider.MOST_VISITED_URL)) {
-                if (!mInMostVisitedPage) {
-                    loadUrl(HomeProvider.MOST_VISITED, null);
-                    mInMostVisitedPage = true;
-                }
-                view.clearHistory();
-            } else {
-                mInMostVisitedPage = false;
-            }
+//            if (mCurrentState.mUrl.equals(HomeProvider.MOST_VISITED_URL)) {
+//                if (!mInMostVisitedPage) {
+//                    loadUrl(HomeProvider.MOST_VISITED, null);
+//                    mInMostVisitedPage = true;
+//                }
+//                view.clearHistory();
+//            } else {
+//                mInMostVisitedPage = false;
+//            }
         }
 
         // return true if want to hijack the url to let another app to handle it
@@ -617,7 +615,8 @@ class Tab implements PictureListener {
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view,
                 String url) {
-            return HomeProvider.shouldInterceptRequest(mContext, url);
+//            return HomeProvider.shouldInterceptRequest(mContext, url);
+            return null;
         }
 
         @Override
@@ -1799,20 +1798,23 @@ class Tab implements PictureListener {
             mInPageLoad = true;
             mCurrentState = new PageState(mContext, false, url, null);
             mWebViewController.onPageStarted(this, mMainView, null);
-            WebResourceResponse res = HomeProvider.shouldInterceptRequest(mContext, url);
-            if (res != null) {
-                try {
-                    String data = readWebResource(res).toString();
-                    mInMostVisitedPage = true;
-                    mMainView.loadDataWithBaseURL(url, data, res.getMimeType(), res.getEncoding(),
-                            HomeProvider.MOST_VISITED_URL);
-                } catch (IOException io) {
-                    // Fallback to default load handling
-                    mMainView.loadUrl(url, headers);
-                }
-            } else {
-                mMainView.loadUrl(url, headers);
-            }
+
+//            WebResourceResponse res = HomeProvider.shouldInterceptRequest(mContext, url);
+//            if (res != null) {
+//                try {
+//                    String data = readWebResource(res).toString();
+//                    mInMostVisitedPage = true;
+//                    mMainView.loadDataWithBaseURL(url, data, res.getMimeType(), res.getEncoding(),
+//                            HomeProvider.MOST_VISITED_URL);
+//                } catch (IOException io) {
+//                    // Fallback to default load handling
+//                    mMainView.loadUrl(url, headers);
+//                }
+//            } else {
+//                mMainView.loadUrl(url, headers);
+//            }
+
+            mMainView.loadUrl(url, headers);
         }
     }
 

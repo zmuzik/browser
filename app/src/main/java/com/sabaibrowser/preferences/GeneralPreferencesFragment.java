@@ -42,7 +42,6 @@ import com.sabaibrowser.BrowserSettings;
 import com.sabaibrowser.PreferenceKeys;
 import com.sabaibrowser.R;
 import com.sabaibrowser.UrlUtils;
-import com.sabaibrowser.homepages.HomeProvider;
 
 public class GeneralPreferencesFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -101,9 +100,9 @@ public class GeneralPreferencesFragment extends PreferenceFragment
                 settings.setHomePage(BrowserSettings.getFactoryResetHomeUrl(
                         getActivity()));
             }
-            if (MOST_VISITED.equals(objValue)) {
-                settings.setHomePage(HomeProvider.MOST_VISITED);
-            }
+//            if (MOST_VISITED.equals(objValue)) {
+//                settings.setHomePage(HomeProvider.MOST_VISITED);
+//            }
             if (OTHER.equals(objValue)) {
                 promptForHomepage((ListPreference) pref);
                 return false;
@@ -166,9 +165,9 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         if (TextUtils.isEmpty(homepage) || BLANK_URL.endsWith(homepage)) {
             return BLANK;
         }
-        if (HomeProvider.MOST_VISITED.equals(homepage)) {
-            return MOST_VISITED;
-        }
+//        if (HomeProvider.MOST_VISITED.equals(homepage)) {
+//            return MOST_VISITED;
+//        }
         String defaultHomepage = BrowserSettings.getFactoryResetHomeUrl(
                 getActivity());
         if (TextUtils.equals(defaultHomepage, homepage)) {

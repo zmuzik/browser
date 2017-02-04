@@ -36,8 +36,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.sabaibrowser.SuggestionsAdapter.CompletionListener;
-import com.sabaibrowser.SuggestionsAdapter.SuggestItem;
 import com.sabaibrowser.search.SearchEngine;
 import com.sabaibrowser.search.SearchEngineInfo;
 import com.sabaibrowser.search.SearchEngines;
@@ -50,7 +48,7 @@ import java.lang.reflect.Method;
  */
 public class UrlInputView extends AutoCompleteTextView
         implements OnEditorActionListener,
-        CompletionListener, OnItemClickListener, TextWatcher {
+        OnItemClickListener, TextWatcher {
 
     static final String TYPED = "browser-type";
     static final String SUGGESTED = "browser-suggest";
@@ -67,7 +65,6 @@ public class UrlInputView extends AutoCompleteTextView
 
     private UrlInputListener   mListener;
     private InputMethodManager mInputManager;
-    private SuggestionsAdapter mAdapter;
     private View mContainer;
     private boolean mLandscape;
     private boolean mIncognitoMode;
@@ -92,8 +89,6 @@ public class UrlInputView extends AutoCompleteTextView
     private void init(Context ctx) {
         mInputManager = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         setOnEditorActionListener(this);
-        mAdapter = new SuggestionsAdapter(ctx, this);
-        setAdapter(mAdapter);
         setSelectAllOnFocus(true);
         onConfigurationChanged(ctx.getResources().getConfiguration());
         setThreshold(1);
@@ -189,7 +184,6 @@ public class UrlInputView extends AutoCompleteTextView
         super.onConfigurationChanged(config);
         mLandscape = (config.orientation &
                 Configuration.ORIENTATION_LANDSCAPE) != 0;
-        mAdapter.setLandscapeMode(mLandscape);
         if (isPopupShowing() && (getVisibility() == View.VISIBLE)) {
             dismissDropDown();
             showDropDown();
@@ -200,7 +194,6 @@ public class UrlInputView extends AutoCompleteTextView
     @Override
     public void dismissDropDown() {
         super.dismissDropDown();
-        mAdapter.clearCache();
     }
 
     @Override
@@ -265,12 +258,12 @@ public class UrlInputView extends AutoCompleteTextView
 
     // Completion Listener
 
-    @Override
+    //@Override
     public void onSearch(String search) {
         mListener.onCopySuggestion(search);
     }
 
-    @Override
+    //@Override
     public void onSelect(String url, int type, String extra) {
         finishInput(url, extra, SUGGESTED);
     }
@@ -278,8 +271,8 @@ public class UrlInputView extends AutoCompleteTextView
     @Override
     public void onItemClick(
             AdapterView<?> parent, View view, int position, long id) {
-        SuggestItem item = mAdapter.getItem(position);
-        onSelect(SuggestionsAdapter.getSuggestionUrl(item), item.type, item.extra);
+//        SuggestItem item = mAdapter.getItem(position);
+//        onSelect(SuggestionsAdapter.getSuggestionUrl(item), item.type, item.extra);
     }
 
     interface UrlInputListener {
@@ -294,7 +287,6 @@ public class UrlInputView extends AutoCompleteTextView
 
     public void setIncognitoMode(boolean incognito) {
         mIncognitoMode = incognito;
-        mAdapter.setIncognitoMode(mIncognitoMode);
     }
 
     @Override
@@ -304,10 +296,6 @@ public class UrlInputView extends AutoCompleteTextView
             return true;
         }
         return super.onKeyDown(keyCode, evt);
-    }
-
-    public SuggestionsAdapter getAdapter() {
-        return mAdapter;
     }
 
     /*
