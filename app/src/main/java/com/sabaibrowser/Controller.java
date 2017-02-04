@@ -663,7 +663,6 @@ public class Controller
         mNetworkHandler.onPause();
 
         //WebView.disablePlatformNotifications();
-        NfcHandler.unregister(mActivity);
         if (sThumbnailBitmap != null) {
             sThumbnailBitmap.recycle();
             sThumbnailBitmap = null;
@@ -713,7 +712,6 @@ public class Controller
         mUi.onResume();
         mNetworkHandler.onResume();
         //WebView.enablePlatformNotifications();
-        NfcHandler.register(mActivity, this);
         if (mVoiceResult != null) {
             mUi.onVoiceResult(mVoiceResult);
             mVoiceResult = null;
