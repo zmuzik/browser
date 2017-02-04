@@ -20,9 +20,6 @@
 
     <original-package android:name="com.sabaibrowser" />
 
-    <uses-sdk android:minSdkVersion="21"
-        android:targetSdkVersion="23" />
-
     <uses-feature android:name="android.software.leanback"
     android:required="false" />
 
@@ -31,10 +28,6 @@
 
     <uses-feature android:name="android.hardware.screen.portrait"
     android:required="false" />
-
-    <permission android:name="com.sabaibrowser.permission.PRELOAD"
-        android:label="@string/permission_preload_label"
-        android:protectionLevel="signatureOrSystem" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
