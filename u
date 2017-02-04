@@ -1,2 +1,2 @@
 #!/bin/bash
-adb uninstall com.android.browser
+adb uninstall com.sabaibrowser
