@@ -56,7 +56,7 @@
 
     <application   android:name="Browser"
                    android:label="@string/application_name"
-                   android:icon="@mipmap/ic_launcher_browser"
+                   android:icon="@mipmap/ic_launcher"
                    android:backupAgent=".BrowserBackupAgent"
                    android:hardwareAccelerated="true"
                    android:taskAffinity="android.task.browser"
