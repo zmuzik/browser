@@ -64,7 +64,6 @@ public class PhoneUi extends BaseUi {
      */
     public PhoneUi(Activity browser, UiController controller) {
         super(browser, controller);
-        setUseQuickControls(BrowserSettings.getInstance().useQuickControls());
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
         TypedValue heightValue = new TypedValue();
         browser.getTheme().resolveAttribute(
@@ -80,9 +79,6 @@ public class PhoneUi extends BaseUi {
 
     @Override
     public void editUrl(boolean clearInput, boolean forceIME) {
-        if (mUseQuickControls) {
-            mTitleBar.setShowProgressOnly(false);
-        }
         //Do nothing while at Nav show screen.
         if (mShowNav) return;
         super.editUrl(clearInput, forceIME);
@@ -150,13 +146,7 @@ public class PhoneUi extends BaseUi {
             return;
         }
         // Request focus on the top window.
-        if (mUseQuickControls) {
-            mPieControl.forceToTop(mContentView);
-            view.setTitleBar(null);
-            mTitleBar.setShowProgressOnly(true);
-        } else {
-            view.setTitleBar(mTitleBar);
-        }
+        view.setTitleBar(mTitleBar);
         // update nav bar state
         mNavigationBar.onStateChanged(StateListener.STATE_NORMAL);
         mTitleBar.setSkipTitleBarAnimations(false);
@@ -185,11 +175,11 @@ public class PhoneUi extends BaseUi {
             info.setVisible(false);
         }
         MenuItem newTab = menu.findItem(R.id.new_tab_menu_id);
-        if (newTab != null && !mUseQuickControls) {
+        if (newTab != null) {
             newTab.setVisible(false);
         }
         MenuItem newIncognitoTab = menu.findItem(R.id.new_incognito_tab_menu_id);
-        if (newIncognitoTab != null && !mUseQuickControls) {
+        if (newIncognitoTab != null) {
             newIncognitoTab.setVisible(false);
         }
         MenuItem closeOthers = menu.findItem(R.id.close_other_tabs_id);
@@ -245,9 +235,6 @@ public class PhoneUi extends BaseUi {
     public void onActionModeFinished(boolean inLoad) {
         mTitleBar.animate().translationY(0);
         if (inLoad) {
-            if (mUseQuickControls) {
-                mTitleBar.setShowProgressOnly(true);
-            }
             showTitleBar();
         }
     }

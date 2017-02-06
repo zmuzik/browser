@@ -108,10 +108,8 @@ public abstract class BaseUi implements UI {
     private View mVideoProgressView;
 
     private boolean mActivityPaused;
-    protected boolean mUseQuickControls;
     protected TitleBar mTitleBar;
     private NavigationBarBase mNavigationBar;
-    protected PieControl mPieControl;
     private boolean mBlockFocusAnimations;
 
     public BaseUi(Activity browser, UiController controller) {
@@ -196,21 +194,6 @@ public abstract class BaseUi implements UI {
         return false;
     }
 
-    @Override
-    public void setUseQuickControls(boolean useQuickControls) {
-        mUseQuickControls = useQuickControls;
-        mTitleBar.setUseQuickControls(mUseQuickControls);
-        if (useQuickControls) {
-            mPieControl = new PieControl(mActivity, mUiController, this);
-            mPieControl.attachToContainer(mContentView);
-        } else {
-            if (mPieControl != null) {
-                mPieControl.removeFromContainer(mContentView);
-            }
-        }
-        updateUrlBarAutoShowManagerTarget();
-    }
-
     // Tab callbacks
     @Override
     public void onTabDataChanged(Tab tab) {
@@ -274,15 +257,8 @@ public abstract class BaseUi implements UI {
         updateUrlBarAutoShowManagerTarget();
         attachTabToContentView(tab);
         if (web != null) {
-            // Request focus on the top window.
-            if (mUseQuickControls) {
-                mPieControl.forceToTop(mContentView);
-                web.setTitleBar(null);
-                mTitleBar.hide();
-            } else {
-                web.setTitleBar(mTitleBar);
-                mTitleBar.onScrollChanged();
-            }
+            web.setTitleBar(mTitleBar);
+            mTitleBar.onScrollChanged();
         }
         mTitleBar.bringToFront();
         tab.getTopWindow().requestFocus();
@@ -296,7 +272,7 @@ public abstract class BaseUi implements UI {
 
     protected void updateUrlBarAutoShowManagerTarget() {
         WebView web = mActiveTab != null ? mActiveTab.getWebView() : null;
-        if (!mUseQuickControls && web instanceof BrowserWebView) {
+        if (web instanceof BrowserWebView) {
             mUrlBarAutoShowManager.setTarget((BrowserWebView) web);
         } else {
             mUrlBarAutoShowManager.setTarget(null);
