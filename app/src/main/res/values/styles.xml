@@ -110,4 +110,8 @@
         <item name="android:imeOptions">flagNoExtractUi|actionNext</item>
         <item name="android:singleLine">true</item>
     </style>
+
+    <!-- import from cm_styles.xml -->
+    <style name="LoginButtonTheme" parent="@android:Widget.Holo.Light.Button" />
+    <style name="LoginSpinnerTheme" parent="@android:Widget.Holo.Light.Spinner" />
 </resources>
