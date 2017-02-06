@@ -39,6 +39,7 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 
+import com.sabaibrowser.preferences.GeneralPreferencesFragment;
 import com.sabaibrowser.search.SearchEngine;
 import com.sabaibrowser.search.SearchEngines;
 
@@ -213,11 +214,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
                 mPrefs.edit().remove(PREF_TEXT_SIZE).apply();
             }
 
-            sFactoryResetUrl = mContext.getResources().getString(R.string.homepage_base);
-//            if (sFactoryResetUrl.indexOf("{CID}") != -1) {
-//                sFactoryResetUrl = sFactoryResetUrl.replace("{CID}",
-//                    BrowserProvider.getClientId(mContext.getContentResolver()));
-//            }
+            sFactoryResetUrl = GeneralPreferencesFragment.BLANK_URL;
 
             synchronized (BrowserSettings.class) {
                 sInitialized = true;
