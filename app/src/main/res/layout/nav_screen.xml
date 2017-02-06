@@ -30,7 +30,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:layout_gravity="top"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:gravity="right"
         android:background="@color/primary"
         android:elevation="8dp">
