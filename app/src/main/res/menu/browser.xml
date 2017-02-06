@@ -129,11 +129,11 @@
             android:alphabeticShortcut="l" />
         <item android:id="@+id/close_menu_id"
             android:alphabeticShortcut="w" />
-        <item android:id="@+id/find_menu_id"
+        <item android:id="@+id/shortcut_find_menu_id"
             android:alphabeticShortcut="f" />
-        <item android:id="@+id/page_info_menu_id"
+        <item android:id="@+id/shortcut_page_info_menu_id"
             android:alphabeticShortcut="g" />
-        <item android:id="@+id/bookmarks_menu_id"
+        <item android:id="@+id/shortcut_bookmarks_menu_id"
             android:alphabeticShortcut="b" />
     </group>
     <!-- these items are toggled in and out of @+id/stop_reload_menu_id -->

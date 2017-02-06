@@ -130,7 +130,8 @@ public class BrowserWebView extends WebView {
     }
 
     public void drawContent(Canvas c) {
-        onDraw(c);
+        //onDraw(c);
+        draw(c);
     }
 
     @Override
