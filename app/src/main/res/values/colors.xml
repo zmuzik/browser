@@ -28,4 +28,22 @@
     <color name="qc_sub">#2e7d32</color>
     <color name="qc_tab_nr">#2e7d32</color>
     <color name="navtab_bg">#80606060</color>
+
+    <!-- imported from cm_colors -->
+    <color name="white">#fafafa</color>
+    <color name="black">#212121</color>
+    <color name="primary">#4caf50</color>
+    <color name="primary_dark">#388e3c</color>
+    <color name="accent">#1b5e20</color>
+    <color name="floating_action_button_touch_tint">#388e3c</color>
+    <color name="trasparent">#00000000</color>
+
+    <color name="bottom_bar">#f0f0f0</color>
+
+    <color name="qc_tab_title_text_color">#DDDDDD</color>
+    <color name="title_bar_autologin_background">#FBF0A0</color>
+    <color name="title_bar_autologin_error_text_color">#dd6826</color>
+    <color name="autologin_bar_text_color">@android:color/primary_text_light</color>
+    <color name="anim_screen_image_view_background">@color/white</color>
+    <color name="nav_screen_background">@color/white</color>
 </resources>
