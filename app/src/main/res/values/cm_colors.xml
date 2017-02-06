@@ -23,6 +23,7 @@
     <color name="floating_action_button_touch_tint">#388e3c</color>
     <color name="trasparent">#00000000</color>
 
+    <color name="bottom_bar">#f0f0f0</color>
 
     <color name="qc_tab_title_text_color">#DDDDDD</color>
     <color name="title_bar_autologin_background">#FBF0A0</color>
