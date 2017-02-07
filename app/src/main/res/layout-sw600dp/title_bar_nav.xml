@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="4dip"
             android:paddingRight="0dip"
-            android:background="@null"
+            android:background="@color/white"
             android:hint="@string/search_hint"
             android:singleLine="true"
             android:ellipsize="end"
