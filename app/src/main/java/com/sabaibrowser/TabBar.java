@@ -121,7 +121,7 @@ public class TabBar extends LinearLayout implements OnClickListener {
         mFocusPaint.setStyle(Paint.Style.STROKE);
         mFocusPaint.setStrokeWidth(res.getDimension(R.dimen.tab_focus_stroke));
         mFocusPaint.setAntiAlias(true);
-        mFocusPaint.setColor(res.getColor(R.color.tabFocusHighlight));
+        mFocusPaint.setColor(res.getColor(R.color.accent));
     }
 
     @Override

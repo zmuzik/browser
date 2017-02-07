@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/bottom_bar">
+    android:background="@color/white">
     <ImageView
         android:id="@+id/date_icon"
         android:src="@drawable/ic_search_category_history"
