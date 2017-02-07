@@ -18,7 +18,7 @@
 -->
 <resources>
     <style name="BrowserTheme" parent="Theme.AppCompat.Light">
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
