@@ -39,13 +39,13 @@
         <item name="android:displayOptions"></item>
     </style>
     <style name="Suggestions" parent="@android:style/Widget.Material.AutoCompleteTextView">
-        <item name="android:popupBackground">@color/white</item>
+        <item name="android:popupBackground">@color/primary_text</item>
         <item name="android:dropDownVerticalOffset">0dip</item>
         <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
     </style>
     <style name="Widget.UrlInputView" parent="BrowserTheme">
-        <!--item name="android:colorAccent">@color/accent</item-->
+        <item name="android:colorAccent">@color/accent</item>
     </style>
     <style name="BrowserButton">
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>

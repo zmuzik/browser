@@ -62,7 +62,6 @@
             android:paddingLeft="4dip"
             android:paddingRight="0dip"
             android:background="@null"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:hint="@string/search_hint"
             android:singleLine="true"
             android:ellipsize="end"
@@ -71,6 +70,7 @@
             android:inputType="textUri"
             android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
             android:theme="@style/Widget.UrlInputView"
+            android:textColor="@color/primary_text"
             style="@style/Suggestions" />
         <ImageButton
             android:id="@+id/star"

@@ -53,7 +53,6 @@
             android:layout_height="match_parent"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="24dip"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:hint="@string/search_hint"
             android:singleLine="true"
             android:ellipsize="end"
@@ -63,6 +62,7 @@
             android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
             style="@style/Suggestions"
             android:theme="@style/Widget.UrlInputView"
+            android:textColor="@color/primary_text"
             android:background="@null" />
         <ImageView
             android:id="@+id/clear"
