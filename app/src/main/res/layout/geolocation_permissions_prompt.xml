@@ -20,7 +20,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/geolocation_permissions_prompt_background"
+    android:background="@color/white"
     android:visibility="gone">
 
     <!-- 'google.com wants to know your location' -->

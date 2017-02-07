@@ -94,7 +94,7 @@ public class TabBar extends LinearLayout implements OnClickListener {
         mUi = ui;
         Resources res = activity.getResources();
         mTabWidth = (int) res.getDimension(R.dimen.tab_width);
-        mActiveDrawable = res.getDrawable(R.drawable.bg_urlbar);
+        mActiveDrawable = res.getDrawable(R.color.primary_dark);
         mInactiveDrawable = res.getDrawable(R.color.primary);
 
         mTabMap = new HashMap<Tab, TabView>();

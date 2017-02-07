@@ -639,7 +639,7 @@ public abstract class BaseUi implements UI {
     public Bitmap getDefaultVideoPoster() {
         if (mDefaultVideoPoster == null) {
             mDefaultVideoPoster = BitmapFactory.decodeResource(
-                    mActivity.getResources(), R.drawable.default_video_poster);
+                    mActivity.getResources(), R.drawable.video_placeholder);
         }
         return mDefaultVideoPoster;
     }
