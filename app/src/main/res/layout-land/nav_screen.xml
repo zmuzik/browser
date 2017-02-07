@@ -32,7 +32,7 @@
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:gravity="right"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         android:elevation="8dp">
         <ImageButton
             android:id="@+id/gotohome"

@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1.0"
         android:orientation="horizontal"
-        android:background="@color/white">
+        android:background="@color/light_gray">
         <com.sabaibrowser.UrlInputView
             android:id="@+id/url"
             android:layout_width="0dip"
