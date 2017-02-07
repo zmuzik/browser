@@ -63,7 +63,6 @@
             android:scrollHorizontally="true"
             android:inputType="textUri"
             android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-            style="@style/Suggestions"
             android:theme="@style/Widget.UrlInputView"
             android:textColor="@color/primary_text"
             android:background="@color/white" />

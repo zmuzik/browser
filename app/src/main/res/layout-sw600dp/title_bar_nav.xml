@@ -70,8 +70,7 @@
             android:inputType="textUri"
             android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
             android:theme="@style/Widget.UrlInputView"
-            android:textColor="@color/primary_text"
-            style="@style/Suggestions" />
+            android:textColor="@color/primary_text" />
         <ImageButton
             android:id="@+id/star"
             android:src="@drawable/btn_imageview_star"

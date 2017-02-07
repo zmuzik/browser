@@ -38,8 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingLeft="8dp"
-            android:paddingRight="24dp"
-            style="@style/LoginSpinnerTheme" />
+            android:paddingRight="24dp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,8 +50,7 @@
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/autologin_bar_hide_text"
-            style="@style/LoginButtonTheme" />
+            android:text="@string/autologin_bar_hide_text" />
         <ProgressBar
             android:id="@+id/autologin_progress"
             android:indeterminateOnly="true"
@@ -62,7 +60,6 @@
         <Button
             android:id="@+id/autologin_login"
             android:text="@string/autologin_bar_login_text"
-            style="@style/LoginButtonTheme"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
