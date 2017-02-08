@@ -26,11 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height" />
     <ViewStub
-        android:id="@+id/snapshotbar_stub"
-        android:layout="@layout/title_bar_snapshot"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height" />
-    <ViewStub
         android:id="@+id/autologin_stub"
         android:layout="@layout/title_bar_autologin"
         android:paddingTop="3dip"
