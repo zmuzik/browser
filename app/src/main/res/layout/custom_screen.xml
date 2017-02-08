@@ -14,8 +14,8 @@
      limitations under the License.
 -->
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout android:id="@+id/fullscreen_custom_content"
         android:visibility="gone"
         android:background="@color/black"
@@ -39,6 +39,18 @@
             android:layout_height="match_parent"
             android:layout_above="@id/fixed_titlebar_container"
         />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="@dimen/fab_margin_side"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:backgroundTint="@color/primary"
+            app:elevation="8dp"/>
     </RelativeLayout>
 </merge>
 
