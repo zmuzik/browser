@@ -81,19 +81,9 @@ public class BrowserActivity extends Activity
         mController.start(intent);
     }
 
-    public static boolean isTablet(Context context) {
-        return context.getResources().getBoolean(R.bool.isTablet);
-    }
-
     private Controller createController() {
         Controller controller = new Controller(this);
-        boolean xlarge = isTablet(this);
-        UI ui = null;
-        if (xlarge) {
-            ui = new XLargeUi(this, controller);
-        } else {
-            ui = new PhoneUi(this, controller);
-        }
+        UI ui = new PhoneUi(this, controller);
         controller.setUi(ui);
         return controller;
     }

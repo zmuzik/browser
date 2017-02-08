@@ -351,7 +351,7 @@ public class PageDialogsHandler {
 //                (LinearLayout)certificateView.findViewById(com.android.internal.R.id.placeholder);
 //
 //        LayoutInflater factory = LayoutInflater.from(mContext);
-        int iconId = R.drawable.ic_dialog_browser_certificate_secure;
+//        int iconId = R.drawable.ic_dialog_browser_certificate_secure;
 //
 //        if (error == null) {
 //            iconId = R.drawable.ic_dialog_browser_certificate_secure;
@@ -390,14 +390,7 @@ public class PageDialogsHandler {
 
         return new AlertDialog.Builder(mContext)
                 //.setTitle(com.android.internal.R.string.ssl_certificate)
-                .setIcon(iconId)
+                //.setIcon(iconId)
                 .setView(certificateView);
-    }
-
-    private void addError(LayoutInflater inflater, LinearLayout parent, int error) {
-        TextView textView = (TextView) inflater.inflate(R.layout.ssl_warning,
-                parent, false);
-        textView.setText(error);
-        parent.addView(textView);
     }
 }

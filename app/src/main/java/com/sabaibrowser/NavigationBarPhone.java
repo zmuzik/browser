@@ -81,7 +81,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
         mRefreshDrawable = res.getDrawable(R.drawable.ic_refresh);
         mStopDescription = res.getString(R.string.accessibility_button_stop);
         mRefreshDescription = res.getString(R.string.accessibility_button_refresh);
-        mTextfieldBgDrawable = res.getDrawable(R.drawable.textfield_active_holo_dark);
+        //mTextfieldBgDrawable = res.getDrawable(R.drawable.textfield_active_holo_dark);
         mUrlInput.setContainer(this);
         mUrlInput.setStateListener(this);
         mIncognitoIcon = findViewById(R.id.incognito_icon);
@@ -214,7 +214,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mMagnify.setVisibility(View.GONE);
             mTabSwitcher.setVisibility(View.GONE);
             mMore.setVisibility(View.GONE);
-            mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
+            //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         case StateListener.STATE_EDITED:
             mStopButton.setVisibility(View.GONE);
@@ -222,7 +222,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mMagnify.setVisibility(View.VISIBLE);
             mTabSwitcher.setVisibility(View.GONE);
             mMore.setVisibility(View.GONE);
-            mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
+            //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         }
     }

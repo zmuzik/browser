@@ -44,7 +44,6 @@
         <item
             android:id="@+id/add_bookmark_menu_id"
             android:title="@string/save_to_bookmarks"
-            android:icon="@drawable/ic_bookmark_on"
             android:alphabeticShortcut="d"
             android:visible="@bool/menu_show_bookmarks" />
         <!--item
