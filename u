@@ -1,2 +1,10 @@
 #!/bin/bash
-adb uninstall com.sabaibrowser
+APP_ID="com.sabaibrowser"
+
+if [ $# -eq 0 ]; then
+  adb uninstall $APP_ID
+elif [ $1 == "e" ]; then
+  adb -e uninstall $APP_ID
+elif [ $1 == "d" ]; then
+  adb -d uninstall $APP_ID
+fi
