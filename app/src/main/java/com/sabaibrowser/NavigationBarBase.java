@@ -64,7 +64,7 @@ public class NavigationBarBase extends LinearLayout implements
         super.onFinishInflate();
         //XXX
         //mLockIcon = (ImageView) findViewById(R.id.lock);
-        mFavicon = (ImageView) findViewById(R.id.favicon);
+        //mFavicon = (ImageView) findViewById(R.id.favicon);
         mUrlInput = (UrlInputView) findViewById(R.id.url);
         mUrlInput.setUrlInputListener(this);
         mUrlInput.setOnFocusChangeListener(this);

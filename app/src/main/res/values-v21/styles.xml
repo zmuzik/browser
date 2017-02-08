@@ -17,18 +17,16 @@
  */
 -->
 <resources>
-    <style name="BaseTheme" parent="Theme.AppCompat.Light">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="android:colorBackground">@color/white</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-    </style>
     <style name="BrowserTheme" parent="BaseTheme">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
     </style>
 
     <style name="PreferencesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
     </style>
 
     <style name="ActionBarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -37,20 +35,22 @@
     </style>
 
     <style name="Widget.UrlInputView" parent="BrowserTheme">
+        <item name="android:colorAccent">@color/accent</item>
     </style>
 
     <style name="BrowserButton">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
     </style>
 
     <style name="TabTitleSelected" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TabTitleUnselected" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:textStyle">normal</item>
     </style>
 </resources>

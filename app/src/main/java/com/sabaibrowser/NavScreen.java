@@ -146,19 +146,21 @@ public class NavScreen extends RelativeLayout
             }
         });
         mNewTabFab = (ImageView) findViewById(R.id.floating_action_button);
-        mNewTabFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNewTab(false);
-            }
-        });
-        mNewTabFab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                openNewTab(true);
-                return true;
-            }
-        });
+        if (mNewTabFab != null) {
+            mNewTabFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openNewTab(false);
+                }
+            });
+            mNewTabFab.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    openNewTab(true);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override

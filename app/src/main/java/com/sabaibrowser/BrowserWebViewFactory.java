@@ -17,6 +17,7 @@ package com.sabaibrowser;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -68,8 +69,10 @@ public class BrowserWebViewFactory implements WebViewFactory {
         final BrowserSettings s = BrowserSettings.getInstance();
         s.startManagingSettings(w.getSettings());
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptThirdPartyCookies(w, cookieManager.acceptCookie());
+        if (Build.VERSION .SDK_INT >= 21) {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptThirdPartyCookies(w, cookieManager.acceptCookie());
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             // Remote Web Debugging is always enabled, where available.

@@ -35,6 +35,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -1977,10 +1978,12 @@ class Tab implements PictureListener {
 
     public void setAcceptThirdPartyCookies(boolean accept) {
         CookieManager cookieManager = CookieManager.getInstance();
-        if (mMainView != null)
-            cookieManager.setAcceptThirdPartyCookies(mMainView, accept);
-        if (mSubView != null)
-            cookieManager.setAcceptThirdPartyCookies(mSubView, accept);
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (mMainView != null)
+                cookieManager.setAcceptThirdPartyCookies(mMainView, accept);
+            if (mSubView != null)
+                cookieManager.setAcceptThirdPartyCookies(mSubView, accept);
+        }
     }
 
     private StringBuilder readWebResource(WebResourceResponse response) throws IOException {
