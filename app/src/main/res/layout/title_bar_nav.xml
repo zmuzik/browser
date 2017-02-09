@@ -83,19 +83,9 @@
             android:visibility="gone"
             android:src="@drawable/ic_incognito" />
     </LinearLayout>
-    <ImageButton
-        android:id="@+id/tab_switcher"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/fab_filling"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
-            android:contentDescription="@string/accessibility_button_navscreen"
-        android:src="@drawable/ic_windows"
-        style="@style/BrowserButton" />
-    <ImageButton
-        android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        style="@style/BrowserButton"
-        android:gravity="center_vertical"
-        android:contentDescription="@string/accessibility_button_more"
-        android:src="@drawable/ic_menu_overflow" />
+        android:src="@color/trasparent"/>
 </com.sabaibrowser.NavigationBarPhone>

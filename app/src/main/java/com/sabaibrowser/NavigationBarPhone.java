@@ -39,13 +39,12 @@ public class NavigationBarPhone extends NavigationBarBase implements
     private ImageView mStopButton;
     private ImageView mMagnify;
     private ImageView mClearButton;
+    private ImageView mFabFilling;
     private Drawable mStopDrawable;
     private Drawable mRefreshDrawable;
     private String mStopDescription;
     private String mRefreshDescription;
-    private View mTabSwitcher;
     private View mTitleContainer;
-    private View mMore;
     private Drawable mTextfieldBgDrawable;
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
@@ -72,11 +71,8 @@ public class NavigationBarPhone extends NavigationBarBase implements
         mClearButton = (ImageView) findViewById(R.id.clear);
         mClearButton.setOnClickListener(this);
         mMagnify = (ImageView) findViewById(R.id.magnify);
-        mTabSwitcher = findViewById(R.id.tab_switcher);
-        mTabSwitcher.setOnClickListener(this);
-        mMore = findViewById(R.id.more);
-        mMore.setOnClickListener(this);
         mTitleContainer = findViewById(R.id.title_bg);
+        mFabFilling = (ImageView) findViewById(R.id.fab_filling);
         setFocusState(false);
         Resources res = getContext().getResources();
         mStopDrawable = res.getDrawable(R.drawable.ic_stop);
@@ -145,10 +141,6 @@ public class NavigationBarPhone extends NavigationBarBase implements
                     web.reload();
                 }
             }
-        } else if (v == mTabSwitcher) {
-            ((PhoneUi) mBaseUi).toggleNavScreen();
-        } else if (mMore == v) {
-            showMenu(mMore);
         } else if (mClearButton == v) {
             mUrlInput.setText("");
         } else {
@@ -212,9 +204,8 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mStopButton.setVisibility(View.GONE);
             mClearButton.setVisibility(View.GONE);
             mMagnify.setVisibility(View.GONE);
-            mTabSwitcher.setVisibility(View.VISIBLE);
             mTitleContainer.setBackgroundDrawable(null);
-            mMore.setVisibility(View.VISIBLE);
+            mFabFilling.setVisibility(View.VISIBLE);
             if (mFab != null) {
                 mFab.setVisibility(View.VISIBLE);
             }
@@ -223,19 +214,15 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mStopButton.setVisibility(View.VISIBLE);
             mClearButton.setVisibility(View.GONE);
             mMagnify.setVisibility(View.GONE);
-            mTabSwitcher.setVisibility(View.GONE);
-            mMore.setVisibility(View.GONE);
+            mFabFilling.setVisibility(View.GONE);
             mFab.setVisibility(View.GONE);
-            //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         case StateListener.STATE_EDITED:
             mStopButton.setVisibility(View.GONE);
             mClearButton.setVisibility(View.VISIBLE);
             mMagnify.setVisibility(View.VISIBLE);
-            mTabSwitcher.setVisibility(View.GONE);
-            mMore.setVisibility(View.GONE);
+            mFabFilling.setVisibility(View.GONE);
             mFab.setVisibility(View.GONE);
-            //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         }
     }
