@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
+    private FloatingActionButton mFab;
 
     public NavigationBarPhone(Context context) {
         super(context);
@@ -207,6 +209,9 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mTabSwitcher.setVisibility(View.VISIBLE);
             mTitleContainer.setBackgroundDrawable(null);
             mMore.setVisibility(View.VISIBLE);
+            if (mFab != null) {
+                mFab.setVisibility(View.VISIBLE);
+            }
             break;
         case StateListener.STATE_HIGHLIGHTED:
             mStopButton.setVisibility(View.VISIBLE);
@@ -214,6 +219,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mMagnify.setVisibility(View.GONE);
             mTabSwitcher.setVisibility(View.GONE);
             mMore.setVisibility(View.GONE);
+            mFab.setVisibility(View.GONE);
             //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         case StateListener.STATE_EDITED:
@@ -222,6 +228,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
             mMagnify.setVisibility(View.VISIBLE);
             mTabSwitcher.setVisibility(View.GONE);
             mMore.setVisibility(View.GONE);
+            mFab.setVisibility(View.GONE);
             //mTitleContainer.setBackgroundDrawable(mTextfieldBgDrawable);
             break;
         }
@@ -237,6 +244,10 @@ public class NavigationBarPhone extends NavigationBarBase implements
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         return mUiController.onOptionsItemSelected(item);
+    }
+
+    public void setFab(FloatingActionButton fab) {
+        mFab = fab;
     }
 
 }

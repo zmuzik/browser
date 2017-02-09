@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -81,6 +82,7 @@ public abstract class BaseUi implements UI {
     private static final int MSG_HIDE_CUSTOM_VIEW = 2;
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
     public static final int HIDE_CUSTOM_VIEW_DELAY = 200; // in ms
+    FloatingActionButton mFab;
 
     Activity mActivity;
     UiController mUiController;
@@ -129,6 +131,7 @@ public abstract class BaseUi implements UI {
                 R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fullscreen_custom_content);
+        mFab = (FloatingActionButton) frameLayout.findViewById(R.id.main_fab);
         setImmersiveFullscreen(BrowserSettings.getInstance().useFullscreen());
         mTitleBar = new TitleBar(mActivity, mUiController, this,
                 mContentView);
