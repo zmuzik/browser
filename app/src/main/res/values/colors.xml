@@ -26,7 +26,7 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">@color/white</color>
-    <color name="icons_dark">@color/black</color>
+    <color name="icons_dark">@color/secondary_text</color>
     <color name="divider">#BDBDBD</color>
 
     <!-- colors by name-->
