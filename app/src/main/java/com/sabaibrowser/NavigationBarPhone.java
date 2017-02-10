@@ -32,6 +32,7 @@ import android.widget.PopupMenu.OnDismissListener;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.sabaibrowser.UrlInputView.StateListener;
+import com.sabaibrowser.view.Bubble;
 
 public class NavigationBarPhone extends NavigationBarBase implements
         StateListener, OnMenuItemClickListener, OnDismissListener {
@@ -49,7 +50,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
-    private FloatingActionButton mFab;
+    private Bubble mFab;
 
     public NavigationBarPhone(Context context) {
         super(context);
@@ -239,7 +240,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
         return mUiController.onOptionsItemSelected(item);
     }
 
-    public void setFab(FloatingActionButton fab) {
+    public void setFab(Bubble fab) {
         mFab = fab;
     }
 

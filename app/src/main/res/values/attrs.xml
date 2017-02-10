@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Bubble">
+        <attr name="solid" format="boolean" />
+        <attr name="icon" format="reference" />
+    </declare-styleable>
+</resources>

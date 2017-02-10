@@ -39,19 +39,17 @@
             android:layout_height="match_parent"
             android:layout_above="@id/fixed_titlebar_container"
         />
-        <android.support.design.widget.FloatingActionButton
+        <com.sabaibrowser.view.Bubble
             android:id="@+id/main_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="normal"
-            android:src="@drawable/logo_fab_icon"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_gravity="bottom|right"
             android:layout_marginRight="@dimen/fab_margin_side"
             android:layout_marginBottom="@dimen/fab_margin_bottom"
-            android:backgroundTint="@color/primary"
-            app:elevation="8dp"/>
+            app:solid="true"
+            app:icon="@drawable/logo_fab_icon"
+            android:layout_toLeftOf="@id/main_fab"/>
     </RelativeLayout>
 </merge>
 
