@@ -66,12 +66,6 @@ public class PhoneUi extends BaseUi {
         super(browser, controller);
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
         mNavigationBar.setFab(mFab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mNavigationBar.showMenu(view);
-            }
-        });
         TypedValue heightValue = new TypedValue();
         browser.getTheme().resolveAttribute(
                 android.R.attr.actionBarSize, heightValue, true);
