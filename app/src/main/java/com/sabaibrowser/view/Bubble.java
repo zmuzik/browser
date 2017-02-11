@@ -11,9 +11,6 @@ import com.sabaibrowser.R;
 
 public class Bubble extends ImageView {
 
-    private static final int DEFAULT_DIAMETER = 56;
-    private static final int DEFAULT_BORDER_SIZE = 2;
-
     public Bubble(Context context) {
         super(context);
         init(false);
