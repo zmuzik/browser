@@ -19,6 +19,13 @@ public class Bubble extends ImageView {
         init(false);
     }
 
+    public Bubble(Context context, boolean solid, int drawableId) {
+        super(context);
+        init(solid);
+        Drawable drawable = context.getResources().getDrawable(drawableId);
+        setImageDrawable(drawable);
+    }
+
     public Bubble(Context context, boolean solid, Drawable drawable) {
         super(context);
         init(solid);

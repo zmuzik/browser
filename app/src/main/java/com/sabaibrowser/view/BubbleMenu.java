@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 
 import com.sabaibrowser.R;
 
+import java.util.ArrayList;
+
 public class BubbleMenu extends FrameLayout {
 
     boolean isOpen = false;
@@ -74,30 +76,98 @@ public class BubbleMenu extends FrameLayout {
         isOpen = false;
     }
 
+    private static class MenuItem extends Bubble {
+
+        String id;
+
+        public MenuItem(Context context, String id, int icon) {
+            super(context, true, context.getResources().getDrawable(icon));
+            this.id = id;
+        }
+    }
+
     private static class BubbleScroller extends ViewGroup {
+
+        private static final String ID_REFRESH = "REFRESH";
+        private static final String ID_SETTINGS = "SETTINGS";
+
+        ArrayList<Bubble> menuItems;
 
         int componentWidthPx;
         int componentHeightPx;
+        int fabDistance;
+
+        int bubbleSize;
+        int paddingHoriz;
+        int paddingVert;
+
+        int mainFabCenterX;
+        int mainFabCenterY;
+        int baseBubbleCenterX;
+        int baseBubbleCenterY;
 
         public BubbleScroller(Context context) {
             super(context);
             setBackgroundColor(getResources().getColor(R.color.bubble_menu_bg));
+
+            // init dimensions
+            bubbleSize = getResources().getDimensionPixelSize(R.dimen.bubble_menu_bubble_size);
+            paddingHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_horiz);
+            paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
+            fabDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance);
+
+            // init data
+            menuItems = new ArrayList<Bubble>();
+            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_refresh));
+            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_home));
+            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_bookmarks));
+            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_back_hierarchy));
+            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_settings));
+
+            for (Bubble bubble : menuItems) {
+                addView(bubble);
+            }
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
             componentWidthPx = ((View) getParent().getParent()).getWidth();
             componentHeightPx = ((View) getParent().getParent()).getHeight();
+
+            mainFabCenterX = componentWidthPx - paddingHoriz - bubbleSize / 2;
+            mainFabCenterY = componentHeightPx - paddingVert - bubbleSize / 2;
+
+            baseBubbleCenterX = mainFabCenterX - fabDistance;
+            baseBubbleCenterY = mainFabCenterY;
+
             setMeasuredDimension(componentWidthPx, componentHeightPx);
         }
 
         @Override
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
-            final int count = getChildCount();
+            final int count = menuItems.size();
+
+            // step to rotate;
+            double fi = 0d, fiStep = 0d;
+            if (count == 1) {
+                fi = Math.PI / 4;
+            } else if (count == 2) {
+                fi = Math.PI / 8;
+                fiStep = Math.PI / 4;
+            } else {
+                fiStep = Math.PI / 2 / (count - 1);
+            }
+
+            int x = 0, y = 0;
+
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
-                child.layout(0, 0, 0, 0);
+                x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
+                y = baseBubbleCenterY - (int) (fabDistance * Math.sin(fi));
+                child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
+                fi += fiStep;
             }
         }
     }

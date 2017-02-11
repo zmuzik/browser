@@ -9,8 +9,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="@dimen/fab_margin_bottom"
-        android:layout_marginRight="@dimen/fab_margin_side"
+        android:layout_marginBottom="@dimen/bubble_menu_padding_vert"
+        android:layout_marginRight="@dimen/bubble_menu_padding_horiz"
         app:icon="@drawable/logo_fab_icon"
         app:solid="true" />
 

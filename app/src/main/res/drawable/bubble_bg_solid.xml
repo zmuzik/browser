@@ -6,6 +6,6 @@
         android:width="2dp"
         android:color="@color/primary" />
     <size
-        android:width="@dimen/bubble_diameter"
-        android:height="@dimen/bubble_diameter" />
+        android:width="@dimen/bubble_menu_bubble_size"
+        android:height="@dimen/bubble_menu_bubble_size" />
 </shape>
