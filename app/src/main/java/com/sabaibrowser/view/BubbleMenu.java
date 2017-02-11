@@ -81,7 +81,7 @@ public class BubbleMenu extends FrameLayout {
         String id;
 
         public MenuItem(Context context, String id, int icon) {
-            super(context, true, context.getResources().getDrawable(icon));
+            super(context, true, icon);
             this.id = id;
         }
     }

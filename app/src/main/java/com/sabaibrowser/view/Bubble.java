@@ -26,12 +26,6 @@ public class Bubble extends ImageView {
         setImageDrawable(drawable);
     }
 
-    public Bubble(Context context, boolean solid, Drawable drawable) {
-        super(context);
-        init(solid);
-        setImageDrawable(drawable);
-    }
-
     public Bubble(Context context, boolean solid, Bitmap bitmap) {
         super(context);
         init(solid);
