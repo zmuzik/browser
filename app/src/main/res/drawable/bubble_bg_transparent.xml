@@ -3,7 +3,7 @@
     android:shape="oval">
     <solid android:color="@color/trasparent" />
     <stroke
-        android:width="2dp"
+        android:width="@dimen/bubble_menu_bubble_border"
         android:color="@color/primary" />
     <size
         android:width="@dimen/bubble_menu_bubble_size"
