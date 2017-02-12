@@ -35,10 +35,9 @@
     <com.sabaibrowser.PageProgressView
         android:id="@+id/progress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="2dp"
         android:background="@null"
         android:layout_below="@id/taburlbar"
-        android:src="@drawable/progress"
-        android:layout_marginTop="@dimen/progress_bar_margin"
+        android:src="@color/primary"
         android:visibility="gone" />
 </RelativeLayout>
