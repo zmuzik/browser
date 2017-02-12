@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.sabaibrowser.R;
 
@@ -106,17 +107,28 @@ public class BubbleMenu extends FrameLayout {
             paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
             fabDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance);
 
-            // init data
-            menuItems = new ArrayList<Bubble>();
-            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_refresh));
-            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_home));
-            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_bookmarks));
-            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_back_hierarchy));
-            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_settings));
+//            // init data
+//            menuItems = new ArrayList<Bubble>();
+//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_refresh));
+//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_home));
+//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_bookmarks));
+//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_back_hierarchy));
+//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_settings));
+//
+//            for (Bubble bubble : menuItems) {
+//                addView(bubble);
+//            }
 
-            for (Bubble bubble : menuItems) {
-                addView(bubble);
-            }
+            addMenuItem(R.drawable.ic_refresh, new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
+                }
+            });
+            addMenuItem(R.drawable.ic_home, null);
+            addMenuItem(R.drawable.ic_bookmarks, null);
+            addMenuItem(R.drawable.ic_back_hierarchy, null);
+            addMenuItem(R.drawable.ic_settings, null);
         }
 
         @Override
@@ -159,6 +171,16 @@ public class BubbleMenu extends FrameLayout {
                 child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
                 fi += fiStep;
             }
+        }
+
+        void addMenuItem(int icon, OnClickListener listener) {
+            if (menuItems == null) {
+                menuItems = new ArrayList<Bubble>();
+            }
+            Bubble item = new Bubble(getContext(), true, icon);
+            menuItems.add(item);
+            addView(item);
+            item.setOnClickListener(listener);
         }
     }
 }
