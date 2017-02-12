@@ -107,18 +107,7 @@ public class BubbleMenu extends FrameLayout {
             paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
             fabDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance);
 
-//            // init data
-//            menuItems = new ArrayList<Bubble>();
-//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_refresh));
-//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_home));
-//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_bookmarks));
-//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_back_hierarchy));
-//            menuItems.add(new Bubble(getContext(), true, R.drawable.ic_settings));
-//
-//            for (Bubble bubble : menuItems) {
-//                addView(bubble);
-//            }
-
+            // init data
             addMenuItem(R.drawable.ic_refresh, new OnClickListener() {
                 @Override
                 public void onClick(View view) {
