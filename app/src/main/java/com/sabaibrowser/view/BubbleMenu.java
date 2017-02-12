@@ -76,16 +76,6 @@ public class BubbleMenu extends FrameLayout {
         isOpen = false;
     }
 
-    private static class MenuItem extends Bubble {
-
-        String id;
-
-        public MenuItem(Context context, String id, int icon) {
-            super(context, true, icon);
-            this.id = id;
-        }
-    }
-
     private static class BubbleScroller extends ViewGroup {
 
         private static final String ID_REFRESH = "REFRESH";
