@@ -34,6 +34,7 @@ public class NavTabView extends LinearLayout {
     private TextView mTitle;
     private View mTitleBar;
     ImageView mImage;
+    private ImageView mIncognitoIcon;
     private OnClickListener mClickListener;
     private boolean mHighlighted;
 
@@ -58,6 +59,7 @@ public class NavTabView extends LinearLayout {
         mTitleBar = findViewById(R.id.titlebar);
         mTitle = (TextView) findViewById(R.id.title);
         mImage = (ImageView) findViewById(R.id.tab_view);
+        mIncognitoIcon = (ImageView) findViewById(R.id.incognito_indicator);
     }
 
     protected boolean isTitle(View v) {
@@ -114,6 +116,11 @@ public class NavTabView extends LinearLayout {
             if (tab != null) {
                 mImage.setContentDescription(tab.getTitle());
             }
+        }
+        if (mTab.isPrivateBrowsingEnabled()) {
+            mIncognitoIcon.setVisibility(View.VISIBLE);
+        } else {
+            mIncognitoIcon.setVisibility(View.GONE);
         }
     }
 
