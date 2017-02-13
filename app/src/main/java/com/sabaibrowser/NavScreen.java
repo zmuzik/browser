@@ -42,6 +42,7 @@ import com.sabaibrowser.NavTabScroller.OnLayoutListener;
 import com.sabaibrowser.NavTabScroller.OnRemoveListener;
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
 import com.sabaibrowser.UI.ComboViews;
+import com.sabaibrowser.view.BubbleMenu;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,7 @@ public class NavScreen extends RelativeLayout
 //    ImageButton mNewIncognitoTab;
 //    ImageButton mNewTab;
     FrameLayout mHolder;
+    BubbleMenu mBubbleMenu;
 
     TextView mTitle;
     ImageButton mCloseTab;
@@ -143,6 +145,28 @@ public class NavScreen extends RelativeLayout
             public void onRemovePosition(int pos) {
                 Tab tab = mAdapter.getItem(pos);
                 onCloseTab(tab);
+            }
+        });
+        mBubbleMenu = (BubbleMenu) findViewById(R.id.bubble_menu_nav);
+        mBubbleMenu.addMenuItem(R.drawable.ic_new_window, new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                openNewTab(false);
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_incognito, new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                openNewTab(true);
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_home, new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                gotoHomePage();
             }
         });
     }
