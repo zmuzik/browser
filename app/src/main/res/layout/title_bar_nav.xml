@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dip"
             android:visibility="gone"
-            android:src="@drawable/ic_incognito" />
+            android:src="@drawable/ic_incognito_dark" />
     </LinearLayout>
     <ImageView
         android:id="@+id/fab_filling"

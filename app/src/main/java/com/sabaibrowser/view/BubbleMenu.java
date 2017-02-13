@@ -88,7 +88,7 @@ public class BubbleMenu extends ViewGroup {
         invalidate();
     }
 
-    private void closeMenu() {
+    public void closeMenu() {
         setBackground(null);
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.logo_fab_icon));
         isOpen = false;

@@ -76,16 +76,40 @@ public class PhoneUi extends BaseUi {
     }
 
     private void initBubbleMenu() {
-        mBubbleMenu.addMenuItem(R.drawable.ic_refresh, new View.OnClickListener() {
+        mBubbleMenu.addMenuItem(R.drawable.ic_windows, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mActivity, "test", Toast.LENGTH_SHORT).show();
+                mBubbleMenu.closeMenu();
+                showNavScreen();
             }
         });
-        mBubbleMenu.addMenuItem(R.drawable.ic_home, null);
-        mBubbleMenu.addMenuItem(R.drawable.ic_bookmarks, null);
-        mBubbleMenu.addMenuItem(R.drawable.ic_back_hierarchy, null);
-        mBubbleMenu.addMenuItem(R.drawable.ic_settings, null);
+        mBubbleMenu.addMenuItem(R.drawable.ic_new_window, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openTabToHomePage();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_incognito, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openIncognitoTab();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_bookmarks, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_settings, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openPreferences();
+            }
+        });
     }
 
     @Override
