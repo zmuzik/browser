@@ -14,23 +14,23 @@ import java.util.ArrayList;
 
 public class BubbleMenu extends ViewGroup {
 
-    boolean isOpen = false;
-    Bubble mainFab;
+    private boolean isOpen = false;
+    private Bubble mainFab;
 
-    ArrayList<Bubble> menuItems;
+    private ArrayList<Bubble> menuItems;
 
-    int componentWidthPx;
-    int componentHeightPx;
-    int fabDistance;
+    private int componentWidthPx;
+    private int componentHeightPx;
+    private int fabDistance;
 
-    int bubbleSize;
-    int paddingHoriz;
-    int paddingVert;
+    private int bubbleSize;
+    private int paddingHoriz;
+    private int paddingVert;
 
-    int mainFabCenterX;
-    int mainFabCenterY;
-    int baseBubbleCenterX;
-    int baseBubbleCenterY;
+    private int mainFabCenterX;
+    private int mainFabCenterY;
+    private int baseBubbleCenterX;
+    private int baseBubbleCenterY;
 
     public BubbleMenu(Context context) {
         super(context);
@@ -48,7 +48,7 @@ public class BubbleMenu extends ViewGroup {
         if (isOpen) closeMenu();
     }
 
-    void init() {
+    private void init() {
         bubbleSize = getResources().getDimensionPixelSize(R.dimen.bubble_menu_bubble_size);
         paddingHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_horiz);
         paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
@@ -73,7 +73,7 @@ public class BubbleMenu extends ViewGroup {
         });
     }
 
-    void toggleOpenMenu() {
+    private void toggleOpenMenu() {
         if (!isOpen) {
             openMenu();
         } else {
@@ -81,7 +81,7 @@ public class BubbleMenu extends ViewGroup {
         }
     }
 
-    void openMenu() {
+    private void openMenu() {
         setBackgroundColor(getResources().getColor(R.color.bubble_menu_bg));
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_white));
 
@@ -103,7 +103,7 @@ public class BubbleMenu extends ViewGroup {
         invalidate();
     }
 
-    void closeMenu() {
+    private void closeMenu() {
         setBackground(null);
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.logo_fab_icon));
         for (Bubble item : menuItems) {
@@ -167,7 +167,7 @@ public class BubbleMenu extends ViewGroup {
         }
     }
 
-    void addMenuItem(int icon, OnClickListener listener) {
+    public void addMenuItem(int icon, OnClickListener listener) {
         if (menuItems == null) {
             menuItems = new ArrayList<Bubble>();
         }
