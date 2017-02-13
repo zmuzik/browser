@@ -25,51 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
-    <LinearLayout
-        android:id="@+id/tabbar"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:gravity="right"
-        android:background="@color/light_gray"
-        android:elevation="8dp">
-        <ImageButton
-            android:id="@+id/newincognitotab"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            style="@style/BrowserButton"
-            android:gravity="center_vertical"
-            android:contentDescription="@string/accessibility_button_newincognitotab"
-            android:src="@drawable/ic_incognito" />
-        <ImageButton
-            android:id="@+id/newtab"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            style="@style/BrowserButton"
-            android:gravity="center_vertical"
-            android:contentDescription="@string/accessibility_button_newtab"
-            android:visibility="gone"
-            android:src="@drawable/ic_new_window" />
-        <ImageButton
-            android:id="@+id/bookmarks"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/accessibility_button_bookmarks"
-            android:src="@drawable/ic_bookmarks_history"
-            style="@style/BrowserButton" />
-        <ImageButton
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="8dip"
-            android:paddingRight="8dip"
-            style="@style/BrowserButton"
-            android:gravity="center_vertical"
-            android:contentDescription="@string/accessibility_button_more"
-            android:src="@drawable/ic_menu_overflow" />
-    </LinearLayout>
     <FrameLayout
         android:id="@+id/floating_action_button_container"
         android:background="@drawable/fab_accent"
@@ -80,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content">
         <!--
-
         <ImageButton
             android:id="@+id/floating_action_button"
             android:layout_width="56dp"

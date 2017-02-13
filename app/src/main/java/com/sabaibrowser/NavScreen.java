@@ -57,11 +57,11 @@ public class NavScreen extends RelativeLayout
 
     ImageButton mRefresh;
     ImageButton mForward;
-    ImageButton mBookmarks;
-    ImageButton mMore;
-    ImageButton mHomeTab;
-    ImageButton mNewIncognitoTab;
-    ImageButton mNewTab;
+//    ImageButton mBookmarks;
+//    ImageButton mMore;
+//    ImageButton mHomeTab;
+//    ImageButton mNewIncognitoTab;
+//    ImageButton mNewTab;
     FrameLayout mHolder;
 
     TextView mTitle;
@@ -83,12 +83,12 @@ public class NavScreen extends RelativeLayout
     }
 
     protected void showMenu() {
-        PopupMenu popup = new PopupMenu(getContext(), mMore);
-        Menu menu = popup.getMenu();
-        popup.getMenuInflater().inflate(R.menu.browser, menu);
-        mUiController.updateMenuState(mUiController.getCurrentTab(), menu);
-        popup.setOnMenuItemClickListener(this);
-        popup.show();
+//        PopupMenu popup = new PopupMenu(getContext(), mMore);
+//        Menu menu = popup.getMenu();
+//        popup.getMenuInflater().inflate(R.menu.browser, menu);
+//        mUiController.updateMenuState(mUiController.getCurrentTab(), menu);
+//        popup.setOnMenuItemClickListener(this);
+//        popup.show();
     }
 
     @Override
@@ -121,15 +121,15 @@ public class NavScreen extends RelativeLayout
         LayoutInflater.from(getContext()).inflate(R.layout.nav_screen, this);
         setContentDescription(getContext().getResources().getString(
                 R.string.accessibility_transition_navscreen));
-        mBookmarks = (ImageButton) findViewById(R.id.bookmarks);
-        mHomeTab = (ImageButton) findViewById(R.id.gotohome);
-        mNewIncognitoTab = (ImageButton) findViewById(R.id.newincognitotab);
-        mNewTab = (ImageButton) findViewById(R.id.newtab);
-        mMore = (ImageButton) findViewById(R.id.more);
-        mBookmarks.setOnClickListener(this);
-        mNewIncognitoTab.setOnClickListener(this);
-        mNewTab.setOnClickListener(this);
-        mMore.setOnClickListener(this);
+//        mBookmarks = (ImageButton) findViewById(R.id.bookmarks);
+//        mHomeTab = (ImageButton) findViewById(R.id.gotohome);
+//        mNewIncognitoTab = (ImageButton) findViewById(R.id.newincognitotab);
+//        mNewTab = (ImageButton) findViewById(R.id.newtab);
+//        mMore = (ImageButton) findViewById(R.id.more);
+//        mBookmarks.setOnClickListener(this);
+//        mNewIncognitoTab.setOnClickListener(this);
+//        mNewTab.setOnClickListener(this);
+//        mMore.setOnClickListener(this);
         mScroller = (NavTabScroller) findViewById(R.id.scroller);
         TabControl tc = mUiController.getTabControl();
         mTabViews = new HashMap<Tab, View>(tc.getTabCount());
@@ -145,35 +145,19 @@ public class NavScreen extends RelativeLayout
                 onCloseTab(tab);
             }
         });
-        mNewTabFab = (ImageView) findViewById(R.id.floating_action_button);
-        if (mNewTabFab != null) {
-            mNewTabFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openNewTab(false);
-                }
-            });
-            mNewTabFab.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    openNewTab(true);
-                    return true;
-                }
-            });
-        }
     }
 
     @Override
     public void onClick(View v) {
-        if (mBookmarks == v) {
-            mUiController.bookmarksOrHistoryPicker(ComboViews.Bookmarks);
-        } else if (mNewIncognitoTab == v || mNewTab == v) {
-            openNewTab(mNewIncognitoTab == v);
-        } else if (mHomeTab == v) {
-            gotoHomePage();
-        } else if (mMore == v) {
-            showMenu();
-        }
+//        if (mBookmarks == v) {
+//            mUiController.bookmarksOrHistoryPicker(ComboViews.Bookmarks);
+//        } else if (mNewIncognitoTab == v || mNewTab == v) {
+//            openNewTab(mNewIncognitoTab == v);
+//        } else if (mHomeTab == v) {
+//            gotoHomePage();
+//        } else if (mMore == v) {
+//            showMenu();
+//        }
     }
 
     private void onCloseTab(Tab tab) {
