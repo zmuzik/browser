@@ -57,6 +57,7 @@ import android.widget.Toast;
 
 import com.sabaibrowser.Tab.SecurityState;
 import com.sabaibrowser.view.Bubble;
+import com.sabaibrowser.view.BubbleMenu;
 
 import java.util.List;
 
@@ -83,6 +84,7 @@ public abstract class BaseUi implements UI {
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
     public static final int HIDE_CUSTOM_VIEW_DELAY = 200; // in ms
     Bubble mFab;
+    BubbleMenu mBubbleMenu;
 
     Activity mActivity;
     UiController mUiController;
@@ -132,6 +134,7 @@ public abstract class BaseUi implements UI {
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fullscreen_custom_content);
         mFab = (Bubble) frameLayout.findViewById(R.id.main_fab);
+        mBubbleMenu = (BubbleMenu) frameLayout.findViewById(R.id.bubble_menu);
         setImmersiveFullscreen(BrowserSettings.getInstance().useFullscreen());
         mTitleBar = new TitleBar(mActivity, mUiController, this,
                 mContentView);

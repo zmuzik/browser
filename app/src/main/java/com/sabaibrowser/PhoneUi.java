@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.sabaibrowser.UrlInputView.StateListener;
 
@@ -66,11 +67,25 @@ public class PhoneUi extends BaseUi {
         super(browser, controller);
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
         mNavigationBar.setFab(mFab);
+        initBubbleMenu();
         TypedValue heightValue = new TypedValue();
         browser.getTheme().resolveAttribute(
                 android.R.attr.actionBarSize, heightValue, true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data,
                 browser.getResources().getDisplayMetrics());
+    }
+
+    private void initBubbleMenu() {
+        mBubbleMenu.addMenuItem(R.drawable.ic_refresh, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mActivity, "test", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_home, null);
+        mBubbleMenu.addMenuItem(R.drawable.ic_bookmarks, null);
+        mBubbleMenu.addMenuItem(R.drawable.ic_back_hierarchy, null);
+        mBubbleMenu.addMenuItem(R.drawable.ic_settings, null);
     }
 
     @Override

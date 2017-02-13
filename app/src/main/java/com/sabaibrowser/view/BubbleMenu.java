@@ -84,21 +84,6 @@ public class BubbleMenu extends ViewGroup {
     private void openMenu() {
         setBackgroundColor(getResources().getColor(R.color.bubble_menu_bg));
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_white));
-
-        // init dimensions
-
-        // init data
-        addMenuItem(R.drawable.ic_refresh, new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
-            }
-        });
-        addMenuItem(R.drawable.ic_home, null);
-        addMenuItem(R.drawable.ic_bookmarks, null);
-        addMenuItem(R.drawable.ic_back_hierarchy, null);
-        addMenuItem(R.drawable.ic_settings, null);
-
         isOpen = true;
         invalidate();
     }
@@ -106,10 +91,6 @@ public class BubbleMenu extends ViewGroup {
     private void closeMenu() {
         setBackground(null);
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.logo_fab_icon));
-        for (Bubble item : menuItems) {
-            removeView(item);
-        }
-        menuItems = null;
         isOpen = false;
         invalidate();
     }
@@ -139,12 +120,12 @@ public class BubbleMenu extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int count = (menuItems == null) ? 0 : menuItems.size();
 
-        if (count == 0) {
-            mainFab.layout(0, 0, bubbleSize, bubbleSize);
-        } else {
+        if (isOpen) {
+            // main bubble
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
 
+            // menu item bubbles
             double fi = 0d, fiStep = 0d;
             if (count == 1) {
                 fi = Math.PI / 4;
@@ -164,6 +145,8 @@ public class BubbleMenu extends ViewGroup {
                 child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
                 fi += fiStep;
             }
+        } else {
+            mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
     }
 
