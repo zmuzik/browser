@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.sabaibrowser.R;
 
@@ -132,6 +131,9 @@ public class BubbleMenu extends ViewGroup {
             } else if (count == 2) {
                 fi = Math.PI / 8;
                 fiStep = Math.PI / 4;
+            } else if (count == 3) {
+                fi = Math.PI / 12;
+                fiStep = Math.PI / 6;
             } else {
                 fiStep = Math.PI / 2 / (count - 1);
             }
