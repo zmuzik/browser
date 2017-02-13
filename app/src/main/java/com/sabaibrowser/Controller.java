@@ -93,7 +93,6 @@ public class Controller
     private static final String LOGTAG = "Controller";
     private static final String SEND_APP_ID_EXTRA =
         "android.speech.extras.SEND_APPLICATION_ID_EXTRA";
-    private static final String INCOGNITO_URI = "browser:incognito";
 
 
     // public message ids
@@ -2193,7 +2192,7 @@ public class Controller
 
     @Override
     public Tab openIncognitoTab() {
-        return openTab(INCOGNITO_URI, true, true, false);
+        return openTab(mSettings.getHomePage(), true, true, false);
     }
 
     @Override

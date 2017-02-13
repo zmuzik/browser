@@ -220,11 +220,10 @@ class Tab implements PictureListener {
 
         PageState(Context c, boolean incognito) {
             mIncognito = incognito;
+            mOriginalUrl = mUrl = "";
             if (mIncognito) {
-                mOriginalUrl = mUrl = "browser:incognito";
                 mTitle = c.getString(R.string.new_incognito_tab);
             } else {
-                mOriginalUrl = mUrl = "";
                 mTitle = c.getString(R.string.new_tab);
             }
             mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
