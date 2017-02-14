@@ -3,6 +3,7 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +14,23 @@ import java.util.ArrayList;
 
 public class BubbleMenu extends ViewGroup {
 
-    private boolean isOpen = false;
-    private Bubble mainFab;
+    protected boolean isOpen = false;
+    protected Bubble mainFab;
 
-    private ArrayList<Bubble> menuItems;
+    protected ArrayList<Bubble> menuItems;
 
-    private int componentWidthPx;
-    private int componentHeightPx;
-    private int fabDistance;
+    protected int componentWidthPx;
+    protected int componentHeightPx;
+    protected int fabDistance;
 
-    private int bubbleSize;
-    private int paddingHoriz;
-    private int paddingVert;
+    protected int bubbleSize;
+    protected int paddingHoriz;
+    protected int paddingVert;
 
-    private int mainFabCenterX;
-    private int mainFabCenterY;
-    private int baseBubbleCenterX;
-    private int baseBubbleCenterY;
+    protected int mainFabCenterX;
+    protected int mainFabCenterY;
+    protected int baseBubbleCenterX;
+    protected int baseBubbleCenterY;
 
     public BubbleMenu(Context context) {
         super(context);
@@ -138,14 +139,31 @@ public class BubbleMenu extends ViewGroup {
                 fiStep = Math.PI / 2 / (count - 1);
             }
 
-            int x = 0, y = 0;
+            int screenX = 0, screenY = 0, x = 0, y = 0, oldX = 0, oldY = 0;
+            int bubbleDistance = (int) (1.1f * bubbleSize);
+            int currentDistance = 0;
+            int bend = 200;
 
             for (int i = 0; i < count; i++) {
                 View child = menuItems.get(i);
-                x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
-                y = baseBubbleCenterY - (int) (fabDistance * Math.sin(fi));
-                child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
-                fi += fiStep;
+                // translation of clean coordinates to the screen coordinates
+                screenX = mainFabCenterX - x;
+                screenY = mainFabCenterY - (int) (1.5f * fabDistance) + y;
+                child.layout(screenX - bubbleSize / 2, screenY - bubbleSize / 2,
+                        screenX + bubbleSize / 2, screenY + bubbleSize / 2);
+                Log.d("COORDINATES", "placing bubble at x: " + x + " y:" + y);
+                Log.d("COORDINATES", "translated into   x: " + screenX + " y:" + screenY);
+
+                // find the center of the next bubble
+                do {
+                    y++;
+                    // function determining the shape
+                    x = (int) Math.sqrt(y * bend);
+                    currentDistance = (int) Math.sqrt(Math.pow(x - oldX, 2) + Math.pow(y - oldY, 2));
+                }
+                while (currentDistance < bubbleDistance);
+                oldX = x;
+                oldY = y;
             }
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
