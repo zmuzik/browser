@@ -32,13 +32,13 @@
             android:id="@+id/fixed_titlebar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentTop="true" />
 
         <FrameLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/fixed_titlebar_container" />
+            android:layout_below="@id/fixed_titlebar_container" />
 
         <com.sabaibrowser.view.BubbleMenu
             android:id="@+id/bubble_menu"
