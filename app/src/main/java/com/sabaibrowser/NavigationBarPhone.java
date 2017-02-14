@@ -84,7 +84,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
         mUrlInput.setStateListener(this);
         mIncognitoIcon = findViewById(R.id.incognito_icon);
         mUrlInput.setOnTouchListener(new SwipeListener(getContext()) {
-            public void onSwipeUp() {
+            public void onSwipeDown() {
                 stopEditingUrl();
                 ((PhoneUi)mBaseUi).showNavScreen();
             }
