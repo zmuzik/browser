@@ -383,7 +383,7 @@ public class PhoneUi extends BaseUi {
             finishAnimateOut();
             return;
         }
-        NavTabView tabview = (NavTabView) mNavScreen.getTabView(position);
+        NavTabView tabview = null;//(NavTabView) mNavScreen.getTabView(position);
         if (tabview == null) {
             if (mTabControl.getTabCount() > 0) {
                 // use a fallback tab
@@ -405,15 +405,15 @@ public class PhoneUi extends BaseUi {
         }
         mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(),
                 mContentView.getHeight());
-        mNavScreen.mScroller.finishScroller();
+        //mNavScreen.mScroller.finishScroller();
         Drawable contentDrawable = tabview.mImage.getDrawable();
         int toLeft = 0;
         int toTop = 0;
         int toRight = mContentView.getWidth();
         int width = contentDrawable.getIntrinsicWidth();
         int height = contentDrawable.getIntrinsicHeight();
-        int fromLeft = tabview.getContentLeft() - mNavScreen.mScroller.getScrollX();
-        int fromTop = tabview.getContentTop() - mNavScreen.mScroller.getScrollY();
+        int fromLeft = tabview.getContentLeft();// - mNavScreen.mScroller.getScrollX();
+        int fromTop = tabview.getContentTop();// - mNavScreen.mScroller.getScrollY();
         int fromRight = fromLeft + width;
         int fromBottom = fromTop + height;
         float scaleFactor = mContentView.getWidth() / (float) width;
