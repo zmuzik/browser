@@ -16,30 +16,16 @@
 
 package com.sabaibrowser;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
-import android.webkit.WebView;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.sabaibrowser.UrlInputView.StateListener;
 
@@ -295,33 +281,21 @@ public class PhoneUi extends BaseUi {
             mNavScreen.refreshAdapter();
         }
         mActiveTab.capture();
-
-
         mCustomViewContainer.setVisibility(View.VISIBLE);
         mCustomViewContainer.bringToFront();
-
         detachTab(mActiveTab);
-
-        //XXX
         mContentView.setVisibility(View.GONE);
-
-        finishAnimationIn();
-        mUiController.setBlockEvents(false);
-    }
-
-    private void finishAnimationIn() {
         if (showingNavScreen()) {
-            // notify accessibility manager about the screen change
             mNavScreen.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
             mTabControl.setOnThumbnailUpdatedListener(mNavScreen);
         }
+        mUiController.setBlockEvents(false);
     }
 
     void hideNavScreen(int position, boolean animate) {
         mShowNav = false;
         if (!showingNavScreen()) return;
         final Tab tab = mUiController.getTabControl().getTab(position);
-
         if (tab != null) {
             setActiveTab(tab);
         } else if (mTabControl.getTabCount() > 0) {
@@ -337,14 +311,6 @@ public class PhoneUi extends BaseUi {
     @Override
     public boolean needsRestoreAllTabs() {
         return false;
-    }
-
-    public void toggleNavScreen() {
-        if (!showingNavScreen()) {
-            showNavScreen();
-        } else {
-            hideNavScreen(mUiController.getTabControl().getCurrentPosition(), false);
-        }
     }
 
     @Override
