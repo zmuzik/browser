@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<?xml version="1.0" encoding="utf-8"?><!-- merge does not propagate it's parameters to the custom view class
+     so we set them in the class inself-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/thumbnail"
@@ -12,11 +10,13 @@
     <TextView
         android:id="@+id/tab_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/thumbnail" />
 
     <ImageView
         android:id="@+id/incognito_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@drawable/ic_incognito_dark" />
 </merge>
