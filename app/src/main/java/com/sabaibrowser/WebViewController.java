@@ -48,8 +48,6 @@ public interface WebViewController {
 
     void onSetWebView(Tab tab, WebView view);
 
-    void createSubWindow(Tab tab);
-
     void onPageStarted(Tab tab, WebView view, Bitmap favicon);
 
     void onPageFinished(Tab tab);
@@ -97,10 +95,6 @@ public interface WebViewController {
     void showFileChooser(ValueCallback<Uri[]> callback, FileChooserParams params);
 
     void endActionMode();
-
-    void attachSubWindow(Tab tab);
-
-    void dismissSubWindow(Tab tab);
 
     Tab openTab(String url, boolean incognito, boolean setActive,
             boolean useCurrent);

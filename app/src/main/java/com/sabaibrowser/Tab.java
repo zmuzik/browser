@@ -16,6 +16,7 @@
 
 package com.sabaibrowser;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -42,6 +43,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -143,10 +145,6 @@ class Tab implements PictureListener {
     private View mContainer;
     // Main WebView
     private WebView mMainView;
-    // Subwindow container
-    private View mSubViewContainer;
-    // Subwindow WebView
-    private WebView mSubView;
     // Saved bundle for when we are running low on memory. It contains the
     // information needed to restore the WebView if the user goes back to the
     // tab.
@@ -578,6 +576,7 @@ class Tab implements PictureListener {
         /**
          * Displays client certificate request to the user.
          */
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onReceivedClientCertRequest(final WebView view,
                 final ClientCertRequest request) {
@@ -680,19 +679,11 @@ class Tab implements PictureListener {
     // -------------------------------------------------------------------------
 
     private final WebChromeClient mWebChromeClient = new WebChromeClient() {
-        // Helper method to create a new tab or sub window.
+        // Helper method to create a new tab.
         private void createWindow(final boolean dialog, final Message msg) {
-            WebView.WebViewTransport transport =
-                    (WebView.WebViewTransport) msg.obj;
-            if (dialog) {
-                createSubWindow();
-                mWebViewController.attachSubWindow(Tab.this);
-                transport.setWebView(mSubView);
-            } else {
-                final Tab newTab = mWebViewController.openTab(null,
-                        Tab.this, true, true);
-                transport.setWebView(newTab.getWebView());
-            }
+            WebView.WebViewTransport transport = (WebView.WebViewTransport) msg.obj;
+            final Tab newTab = mWebViewController.openTab(null, Tab.this, true, true);
+            transport.setWebView(newTab.getWebView());
             msg.sendToTarget();
         }
 
@@ -704,7 +695,7 @@ class Tab implements PictureListener {
                 return false;
             }
             // Short-circuit if we can't create any more tabs or sub windows.
-            if (dialog && mSubView != null) {
+            if (!mWebViewController.getTabControl().canCreateNewTab()) {
                 new AlertDialog.Builder(mContext)
                         .setTitle(R.string.too_many_subwindows_dialog_title)
                         .setIconAttribute(android.R.attr.alertDialogIcon)
@@ -1001,102 +992,6 @@ class Tab implements PictureListener {
     };
 
     // -------------------------------------------------------------------------
-    // WebViewClient implementation for the sub window
-    // -------------------------------------------------------------------------
-
-    // Subclass of WebViewClient used in subwindows to notify the main
-    // WebViewClient of certain WebView activities.
-    private static class SubWindowClient extends WebViewClient {
-        // The main WebViewClient.
-        private final WebViewClient mClient;
-        private final WebViewController mController;
-
-        SubWindowClient(WebViewClient client, WebViewController controller) {
-            mClient = client;
-            mController = controller;
-        }
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            // Unlike the others, do not call mClient's version, which would
-            // change the progress bar.  However, we do want to remove the
-            // find or select dialog.
-            mController.endActionMode();
-        }
-        @Override
-        public void doUpdateVisitedHistory(WebView view, String url,
-                boolean isReload) {
-            mClient.doUpdateVisitedHistory(view, url, isReload);
-        }
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return mClient.shouldOverrideUrlLoading(view, url);
-        }
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler,
-                SslError error) {
-            mClient.onReceivedSslError(view, handler, error);
-        }
-        @Override
-        public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
-            mClient.onReceivedClientCertRequest(view, request);
-        }
-        @Override
-        public void onReceivedHttpAuthRequest(WebView view,
-                HttpAuthHandler handler, String host, String realm) {
-            mClient.onReceivedHttpAuthRequest(view, handler, host, realm);
-        }
-        @Override
-        public void onFormResubmission(WebView view, Message dontResend,
-                Message resend) {
-            mClient.onFormResubmission(view, dontResend, resend);
-        }
-        @Override
-        public void onReceivedError(WebView view, int errorCode,
-                String description, String failingUrl) {
-            mClient.onReceivedError(view, errorCode, description, failingUrl);
-        }
-        @Override
-        public boolean shouldOverrideKeyEvent(WebView view,
-                android.view.KeyEvent event) {
-            return mClient.shouldOverrideKeyEvent(view, event);
-        }
-        @Override
-        public void onUnhandledKeyEvent(WebView view,
-                android.view.KeyEvent event) {
-            mClient.onUnhandledKeyEvent(view, event);
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // WebChromeClient implementation for the sub window
-    // -------------------------------------------------------------------------
-
-    private class SubWindowChromeClient extends WebChromeClient {
-        // The main WebChromeClient.
-        private final WebChromeClient mClient;
-
-        SubWindowChromeClient(WebChromeClient client) {
-            mClient = client;
-        }
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            mClient.onProgressChanged(view, newProgress);
-        }
-        @Override
-        public boolean onCreateWindow(WebView view, boolean dialog,
-                boolean userGesture, android.os.Message resultMsg) {
-            return mClient.onCreateWindow(view, dialog, userGesture, resultMsg);
-        }
-        @Override
-        public void onCloseWindow(WebView window) {
-            if (window != mSubView) {
-                Log.e(LOGTAG, "Can't close the window");
-            }
-            mWebViewController.dismissSubWindow(Tab.this);
-        }
-    }
-
-    // -------------------------------------------------------------------------
 
     // Construct a new tab
     Tab(WebViewController wvcontroller, WebView w) {
@@ -1276,7 +1171,6 @@ class Tab implements PictureListener {
      */
     void destroy() {
         if (mMainView != null) {
-            dismissSubWindow();
             // save the WebView to call destroy() after detach it from the tab
             WebView webView = mMainView;
             setWebView(null);
@@ -1300,51 +1194,6 @@ class Tab implements PictureListener {
         }
         deleteThumbnail();
     }
-
-    /**
-     * Create a new subwindow unless a subwindow already exists.
-     * @return True if a new subwindow was created. False if one already exists.
-     */
-    boolean createSubWindow() {
-        if (mSubView == null) {
-            mWebViewController.createSubWindow(this);
-            mSubView.setWebViewClient(new SubWindowClient(mWebViewClient,
-                    mWebViewController));
-            mSubView.setWebChromeClient(new SubWindowChromeClient(
-                    mWebChromeClient));
-            // Set a different DownloadListener for the mSubView, since it will
-            // just need to dismiss the mSubView, rather than close the Tab
-            mSubView.setDownloadListener(new BrowserDownloadListener() {
-                public void onDownloadStart(String url, String userAgent,
-                        String contentDisposition, String mimetype, String referer,
-                        long contentLength) {
-                    mWebViewController.onDownloadStart(Tab.this, url, userAgent,
-                            contentDisposition, mimetype, referer, contentLength);
-                    if (mSubView.copyBackForwardList().getSize() == 0) {
-                        // This subwindow was opened for the sole purpose of
-                        // downloading a file. Remove it.
-                        mWebViewController.dismissSubWindow(Tab.this);
-                    }
-                }
-            });
-            mSubView.setOnCreateContextMenuListener(mWebViewController.getActivity());
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Dismiss the subWindow for the tab.
-     */
-    void dismissSubWindow() {
-        if (mSubView != null) {
-            mWebViewController.endActionMode();
-            mSubView.destroy();
-            mSubView = null;
-            mSubViewContainer = null;
-        }
-    }
-
 
     /**
      * Set the parent tab of this tab.
@@ -1407,9 +1256,6 @@ class Tab implements PictureListener {
         if (mMainView != null) {
             setupHwAcceleration(mMainView);
             mMainView.onResume();
-            if (mSubView != null) {
-                mSubView.onResume();
-            }
         }
     }
 
@@ -1426,9 +1272,6 @@ class Tab implements PictureListener {
     void pause() {
         if (mMainView != null) {
             mMainView.onPause();
-            if (mSubView != null) {
-                mSubView.onPause();
-            }
         }
     }
 
@@ -1440,9 +1283,6 @@ class Tab implements PictureListener {
         resume();
         Activity activity = mWebViewController.getActivity();
         mMainView.setOnCreateContextMenuListener(activity);
-        if (mSubView != null) {
-            mSubView.setOnCreateContextMenuListener(activity);
-        }
         // Show the pending error dialog if the queue is not empty
         if (mQueuedErrors != null && mQueuedErrors.size() >  0) {
             showError(mQueuedErrors.getFirst());
@@ -1458,9 +1298,6 @@ class Tab implements PictureListener {
         mInForeground = false;
         pause();
         mMainView.setOnCreateContextMenuListener(null);
-        if (mSubView != null) {
-            mSubView.setOnCreateContextMenuListener(null);
-        }
     }
 
     boolean inForeground() {
@@ -1473,9 +1310,6 @@ class Tab implements PictureListener {
      * @return The top window of this tab.
      */
     WebView getTopWindow() {
-        if (mSubView != null) {
-            return mSubView;
-        }
         return mMainView;
     }
 
@@ -1510,26 +1344,6 @@ class Tab implements PictureListener {
      */
     boolean isPrivateBrowsingEnabled() {
         return mCurrentState.mIncognito;
-    }
-
-    /**
-     * Return the subwindow of this tab or null if there is no subwindow.
-     * @return The subwindow of this tab or null.
-     */
-    WebView getSubWebView() {
-        return mSubView;
-    }
-
-    void setSubWebView(WebView subView) {
-        mSubView = subView;
-    }
-
-    View getSubViewContainer() {
-        return mSubViewContainer;
-    }
-
-    void setSubViewContainer(View subViewContainer) {
-        mSubViewContainer = subViewContainer;
     }
 
     /**
@@ -1978,10 +1792,9 @@ class Tab implements PictureListener {
     public void setAcceptThirdPartyCookies(boolean accept) {
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= 21) {
-            if (mMainView != null)
+            if (mMainView != null) {
                 cookieManager.setAcceptThirdPartyCookies(mMainView, accept);
-            if (mSubView != null)
-                cookieManager.setAcceptThirdPartyCookies(mSubView, accept);
+            }
         }
     }
 

@@ -73,11 +73,6 @@ public class PreloadController implements WebViewController {
     }
 
     @Override
-    public void createSubWindow(Tab tab) {
-        if (LOGD_ENABLED) Log.d(LOGTAG, "createSubWindow()");
-    }
-
-    @Override
     public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
         if (LOGD_ENABLED) Log.d(LOGTAG, "onPageStarted()");
         if (view != null) {
@@ -211,16 +206,6 @@ public class PreloadController implements WebViewController {
     @Override
     public void endActionMode() {
         if (LOGD_ENABLED) Log.d(LOGTAG, "endActionMode()");
-    }
-
-    @Override
-    public void attachSubWindow(Tab tab) {
-        if (LOGD_ENABLED) Log.d(LOGTAG, "attachSubWindow()");
-    }
-
-    @Override
-    public void dismissSubWindow(Tab tab) {
-        if (LOGD_ENABLED) Log.d(LOGTAG, "dismissSubWindow()");
     }
 
     @Override

@@ -179,8 +179,6 @@ public class IntentHandler {
                     }
                 }
             } else {
-                // Get rid of the subwindow if it exists
-                mController.dismissSubWindow(current);
                 // If the current Tab is being used as an application tab,
                 // remove the association, since the new Intent means that it is
                 // no longer associated with that application.

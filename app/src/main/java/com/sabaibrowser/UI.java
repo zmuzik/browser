@@ -68,12 +68,6 @@ public interface UI {
 
     public void onSetWebView(Tab tab, WebView view);
 
-    public void createSubWindow(Tab tab, WebView subWebView);
-
-    public void attachSubWindow(View subContainer);
-
-    public void removeSubWindow(View subContainer);
-
     public void onTabDataChanged(Tab tab);
 
     public void onPageStopped(Tab tab);

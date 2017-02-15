@@ -93,18 +93,6 @@ class TabControl {
     }
 
     /**
-     * Return the current tab's subwindow if it exists.
-     * @return The subwindow of the current tab or null if it doesn't exist.
-     */
-    WebView getCurrentSubWindow() {
-        Tab t = getTab(mCurrentTab);
-        if (t == null) {
-            return null;
-        }
-        return t.getSubWebView();
-    }
-
-    /**
      * return the list of tabs
      */
     List<Tab> getTabs() {
@@ -531,7 +519,7 @@ class TabControl {
      */
     Tab getTabFromView(WebView view) {
         for (Tab t : mTabs) {
-            if (t.getSubWebView() == view || t.getWebView() == view) {
+            if (t.getWebView() == view) {
                 return t;
             }
         }
@@ -562,10 +550,6 @@ class TabControl {
             final WebView webview = t.getWebView();
             if (webview != null) {
                 webview.stopLoading();
-            }
-            final WebView subview = t.getSubWebView();
-            if (subview != null) {
-                subview.stopLoading();
             }
         }
     }

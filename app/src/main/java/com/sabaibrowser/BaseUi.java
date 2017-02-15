@@ -335,7 +335,6 @@ public abstract class BaseUi implements UI {
             }
             mContentView.addView(container, COVER_SCREEN_PARAMS);
         }
-        mUiController.attachSubWindow(tab);
     }
 
     private void removeTabFromContentView(Tab tab) {
@@ -354,7 +353,6 @@ public abstract class BaseUi implements UI {
         wrapper.removeView(mainView);
         mContentView.removeView(container);
         mUiController.endActionMode();
-        mUiController.removeSubWindow(tab);
     }
 
     @Override
@@ -373,55 +371,6 @@ public abstract class BaseUi implements UI {
                     (FrameLayout) container.findViewById(R.id.webview_wrapper);
             wrapper.removeView(tab.getWebView());
         }
-    }
-
-    /**
-     * create a sub window container and webview for the tab
-     * Note: this methods operates through side-effects for now
-     * it sets both the subView and subViewContainer for the given tab
-     * @param tab tab to create the sub window for
-     * @param subView webview to be set as a subwindow for the tab
-     */
-    @Override
-    public void createSubWindow(Tab tab, WebView subView) {
-        View subViewContainer = mActivity.getLayoutInflater().inflate(
-                R.layout.browser_subwindow, null);
-        ViewGroup inner = (ViewGroup) subViewContainer
-                .findViewById(R.id.inner_container);
-        inner.addView(subView, new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
-        final ImageButton cancel = (ImageButton) subViewContainer
-                .findViewById(R.id.subwindow_close);
-        final WebView cancelSubView = subView;
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((BrowserWebView) cancelSubView).getWebChromeClient().onCloseWindow(cancelSubView);
-            }
-        });
-        tab.setSubWebView(subView);
-        tab.setSubViewContainer(subViewContainer);
-    }
-
-    /**
-     * Remove the sub window from the content view.
-     */
-    @Override
-    public void removeSubWindow(View subviewContainer) {
-        mContentView.removeView(subviewContainer);
-        mUiController.endActionMode();
-    }
-
-    /**
-     * Attach the sub window to the content view.
-     */
-    @Override
-    public void attachSubWindow(View container) {
-        if (container.getParent() != null) {
-            // already attached, remove first
-            ((ViewGroup) container.getParent()).removeView(container);
-        }
-        mContentView.addView(container, COVER_SCREEN_PARAMS);
     }
 
     protected void refreshWebView() {

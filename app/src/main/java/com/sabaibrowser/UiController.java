@@ -77,10 +77,6 @@ public interface UiController {
 
     void hideCustomView();
 
-    void attachSubWindow(Tab tab);
-
-    void removeSubWindow(Tab tab);
-
     boolean isInCustomActionMode();
 
     void endActionMode();
