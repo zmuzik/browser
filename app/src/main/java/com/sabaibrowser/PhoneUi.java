@@ -56,7 +56,6 @@ public class PhoneUi extends BaseUi {
     private NavigationBarPhone mNavigationBar;
     private int mActionBarHeight;
 
-    boolean mAnimating;
     boolean mShowNav = false;
 
     /**
@@ -372,91 +371,13 @@ public class PhoneUi extends BaseUi {
         mShowNav = false;
         if (!showingNavScreen()) return;
         final Tab tab = mUiController.getTabControl().getTab(position);
-        if ((tab == null) || !animate) {
-            if (tab != null) {
-                setActiveTab(tab);
-            } else if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
-                setActiveTab(mTabControl.getCurrentTab());
-            }
-            mContentView.setVisibility(View.VISIBLE);
-            finishAnimateOut();
-            return;
-        }
-        NavTabView tabview = null;//(NavTabView) mNavScreen.getTabView(position);
-        if (tabview == null) {
-            if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
-                setActiveTab(mTabControl.getCurrentTab());
-            }
-            mContentView.setVisibility(View.VISIBLE);
-            finishAnimateOut();
-            return;
-        }
-        mUiController.setBlockEvents(true);
-        mUiController.setActiveTab(tab);
-        mContentView.setVisibility(View.VISIBLE);
-        if (mAnimScreen == null) {
-            mAnimScreen = new AnimScreen(mActivity);
-        }
-        mAnimScreen.set(tab.getScreenshot());
-        if (mAnimScreen.mMain.getParent() == null) {
-            mCustomViewContainer.addView(mAnimScreen.mMain, COVER_SCREEN_PARAMS);
-        }
-        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(),
-                mContentView.getHeight());
-        //mNavScreen.mScroller.finishScroller();
-        Drawable contentDrawable = tabview.mImage.getDrawable();
-        int toLeft = 0;
-        int toTop = 0;
-        int toRight = mContentView.getWidth();
-        int width = contentDrawable.getIntrinsicWidth();
-        int height = contentDrawable.getIntrinsicHeight();
-        int fromLeft = tabview.getContentLeft();// - mNavScreen.mScroller.getScrollX();
-        int fromTop = tabview.getContentTop();// - mNavScreen.mScroller.getScrollY();
-        int fromRight = fromLeft + width;
-        int fromBottom = fromTop + height;
-        float scaleFactor = mContentView.getWidth() / (float) width;
-        int toBottom = toTop + (int) (height * scaleFactor);
-        mAnimScreen.mContent.setLeft(fromLeft);
-        mAnimScreen.mContent.setTop(fromTop);
-        mAnimScreen.mContent.setRight(fromRight);
-        mAnimScreen.mContent.setBottom(fromBottom);
-        mAnimScreen.setScaleFactor(1f);
-        AnimatorSet set1 = new AnimatorSet();
-        ObjectAnimator fade2 = ObjectAnimator.ofFloat(mAnimScreen.mMain, "alpha", 0f, 1f);
-        ObjectAnimator fade1 = ObjectAnimator.ofFloat(mNavScreen, "alpha", 1f, 0f);
-        set1.playTogether(fade1, fade2);
-        set1.setDuration(100);
-        AnimatorSet set2 = new AnimatorSet();
-        ObjectAnimator l = ObjectAnimator.ofInt(mAnimScreen.mContent, "left",
-                fromLeft, toLeft);
-        ObjectAnimator t = ObjectAnimator.ofInt(mAnimScreen.mContent, "top",
-                fromTop, toTop);
-        ObjectAnimator r = ObjectAnimator.ofInt(mAnimScreen.mContent, "right",
-                fromRight, toRight);
-        ObjectAnimator b = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom",
-                fromBottom, toBottom);
-        ObjectAnimator scale = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor",
-                1f, scaleFactor);
-        ObjectAnimator otheralpha = ObjectAnimator.ofFloat(mCustomViewContainer, "alpha", 1f, 0f);
-        otheralpha.setDuration(100);
-        set2.playTogether(l, t, r, b, scale);
-        set2.setDuration(200);
-        AnimatorSet combo = new AnimatorSet();
-        combo.playSequentially(set1, set2, otheralpha);
-        combo.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator anim) {
-                mCustomViewContainer.removeView(mAnimScreen.mMain);
-                finishAnimateOut();
-                mUiController.setBlockEvents(false);
-            }
-        });
-        combo.start();
-    }
 
-    private void finishAnimateOut() {
+        if (tab != null) {
+            setActiveTab(tab);
+        } else if (mTabControl.getTabCount() > 0) {
+            setActiveTab(mTabControl.getCurrentTab());
+        }
+        mContentView.setVisibility(View.VISIBLE);
         mTabControl.setOnThumbnailUpdatedListener(null);
         mNavScreen.setVisibility(View.GONE);
         mCustomViewContainer.setAlpha(1f);
