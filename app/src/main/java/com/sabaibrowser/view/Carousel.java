@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 public class Carousel extends ViewGroup {
 
-    protected int childWidth;
-    protected int childHeight;
-
     public Carousel(Context context) {
         super(context);
         init();
@@ -23,12 +20,10 @@ public class Carousel extends ViewGroup {
     }
 
     void init() {
-        childWidth = (int) dpToPx(160);
-        childHeight = (int) dpToPx(96);
     }
 
-    public float dpToPx(int dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    public int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     /**

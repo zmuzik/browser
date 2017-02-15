@@ -16,8 +16,6 @@ public class TabCard extends ViewGroup {
     TextView mTitle;
     ImageView mThumbnail;
     ImageView mIncognitoIndicator;
-    int mWidth;
-    int mHeight;
     int mPadding;
     int mThumbnailWidth;
     int mThumbnailHeight;
