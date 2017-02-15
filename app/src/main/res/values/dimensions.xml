@@ -67,7 +67,7 @@
     <dimen name="toolbar_height">52dip</dimen>
     <dimen name="tab_thumbnail_width">160dip</dimen>
     <dimen name="tab_thumbnail_height">240dip</dimen>
-    <dimen name="tab_thumbnail_title_height">24dip</dimen>
+    <dimen name="tab_thumbnail_title_height">16dip</dimen>
     <dimen name="nav_tab_height">160dip</dimen>
     <dimen name="nav_tab_width">240dip</dimen>
     <dimen name="nav_tab_titleheight">24dip</dimen>

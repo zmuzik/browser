@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/incognito_indicator"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/tab_thumbnail_title_height"
+        android:layout_height="@dimen/tab_thumbnail_title_height"
         android:src="@drawable/ic_incognito_dark" />
 </merge>
