@@ -52,7 +52,6 @@ public class PhoneUi extends BaseUi {
     private static final int MSG_INIT_NAVSCREEN = 100;
 
     private NavScreen mNavScreen;
-    private AnimScreen mAnimScreen;
     private NavigationBarPhone mNavigationBar;
     private int mActionBarHeight;
 
@@ -157,11 +156,6 @@ public class PhoneUi extends BaseUi {
                 mNavScreen = new NavScreen(mActivity, mUiController, this);
                 mCustomViewContainer.addView(mNavScreen, COVER_SCREEN_PARAMS);
                 mNavScreen.setVisibility(View.GONE);
-            }
-            if (mAnimScreen == null) {
-                mAnimScreen = new AnimScreen(mActivity);
-                // initialize bitmap
-                mAnimScreen.set(getWebView());
             }
         }
     }
@@ -301,62 +295,18 @@ public class PhoneUi extends BaseUi {
             mNavScreen.refreshAdapter();
         }
         mActiveTab.capture();
-        if (mAnimScreen == null) {
-            mAnimScreen = new AnimScreen(mActivity);
-        } else {
-            mAnimScreen.mMain.setAlpha(1f);
-            mAnimScreen.setScaleFactor(1f);
-        }
-        mAnimScreen.set(getWebView());
-        if (mAnimScreen.mMain.getParent() == null) {
-            mCustomViewContainer.addView(mAnimScreen.mMain, COVER_SCREEN_PARAMS);
-        }
+
+
         mCustomViewContainer.setVisibility(View.VISIBLE);
         mCustomViewContainer.bringToFront();
-        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(),
-                mContentView.getHeight());
-        int fromLeft = 0;
-        int fromTop = 0;
-        int fromRight = mContentView.getWidth();
-        int fromBottom = mContentView.getHeight();
-        int width = mActivity.getResources().getDimensionPixelSize(R.dimen.nav_tab_width);
-        int height = mActivity.getResources().getDimensionPixelSize(R.dimen.nav_tab_height);
-        int ntth = mActivity.getResources().getDimensionPixelSize(R.dimen.nav_tab_titleheight);
-        int toLeft = (mContentView.getWidth() - width) / 2;
-        int toTop = ((fromBottom - (ntth + height)) / 2);
-        int toRight = toLeft + width;
-        int toBottom = toTop + height;
-        float scaleFactor = width / (float) mContentView.getWidth();
-        detachTab(mActiveTab);
-        mContentView.setVisibility(View.GONE);
-        AnimatorSet set1 = new AnimatorSet();
-        AnimatorSet inanim = new AnimatorSet();
-        ObjectAnimator tx = ObjectAnimator.ofInt(mAnimScreen.mContent, "left",
-                fromLeft, toLeft);
-        ObjectAnimator ty = ObjectAnimator.ofInt(mAnimScreen.mContent, "top",
-                fromTop, toTop);
-        ObjectAnimator tr = ObjectAnimator.ofInt(mAnimScreen.mContent, "right",
-                fromRight, toRight);
-        ObjectAnimator tb = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom",
-                fromBottom, toBottom);
-        ObjectAnimator sx = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor",
-                1f, scaleFactor);
-        ObjectAnimator blend1 = ObjectAnimator.ofFloat(mAnimScreen.mMain,
-                "alpha", 1f, 0f);
-        blend1.setDuration(100);
 
-        inanim.playTogether(tx, ty, tr, tb, sx);
-        inanim.setDuration(200);
-        set1.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator anim) {
-                mCustomViewContainer.removeView(mAnimScreen.mMain);
-                finishAnimationIn();
-                mUiController.setBlockEvents(false);
-            }
-        });
-        set1.playSequentially(inanim, blend1);
-        set1.start();
+        detachTab(mActiveTab);
+
+        //XXX
+        mContentView.setVisibility(View.GONE);
+
+        finishAnimationIn();
+        mUiController.setBlockEvents(false);
     }
 
     private void finishAnimationIn() {
@@ -400,68 +350,6 @@ public class PhoneUi extends BaseUi {
     @Override
     public boolean shouldCaptureThumbnails() {
         return true;
-    }
-
-    static class AnimScreen {
-
-        private View mMain;
-        private ImageView mContent;
-        private float mScale;
-        private Bitmap mContentBitmap;
-
-        public AnimScreen(Context ctx) {
-            mMain = LayoutInflater.from(ctx).inflate(R.layout.anim_screen,
-                    null);
-            mContent = (ImageView) mMain.findViewById(R.id.content);
-            mContent.setScaleType(ImageView.ScaleType.MATRIX);
-            mContent.setImageMatrix(new Matrix());
-            mScale = 1.0f;
-            setScaleFactor(getScaleFactor());
-        }
-
-        public void set(WebView web) {
-            if (web == null) {
-                return;
-            }
-            int h = web.getHeight();
-            if (mContentBitmap == null
-                    || mContentBitmap.getWidth() != web.getWidth()
-                    || mContentBitmap.getHeight() != h) {
-                mContentBitmap = safeCreateBitmap(web.getWidth(), h);
-            }
-            if (mContentBitmap != null) {
-                Canvas c = new Canvas(mContentBitmap);
-                c.translate(-web.getScrollX(), -web.getScrollY());
-                web.draw(c);
-                c.setBitmap(null);
-            }
-            mContent.setImageBitmap(mContentBitmap);
-        }
-
-        private Bitmap safeCreateBitmap(int width, int height) {
-            if (width <= 0 || height <= 0) {
-                Log.w(LOGTAG, "safeCreateBitmap failed! width: " + width
-                        + ", height: " + height);
-                return null;
-            }
-            return Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        }
-
-        public void set(Bitmap image) {
-            mContent.setImageBitmap(image);
-        }
-
-        private void setScaleFactor(float sf) {
-            mScale = sf;
-            Matrix m = new Matrix();
-            m.postScale(sf,sf);
-            mContent.setImageMatrix(m);
-        }
-
-        private float getScaleFactor() {
-            return mScale;
-        }
-
     }
 
 }
