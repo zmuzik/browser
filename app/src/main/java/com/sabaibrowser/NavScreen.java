@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 
@@ -34,7 +33,6 @@ import java.util.HashMap;
 
 public class NavScreen extends RelativeLayout
         implements OnClickListener, OnMenuItemClickListener, OnThumbnailUpdatedListener {
-
 
     UiController mUiController;
     PhoneUi mUi;
@@ -71,16 +69,19 @@ public class NavScreen extends RelativeLayout
 
     public void refreshAdapter() {
         TabControl tc = mUiController.getTabControl();
+        mCarousel.removeAllViews();
         for (int i = 0; i < tc.getTabCount(); i++) {
+            final int position = i;
             TabCard card = new TabCard(getContext());
-            //card.setTab(tc.getTab(i));
-            mCarousel.addView(card);
+            card.setTab(tc.getTab(i));
+            card.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mUi.hideNavScreen(position, true);
+                }
+            });
 
-            ImageView iv = new ImageView(getContext());
-            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_incognito_dark));
-            iv.setMinimumWidth(50);
-            iv.setMinimumHeight(50);
-//            mCarousel.addView(iv);
+            mCarousel.addView(card);
         }
     }
 
@@ -150,13 +151,11 @@ public class NavScreen extends RelativeLayout
             mUiController.setBlockEvents(true);
             final int tix = mUi.mTabControl.getTabPosition(tab);
             mUiController.setBlockEvents(false);
-            mUiController.loadUrl(tab,
-                    BrowserSettings.getInstance().getHomePage());
+            mUiController.loadUrl(tab, BrowserSettings.getInstance().getHomePage());
         }
     }
 
     private Tab findCenteredTab() {
-        // XXX temporary hack
         return mUiController.getTabs().get(0);
     }
 
@@ -181,5 +180,4 @@ public class NavScreen extends RelativeLayout
             v.invalidate();
         }
     }
-
 }

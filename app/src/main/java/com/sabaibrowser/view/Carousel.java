@@ -42,7 +42,6 @@ public class Carousel extends ViewGroup {
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
-                // Measure the child.
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
             }
         }
@@ -55,8 +54,10 @@ public class Carousel extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child == null) continue;
-            child.layout(i * 50, i * 50, i * 50 + child.getMeasuredWidth(), i * 50 + child.getMeasuredHeight());
-            Log.d("Carousel", "placed " + child.getClass().getSimpleName() + " at " + i);
+            child.layout(100 + i * 50,
+                    100 + i * 50,
+                    100 + i * 50 + child.getMeasuredWidth(),
+                    100 + i * 50 + child.getMeasuredHeight());
         }
     }
 }

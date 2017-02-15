@@ -1,15 +1,20 @@
 package com.sabaibrowser;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TabCard extends LinearLayout {
 
-    TextView title;
+    TextView mTitle;
+    ImageView mThumbnail;
+    ImageView mIncognitoIndicator;
 
     public TabCard(Context context) {
         super(context);
@@ -37,10 +42,18 @@ public class TabCard extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         LayoutInflater.from(getContext()).inflate(R.layout.tab_card, this);
         setBackgroundColor(getResources().getColor(R.color.light_gray));
-        title = (TextView) findViewById(R.id.tab_title);
+        mTitle = (TextView) findViewById(R.id.tab_title);
+        mThumbnail = (ImageView) findViewById(R.id.thumbnail);
+        mIncognitoIndicator = (ImageView) findViewById(R.id.incognito_indicator);
     }
 
     public void setTab(Tab tab) {
-        title.setText(tab.getUrl());
+        if (tab == null) return;
+        mTitle.setText((tab.getTitle() != null) ? tab.getTitle() : tab.getUrl());
+        mIncognitoIndicator.setVisibility(tab.isPrivateBrowsingEnabled() ? View.VISIBLE : View.GONE);
+        Bitmap image = tab.getScreenshot();
+        if (image != null) {
+            mThumbnail.setImageBitmap(image);
+        }
     }
 }
