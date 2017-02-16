@@ -18,9 +18,14 @@ public class Carousel extends ViewGroup {
     int mSidePadding;
     int mArcCenterY;
     int mArcRadius;
-    int mTabCardWidth;
+    int mTabCardThumbWidth;
+    int mTabCardThumbHeight;
+    int mTabCardTitleHeight;
     int mTabCardPadding;
-    int mTabCardHeight;
+    int mStep;
+
+    int mSelectedPos;
+    View mSelectedItem;
 
     public Carousel(Context context) {
         super(context);
@@ -36,17 +41,32 @@ public class Carousel extends ViewGroup {
         mSidePadding = dpToPx(SIDE_PADDING);
         mArcCenterY = dpToPx(ARC_CENTER_Y);
         mArcRadius = dpToPx(ARC_RADIUS);
-        mTabCardWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
-        mTabCardHeight= (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
+        mTabCardThumbWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
+        mTabCardThumbHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
+        mTabCardTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
+        mStep = (int) dpToPx(64);
     }
 
-    //Position getPositionOnArc(int percentage) { sequence number of element, count,  scroll factor -1..1
+    /**
+     * return position of the upper left corner of the tab card
+     * selected shoule be between 0 and count
+     */
+    Position getPosition(int position, int count, double selected) {
+        selected = Math.min(selected, count);
+        selected = Math.max(0, count);
 
-    Position getPositionOnArc(int percentage) {
-        int x = (getMeasuredWidth() - mTabCardWidth) / 2 - mTabCardPadding;
-        int y = (getMeasuredHeight() - mTabCardHeight) / 2 - mTabCardPadding + percentage * 20;
-        return new Position(x, y, percentage / 100f);
+        // values to be added to get the coords of the upper left corner from the center coords
+        int cornerOffsetX = -mTabCardThumbWidth / 2 - mTabCardPadding;
+        int cornerOffsetY = -mTabCardThumbHeight / 2 - mTabCardPadding - mTabCardTitleHeight;
+
+        // default position of the selected item
+        int centerX = getMeasuredWidth() / 2;
+        int centerY = getMeasuredHeight() / 2;
+
+        int x = centerX;
+        int y = centerY + mStep * (count - position);
+        return new Position(x + cornerOffsetX, y + cornerOffsetY, 0);
     }
 
     public int dpToPx(int dp) {
@@ -80,7 +100,7 @@ public class Carousel extends ViewGroup {
             if (i == 3) {
                 front = child;
             }
-            Position coords = getPositionOnArc(10 * i);
+            Position coords = getPosition(i, count, 0);
             child.layout(coords.x,
                     coords.y,
                     coords.x + child.getMeasuredWidth(),
@@ -89,9 +109,38 @@ public class Carousel extends ViewGroup {
         if (front != null) front.bringToFront();
     }
 
+    public void setSelectedItem(int position) {
+        View v = getChildAt(position);
+        if (v == null) {
+            mSelectedPos = position;
+            mSelectedItem = v;
+        }
+    }
+
+    public void setSelectedItem(View v) {
+        int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = getChildAt(i);
+            if (child == v && child != null) {
+                mSelectedPos = i;
+                mSelectedItem = v;
+            }
+        }
+    }
+
+    public View getSelectedItem() {
+        if (mSelectedItem != null) return mSelectedItem;
+        try {
+            return getChildAt(mSelectedPos);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private static class Position {
-        public int x,y;
+        public int x, y;
         public double fi;
+
         public Position(int x, int y, double fi) {
             this.x = x;
             this.y = y;
