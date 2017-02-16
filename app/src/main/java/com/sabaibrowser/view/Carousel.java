@@ -4,12 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sabaibrowser.R;
 
-public class Carousel extends ViewGroup {
+public class Carousel extends ViewGroup implements View.OnTouchListener {
 
     final int SIDE_PADDING = 8;
     final int ARC_CENTER_Y = 160 + 8;
@@ -23,8 +24,11 @@ public class Carousel extends ViewGroup {
     int mTabCardTitleHeight;
     int mTabCardPadding;
     int mStep;
+    int scrollfactor;
 
     int mSelectedPos;
+    private float gestureStartX;
+    private float gestureStartY;
 
     public Carousel(Context context) {
         super(context);
@@ -46,6 +50,7 @@ public class Carousel extends ViewGroup {
         mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
         mStep = (int) dpToPx(64);
         setChildrenDrawingOrderEnabled(true);
+        setOnTouchListener(this);
     }
 
     /**
@@ -66,7 +71,8 @@ public class Carousel extends ViewGroup {
 
         int x = centerX;
         int y = centerY + mStep * (position - (int) selected);
-        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY, 0);
+
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY + scrollfactor, 0);
     }
 
     public int dpToPx(int dp) {
@@ -140,6 +146,28 @@ public class Carousel extends ViewGroup {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent me) {
+        switch (me.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                gestureStartX = me.getX();
+                gestureStartY = me.getY();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                float distance = gestureStartY - me.getY();
+                scrollfactor = (int) distance;
+//                animate()
+//                        .x(me.getRawX())
+//                        .y(me.getRawY())
+//                        .setDuration(0)
+//                        .start();
+                Log.d("ACTION", "getY: " + me.getY());
+                break;
+        }
+        return true;
     }
 
     private static class ScreenPosition {
