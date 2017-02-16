@@ -38,7 +38,7 @@ public class TabCard extends ViewGroup {
         LayoutInflater.from(getContext()).inflate(R.layout.tab_card, this);
         setBackgroundColor(getResources().getColor(R.color.primary));
 
-        mPadding = (int) getResources().getDimension(R.dimen.nav_tab_padding);
+        mPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
         mTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mThumbnailWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
         mThumbnailHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
