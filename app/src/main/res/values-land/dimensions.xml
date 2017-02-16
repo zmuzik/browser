@@ -12,9 +12,5 @@
 -->
 
 <resources>
-    <dimen name="preference_screen_side_margin">96dp</dimen>
-    <dimen name="preference_screen_side_margin_negative">-100dp</dimen>
     <dimen name="preference_widget_width">72dp</dimen>
-    <dimen name="nav_tab_width">225dip</dimen>
-    <dimen name="nav_tab_height">150dip</dimen>
 </resources>
