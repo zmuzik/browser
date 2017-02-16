@@ -45,6 +45,7 @@ public class Carousel extends ViewGroup {
         mTabCardTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
         mStep = (int) dpToPx(64);
+        setChildrenDrawingOrderEnabled(true);
     }
 
     /**
@@ -64,7 +65,7 @@ public class Carousel extends ViewGroup {
         int centerY = getMeasuredHeight() / 2;
 
         int x = centerX;
-        int y = centerY + mStep * (position - (int)selected);
+        int y = centerY + mStep * (position - (int) selected);
         return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY, 0);
     }
 
@@ -89,23 +90,30 @@ public class Carousel extends ViewGroup {
     }
 
     @Override
+    protected int getChildDrawingOrder(int count, int i) {
+        // ensure proper visibility of tabs according to the perspective
+        int selected = (int) getSelectedPosition();
+        int result = count - 1; // last element for the active tab;
+        if (i < selected) {
+            result = i;
+        } else if (i > selected) {
+            result = count - 1 - (i - selected);
+        }
+        return result;
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         Log.d("Carousel", "w: " + getMeasuredWidth() + " h: " + getMeasuredHeight());
         final int count = getChildCount();
-        View front = null;
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
-            if (child == null) continue;
-            if (i == 3) {
-                front = child;
-            }
             ScreenPosition coords = getPosition(i, count, getSelectedPosition());
             child.layout(coords.x,
                     coords.y,
                     coords.x + child.getMeasuredWidth(),
                     coords.y + child.getMeasuredHeight());
         }
-        if (front != null) front.bringToFront();
     }
 
     public void setSelectedItem(int position) {
