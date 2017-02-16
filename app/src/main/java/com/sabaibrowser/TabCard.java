@@ -76,12 +76,22 @@ public class TabCard extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child == null || child.getVisibility() == View.GONE) continue;
-            if (child == mThumbnail) {
-                x = mPadding;
-                y = mPadding;
-            } else if (child == mTitle) {
-                x = mPadding;
-                y = mPadding + mThumbnailHeight;
+            if (mTitleDown) {
+                if (child == mThumbnail) {
+                    x = mPadding;
+                    y = mPadding;
+                } else if (child == mTitle) {
+                    x = mPadding;
+                    y = mPadding + mThumbnailHeight;
+                }
+            } else {
+                if (child == mThumbnail) {
+                    x = mPadding;
+                    y = mPadding + mTitleHeight;
+                } else if (child == mTitle) {
+                    x = mPadding;
+                    y = mPadding;
+                }
             }
             child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
         }
