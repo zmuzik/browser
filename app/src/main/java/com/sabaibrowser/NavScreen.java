@@ -73,11 +73,14 @@ public class NavScreen extends RelativeLayout
         for (int i = 0; i < tc.getTabCount(); i++) {
             final int position = i;
             TabCard card = new TabCard(getContext());
-            card.setTab(tc.getTab(i));
+            final Tab tab = tc.getTab(i);
+            card.setTab(tab);
             card.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mUi.hideNavScreen(position, true);
+                    switchToTab(tab);
+                    close(position, false);
+                    //mUi.editUrl(false, true);
                 }
             });
 
