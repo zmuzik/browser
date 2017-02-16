@@ -32,20 +32,27 @@ public class TabCard extends ViewGroup {
     }
 
     private void init() {
-        setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        int layoutId = mTitleDown ? R.layout.tab_card : R.layout.tab_card;
-        LayoutInflater.from(getContext()).inflate(layoutId, this);
-        setBackgroundColor(getResources().getColor(R.color.light_gray));
-
         mPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
         mTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mThumbnailWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
         mThumbnailHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
 
-        mTitle = (TextView) findViewById(R.id.tab_title);
-        mThumbnail = (ImageView) findViewById(R.id.thumbnail);
+        setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        setBackgroundColor(getResources().getColor(R.color.light_gray));
+
+        mTitle = new TextView(getContext());
+        mTitle.setHeight(mTitleHeight);
+        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.tab_thumbnail_title_text_size));
+        //XXX mTitle set width wrap content
+        addView(mTitle);
+
+        mThumbnail = new ImageView(getContext());
+        mThumbnail.setMinimumWidth(mThumbnailWidth);
+        mThumbnail.setMinimumHeight(mThumbnailHeight);
+        addView(mThumbnail);
     }
 
     @Override
