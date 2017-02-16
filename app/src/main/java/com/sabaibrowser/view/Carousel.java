@@ -25,7 +25,6 @@ public class Carousel extends ViewGroup {
     int mStep;
 
     int mSelectedPos;
-    View mSelectedItem;
 
     public Carousel(Context context) {
         super(context);
@@ -52,9 +51,9 @@ public class Carousel extends ViewGroup {
      * return position of the upper left corner of the tab card
      * selected shoule be between 0 and count
      */
-    Position getPosition(int position, int count, double selected) {
+    ScreenPosition getPosition(int position, int count, double selected) {
         selected = Math.min(selected, count);
-        selected = Math.max(0, count);
+        selected = Math.max(selected, 0);
 
         // values to be added to get the coords of the upper left corner from the center coords
         int cornerOffsetX = -mTabCardThumbWidth / 2 - mTabCardPadding;
@@ -65,8 +64,8 @@ public class Carousel extends ViewGroup {
         int centerY = getMeasuredHeight() / 2;
 
         int x = centerX;
-        int y = centerY + mStep * (count - position);
-        return new Position(x + cornerOffsetX, y + cornerOffsetY, 0);
+        int y = centerY + mStep * (position - (int)selected);
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY, 0);
     }
 
     public int dpToPx(int dp) {
@@ -100,7 +99,7 @@ public class Carousel extends ViewGroup {
             if (i == 3) {
                 front = child;
             }
-            Position coords = getPosition(i, count, 0);
+            ScreenPosition coords = getPosition(i, count, getSelectedPosition());
             child.layout(coords.x,
                     coords.y,
                     coords.x + child.getMeasuredWidth(),
@@ -110,11 +109,7 @@ public class Carousel extends ViewGroup {
     }
 
     public void setSelectedItem(int position) {
-        View v = getChildAt(position);
-        if (v == null) {
-            mSelectedPos = position;
-            mSelectedItem = v;
-        }
+        mSelectedPos = position;
     }
 
     public void setSelectedItem(View v) {
@@ -123,13 +118,15 @@ public class Carousel extends ViewGroup {
             View child = getChildAt(i);
             if (child == v && child != null) {
                 mSelectedPos = i;
-                mSelectedItem = v;
             }
         }
     }
 
+    public double getSelectedPosition() {
+        return mSelectedPos;
+    }
+
     public View getSelectedItem() {
-        if (mSelectedItem != null) return mSelectedItem;
         try {
             return getChildAt(mSelectedPos);
         } catch (Exception e) {
@@ -137,11 +134,11 @@ public class Carousel extends ViewGroup {
         }
     }
 
-    private static class Position {
+    private static class ScreenPosition {
         public int x, y;
         public double fi;
 
-        public Position(int x, int y, double fi) {
+        public ScreenPosition(int x, int y, double fi) {
             this.x = x;
             this.y = y;
             this.fi = fi;
