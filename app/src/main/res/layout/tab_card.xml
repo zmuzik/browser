@@ -14,10 +14,4 @@
         android:textSize="@dimen/tab_thumbnail_title_text_size"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/thumbnail" />
-
-    <ImageView
-        android:id="@+id/incognito_indicator"
-        android:layout_width="@dimen/tab_thumbnail_title_height"
-        android:layout_height="@dimen/tab_thumbnail_title_height"
-        android:src="@drawable/ic_incognito_dark" />
 </merge>

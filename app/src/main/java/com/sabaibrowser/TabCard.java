@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 public class TabCard extends ViewGroup {
 
-    TextView mTitle;
-    ImageView mThumbnail;
-    ImageView mIncognitoIndicator;
-    int mPadding;
-    int mThumbnailWidth;
-    int mThumbnailHeight;
-    int mTitleHeight;
+    private TextView mTitle;
+    private ImageView mThumbnail;
+    private int mPadding;
+    private int mThumbnailWidth;
+    private int mThumbnailHeight;
+    private int mTitleHeight;
+    private boolean mTitleDown = false;
 
     public TabCard(Context context) {
         super(context);
@@ -35,7 +35,8 @@ public class TabCard extends ViewGroup {
         setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        LayoutInflater.from(getContext()).inflate(R.layout.tab_card, this);
+        int layoutId = mTitleDown ? R.layout.tab_card : R.layout.tab_card;
+        LayoutInflater.from(getContext()).inflate(layoutId, this);
         setBackgroundColor(getResources().getColor(R.color.light_gray));
 
         mPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
@@ -45,7 +46,6 @@ public class TabCard extends ViewGroup {
 
         mTitle = (TextView) findViewById(R.id.tab_title);
         mThumbnail = (ImageView) findViewById(R.id.thumbnail);
-        mIncognitoIndicator = (ImageView) findViewById(R.id.incognito_indicator);
     }
 
     @Override
@@ -82,9 +82,6 @@ public class TabCard extends ViewGroup {
             } else if (child == mTitle) {
                 x = mPadding;
                 y = mPadding + mThumbnailHeight;
-            } else if (child == mIncognitoIndicator) {
-                x = mPadding + mThumbnailWidth - mTitleHeight;
-                y = mPadding + mThumbnailHeight;
             }
             child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
         }
@@ -97,10 +94,30 @@ public class TabCard extends ViewGroup {
     public void setTab(Tab tab) {
         if (tab == null) return;
         mTitle.setText((tab.getTitle() != null) ? tab.getTitle() : tab.getUrl());
-        mIncognitoIndicator.setVisibility(tab.isPrivateBrowsingEnabled() ? View.VISIBLE : View.GONE);
+        boolean isPrivate = tab.isPrivateBrowsingEnabled();
+
+        int backgroundColor = (isPrivate)
+                ? R.color.incognito_tab_card_bg
+                : R.color.normal_tab_card_bg;
+        setBackgroundColor(getResources().getColor(backgroundColor));
+
+        int titleColor = (isPrivate)
+                ? R.color.incognito_tab_card_title
+                : R.color.normal_tab_card_title;
+
+        if (mTitle != null) mTitle.setTextColor(getResources().getColor(titleColor));
+
         Bitmap image = tab.getScreenshot();
         if (image != null) {
             mThumbnail.setImageBitmap(image);
         }
+    }
+
+    public void setTitleDown(boolean down) {
+        mTitleDown = down;
+    }
+
+    public boolean isTitleDown() {
+        return mTitleDown;
     }
 }
