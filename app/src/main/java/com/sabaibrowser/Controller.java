@@ -1566,9 +1566,9 @@ public class Controller
                 openPreferences();
                 break;
 
-            case R.id.find_menu_id:
-                findOnPage();
-                break;
+//            case R.id.find_menu_id:
+//                findOnPage();
+//                break;
 
             case R.id.page_info_menu_id:
                 showPageInfo();
