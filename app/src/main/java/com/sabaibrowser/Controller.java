@@ -1671,11 +1671,6 @@ public class Controller
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        // Let the History and Bookmark fragments handle menus they created.
-        if (item.getGroupId() == R.id.CONTEXT_MENU) {
-            return false;
-        }
-
         int id = item.getItemId();
         boolean result = true;
         switch (id) {
