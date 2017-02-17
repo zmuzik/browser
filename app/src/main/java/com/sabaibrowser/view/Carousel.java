@@ -73,7 +73,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         int x = centerX;
         int y = centerY + mStep * (position - (int) selected);
 
-        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY - scrollFactor - gestureScrollFactor, 0);
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY + scrollFactor + gestureScrollFactor, 0);
     }
 
     public int dpToPx(int dp) {
@@ -163,13 +163,13 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
                 gestureStartX = x;
                 gestureStartY = y;
                 break;
-
             case MotionEvent.ACTION_MOVE:
-                gestureScrollFactor = (int) (gestureStartY - y);
+                gestureScrollFactor = (int) (y - gestureStartY);
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
-                scrollFactor =+ gestureScrollFactor;
+            case MotionEvent.ACTION_CANCEL:
+                scrollFactor = scrollFactor + gestureScrollFactor;
                 gestureScrollFactor = 0;
                 break;
         }
