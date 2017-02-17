@@ -24,7 +24,8 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     int mTabCardTitleHeight;
     int mTabCardPadding;
     int mStep;
-    int scrollfactor;
+    int scrollFactor;
+    int gestureScrollFactor;
 
     int mSelectedPos;
     private float gestureStartX;
@@ -72,7 +73,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         int x = centerX;
         int y = centerY + mStep * (position - (int) selected);
 
-        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY - scrollfactor, 0);
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY - scrollFactor - gestureScrollFactor, 0);
     }
 
     public int dpToPx(int dp) {
@@ -149,6 +150,11 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return true;
+    }
+
+    @Override
     public boolean onTouch(View view, MotionEvent me) {
         int x = (int) me.getX();
         int y = (int) me.getY();
@@ -159,9 +165,12 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                float distance = gestureStartY - y;
-                scrollfactor = (int) distance;
+                gestureScrollFactor = (int) (gestureStartY - y);
                 requestLayout();
+                break;
+            case MotionEvent.ACTION_UP:
+                scrollFactor =+ gestureScrollFactor;
+                gestureScrollFactor = 0;
                 break;
         }
         return true;
