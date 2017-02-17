@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.sabaibrowser.R;
@@ -30,6 +31,10 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     int mSelectedPos;
     private float gestureStartX;
     private float gestureStartY;
+    private boolean mIsScrolling;
+    private int mSlop;
+    private int mMinFlingVelocity;
+    private int mMaxFlingVelocity;
 
     public Carousel(Context context) {
         super(context);
@@ -49,6 +54,12 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         mTabCardThumbHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
         mTabCardTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
+
+        ViewConfiguration vc = ViewConfiguration.get(getContext());
+        mSlop = vc.getScaledTouchSlop();
+        mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
+        mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
+
         mStep = (int) dpToPx(64);
         setChildrenDrawingOrderEnabled(true);
         setOnTouchListener(this);
@@ -150,21 +161,37 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
+    public boolean onInterceptTouchEvent(MotionEvent me) {
+        switch (me.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                gestureStartX = (int) me.getX();
+                gestureStartY = (int) me.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mIsScrolling) return true;
+                if (Math.abs(gestureStartY - me.getY()) > mSlop) {
+                    mIsScrolling = true;
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mIsScrolling = false;
+                return false;
+        }
+        return false;
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent me) {
-        int x = (int) me.getX();
-        int y = (int) me.getY();
         switch (me.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                gestureStartX = x;
-                gestureStartY = y;
-                break;
+            //handled in onInterceptTouchEvent
+//            case MotionEvent.ACTION_DOWN:
+//                gestureStartX = (int) me.getX();
+//                gestureStartY = (int) me.getY();
+//                break;
             case MotionEvent.ACTION_MOVE:
-                gestureScrollFactor = (int) (y - gestureStartY);
+                gestureScrollFactor = (int) (me.getY() - gestureStartY);
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
