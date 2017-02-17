@@ -72,7 +72,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         int x = centerX;
         int y = centerY + mStep * (position - (int) selected);
 
-        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY + scrollfactor, 0);
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY - scrollfactor, 0);
     }
 
     public int dpToPx(int dp) {
@@ -150,21 +150,18 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent me) {
+        int x = (int) me.getX();
+        int y = (int) me.getY();
         switch (me.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                gestureStartX = me.getX();
-                gestureStartY = me.getY();
+                gestureStartX = x;
+                gestureStartY = y;
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                float distance = gestureStartY - me.getY();
+                float distance = gestureStartY - y;
                 scrollfactor = (int) distance;
-//                animate()
-//                        .x(me.getRawX())
-//                        .y(me.getRawY())
-//                        .setDuration(0)
-//                        .start();
-                Log.d("ACTION", "getY: " + me.getY());
+                requestLayout();
                 break;
         }
         return true;
