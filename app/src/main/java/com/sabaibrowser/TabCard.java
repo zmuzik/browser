@@ -33,8 +33,8 @@ public class TabCard extends ViewGroup {
     private void init() {
         mPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
         mTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
-        mThumbnailWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
-        mThumbnailHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
+        mThumbnailWidth = Tab.getTabCardThumbWidth(getContext());
+        mThumbnailHeight = Tab.getTabCardThumbHeight(getContext());
 
         setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

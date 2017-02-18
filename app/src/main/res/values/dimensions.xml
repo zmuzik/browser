@@ -25,9 +25,8 @@
 
     <dimen name="toolbar_height">52dip</dimen>
 
-    <!-- tab switcher card dimensions -->
-    <dimen name="tab_thumbnail_width">240dip</dimen>
-    <dimen name="tab_thumbnail_height">210dip</dimen>
+    <!-- tab switcher and tab card dimensions -->
+    <dimen name="tab_switcher_padding">8dp</dimen>
     <dimen name="tab_thumbnail_title_height">28dip</dimen>
     <dimen name="tab_thumbnail_title_text_size">20dp</dimen>
     <dimen name="tab_thumbnail_card_padding">4dip</dimen>

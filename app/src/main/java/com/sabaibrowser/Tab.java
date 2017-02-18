@@ -93,7 +93,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Class for maintaining Tabs with a main WebView and a subwindow.
  */
-class Tab implements PictureListener {
+public class Tab implements PictureListener {
 
     // Log Tag
     private static final String LOGTAG = "Tab";
@@ -103,6 +103,8 @@ class Tab implements PictureListener {
     // of the browser.
     private static final String CONSOLE_LOGTAG = "browser";
 
+    final static double THUMB_SCREEN_PERCENTAGE = .6d;
+
     private static final int MSG_CAPTURE = 42;
     private static final int CAPTURE_DELAY = 100;
     private static final int INITIAL_PROGRESS = 5;
@@ -110,6 +112,8 @@ class Tab implements PictureListener {
     private static Bitmap sDefaultFavicon;
 
     private static Paint sAlphaPaint = new Paint();
+    private static int sTabCardThumbWidth;
+
     static {
         sAlphaPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         sAlphaPaint.setColor(Color.TRANSPARENT);
@@ -1041,10 +1045,8 @@ class Tab implements PictureListener {
             }
         };
 
-        mCaptureWidth = mContext.getResources().getDimensionPixelSize(
-                R.dimen.tab_thumbnail_width);
-        mCaptureHeight = mContext.getResources().getDimensionPixelSize(
-                R.dimen.tab_thumbnail_height);
+        mCaptureWidth = getTabCardThumbWidth(mContext);
+        mCaptureHeight = getTabCardThumbHeight(mContext);
         updateShouldCaptureThumbnails();
         restoreState(state);
         if (getId() == -1) {
@@ -1815,5 +1817,18 @@ class Tab implements PictureListener {
             is.close();
         }
         return sb;
+    }
+
+    public static int getTabCardThumbWidth(Context ctx) {
+        if (sTabCardThumbWidth != 0) return sTabCardThumbWidth;
+        int width = ctx.getResources().getDisplayMetrics().widthPixels;
+        int height = ctx.getResources().getDisplayMetrics().heightPixels;
+        sTabCardThumbWidth = (int) (THUMB_SCREEN_PERCENTAGE * ((width < height) ? width : height));
+        return sTabCardThumbWidth;
+    }
+
+    public static int getTabCardThumbHeight(Context ctx) {
+        return getTabCardThumbWidth(ctx) - ctx.getResources().getDimensionPixelSize(
+                R.dimen.tab_thumbnail_title_height);
     }
 }

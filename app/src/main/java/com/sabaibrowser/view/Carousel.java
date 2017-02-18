@@ -10,6 +10,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.sabaibrowser.R;
+import com.sabaibrowser.Tab;
 import com.sabaibrowser.TabCard;
 
 public class Carousel extends ViewGroup implements View.OnTouchListener {
@@ -42,8 +43,8 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     }
 
     void init() {
-        mTabCardThumbWidth = (int) getResources().getDimension(R.dimen.tab_thumbnail_width);
-        mTabCardThumbHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_height);
+        mTabCardThumbWidth = Tab.getTabCardThumbWidth(getContext());
+        mTabCardThumbHeight = Tab.getTabCardThumbHeight(getContext());
         mTabCardTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
         mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
 
