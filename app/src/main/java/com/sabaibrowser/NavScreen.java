@@ -114,14 +114,6 @@ public class NavScreen extends RelativeLayout
                 refreshAdapter();
             }
         });
-        mBubbleMenu.addMenuItem(R.drawable.ic_home, new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBubbleMenu.closeMenu();
-                gotoHomePage();
-                refreshAdapter();
-            }
-        });
     }
 
     @Override
