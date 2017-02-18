@@ -85,8 +85,9 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         int x = centerX;
         int y = centerY + mStep * (position - (int) selected);
 
-        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY + scrollFactor + gestureScrollFactor, 0);
+        return new ScreenPosition(x + cornerOffsetX, y + cornerOffsetY + scrollFactor + gestureScrollFactor);
     }
+
 
     public int dpToPx(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
@@ -219,14 +220,12 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         return true;
     }
 
-    private static class ScreenPosition {
-        public int x, y;
-        public double fi;
+    private class ScreenPosition {
+        int x, y;
 
-        public ScreenPosition(int x, int y, double fi) {
+        ScreenPosition(int x, int y) {
             this.x = x;
             this.y = y;
-            this.fi = fi;
         }
     }
 }
