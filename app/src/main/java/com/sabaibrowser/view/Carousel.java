@@ -69,18 +69,10 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         int cornerOffsetX = -mTabCardThumbWidth / 2 - mTabCardPadding;
         int cornerOffsetY = -mTabCardThumbHeight / 2 - mTabCardPadding - mTabCardTitleHeight;
 
-        // default position of the selected item
-        int centerX = getMeasuredWidth() / 2;
-        int centerY = getMeasuredHeight() / 2;
-
-//        int x = centerX;
-//        int y = centerY + mStep * (position - (int) selected);
-
         double arc = 1d / count * (position - selected) + 1d / count * (((double) scrollFactor + gestureScrollFactor) / mStep);
 
         ScreenPosition center = getArcPosition(arc);
-
-        return new ScreenPosition(center.x + cornerOffsetX, center.y + cornerOffsetY);// + scrollFactor + gestureScrollFactor);
+        return new ScreenPosition(center.x + cornerOffsetX, center.y + cornerOffsetY);
     }
 
     /**
@@ -91,22 +83,21 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
 
-        final int CENTER_X = dpToPx(160);
-        final int CENTER_Y = dpToPx(400);
-        final int RADIUS = dpToPx(100);
+        final int CENTER_X = dpToPx(0);
+        final int CENTER_Y = dpToPx(360);
+        final int RADIUS = dpToPx(240);
         final double FI_MINUS_ONE = 0d;
         final double FI_ZERO = Math.PI * 3 / 4;
         final double FI_PLUS_ONE = Math.PI;
 
-        int x = 0, y = 0;
         double fi = FI_ZERO;
         if (percentage > 0) {
             fi = FI_ZERO + percentage * (FI_PLUS_ONE - FI_ZERO);
         } else if (percentage < 0) {
             fi = FI_ZERO + percentage * (FI_ZERO - FI_MINUS_ONE);
         }
-        x = CENTER_X + (int) (Math.sin(fi) * RADIUS);
-        y = CENTER_Y - (int) (Math.cos(fi) * RADIUS);
+        int x = CENTER_X + (int) (Math.sin(fi) * RADIUS);
+        int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS);
 
         return new ScreenPosition(x, y);
     }
