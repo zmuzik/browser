@@ -15,10 +15,7 @@ import com.sabaibrowser.TabCard;
 
 public class Carousel extends ViewGroup implements View.OnTouchListener {
 
-    int mTabCardThumbWidth;
-    int mTabCardThumbHeight;
-    int mTabCardTitleHeight;
-    int mTabCardPadding;
+    int mTabCardSize;
 
     double mStep;
     int scrollFactor;
@@ -43,10 +40,8 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     }
 
     void init() {
-        mTabCardThumbWidth = Tab.getTabCardThumbWidth(getContext());
-        mTabCardThumbHeight = Tab.getTabCardThumbHeight(getContext());
-        mTabCardTitleHeight = (int) getResources().getDimension(R.dimen.tab_thumbnail_title_height);
-        mTabCardPadding = (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
+        mTabCardSize = Tab.getTabCardThumbWidth(getContext())
+                + 2 * (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
 
         ViewConfiguration vc = ViewConfiguration.get(getContext());
         mSlop = vc.getScaledTouchSlop();
@@ -67,13 +62,12 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         selected = Math.max(selected, 0);
 
         // values to be added to get the coords of the upper left corner from the center coords
-        int cornerOffsetX = -mTabCardThumbWidth / 2 - mTabCardPadding;
-        int cornerOffsetY = -mTabCardThumbHeight / 2 - mTabCardPadding - mTabCardTitleHeight;
+        int cornerOffset = -mTabCardSize / 2;
 
         double arc = 1d / count * (position - selected) + 1d / count * (((double) scrollFactor + gestureScrollFactor) / mStep);
 
         ScreenPosition center = getArcPosition(arc);
-        return new ScreenPosition(center.x + cornerOffsetX, center.y + cornerOffsetY);
+        return new ScreenPosition(center.x + cornerOffset, center.y + cornerOffset);
     }
 
     /**
