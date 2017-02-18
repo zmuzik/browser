@@ -86,7 +86,7 @@ public class NavScreen extends RelativeLayout
 
             mCarousel.addView(card);
         }
-        mCarousel.setSelectedItem(tc.getCurrentPosition());
+        mCarousel.setSelectedPosition(tc.getCurrentPosition());
     }
 
     private void init() {
