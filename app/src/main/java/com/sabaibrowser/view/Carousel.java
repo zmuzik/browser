@@ -76,7 +76,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
 //        int x = centerX;
 //        int y = centerY + mStep * (position - (int) selected);
 
-        double arc = 1d/count * (position - selected);// + (double)mStep / ((scrollFactor + gestureScrollFactor) /count) ;
+        double arc = 1d / count * (position - selected) + 1d / count * (((double) scrollFactor + gestureScrollFactor) / mStep);
 
         ScreenPosition center = getArcPosition(arc);
 
