@@ -10,6 +10,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.sabaibrowser.R;
+import com.sabaibrowser.TabCard;
 
 public class Carousel extends ViewGroup implements View.OnTouchListener {
 
@@ -115,7 +116,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         if (i < selected) {
             result = i;
         } else if (i > selected) {
-            result = count - 1 - (i - selected);
+            result = count - 1 + selected - i ;
         }
         return result;
     }
@@ -126,6 +127,11 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
+
+            // correct placement of title
+            ((TabCard) child).setTitleDown(i > mSelectedPos);
+
+            // position
             ScreenPosition coords = getPosition(i, count, getSelectedPosition());
             child.layout(coords.x,
                     coords.y,
