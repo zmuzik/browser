@@ -103,6 +103,7 @@ public class NavScreen extends RelativeLayout
             public void onClick(View view) {
                 mBubbleMenu.closeMenu();
                 openNewTab(false);
+                refreshAdapter();
             }
         });
         mBubbleMenu.addMenuItem(R.drawable.ic_incognito, new OnClickListener() {
@@ -110,6 +111,7 @@ public class NavScreen extends RelativeLayout
             public void onClick(View view) {
                 mBubbleMenu.closeMenu();
                 openNewTab(true);
+                refreshAdapter();
             }
         });
         mBubbleMenu.addMenuItem(R.drawable.ic_home, new OnClickListener() {
@@ -117,6 +119,7 @@ public class NavScreen extends RelativeLayout
             public void onClick(View view) {
                 mBubbleMenu.closeMenu();
                 gotoHomePage();
+                refreshAdapter();
             }
         });
     }
