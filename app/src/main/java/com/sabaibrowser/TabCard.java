@@ -131,8 +131,6 @@ public class TabCard extends ViewGroup {
 
     public void setTitleDown(boolean down) {
         mTitleDown = down;
-        // XXX is this necessary?
-        invalidate();
     }
 
     public boolean isTitleDown() {

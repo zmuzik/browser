@@ -129,14 +129,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
             View child = getChildAt(i);
 
             // correct placement of title
-            boolean oldDown = ((TabCard) child).isTitleDown();
-            boolean newDown = i > mSelectedPos;
-            if (oldDown != newDown) {
-                ((TabCard) child).setTitleDown(newDown);
-            }
-
-            // if not needed to invalidate, could be probably replaced by
-            ((TabCard) child).setTitleDown(i > mSelectedPos);
+            ((TabCard) child).setTitleDown(i > getFrontPosition());
 
             // position
             ScreenPosition coords = getPosition(i, count, getSelectedPosition());
