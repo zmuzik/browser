@@ -111,12 +111,12 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     @Override
     protected int getChildDrawingOrder(int count, int i) {
         // ensure proper visibility of tabs according to the perspective
-        int selected = (int) getSelectedPosition();
+        int frontPosition = getFrontPosition();
         int result = count - 1; // last element for the active tab;
-        if (i < selected) {
+        if (i < frontPosition) {
             result = i;
-        } else if (i > selected) {
-            result = count - 1 + selected - i ;
+        } else if (i > frontPosition) {
+            result = count - 1 + frontPosition - i;
         }
         return result;
     }
@@ -129,6 +129,13 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
             View child = getChildAt(i);
 
             // correct placement of title
+            boolean oldDown = ((TabCard) child).isTitleDown();
+            boolean newDown = i > mSelectedPos;
+            if (oldDown != newDown) {
+                ((TabCard) child).setTitleDown(newDown);
+            }
+
+            // if not needed to invalidate, could be probably replaced by
             ((TabCard) child).setTitleDown(i > mSelectedPos);
 
             // position
@@ -145,6 +152,19 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         scrollFactor = 0;
     }
 
+    public int getSelectedPosition() {
+        return mSelectedPos;
+    }
+
+    public int getFrontPosition() {
+        int result = mSelectedPos;
+        result -= (scrollFactor + gestureScrollFactor) / mStep;
+        result = Math.min(result, getChildCount());
+        result = Math.max(result, 0);
+
+        return result;
+    }
+
     public void setSelectedItem(View v) {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
@@ -153,10 +173,6 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
                 mSelectedPos = i;
             }
         }
-    }
-
-    public double getSelectedPosition() {
-        return mSelectedPos;
     }
 
     public View getSelectedItem() {

@@ -7,4 +7,7 @@ elif [ $1 == "e" ]; then
   adb -e uninstall $APP_ID
 elif [ $1 == "d" ]; then
   adb -d uninstall $APP_ID
+elif [ $1 == "a" ]; then
+  adb -e uninstall $APP_ID
+  adb -d uninstall $APP_ID
 fi
