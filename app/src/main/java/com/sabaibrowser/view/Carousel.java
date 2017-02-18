@@ -136,6 +136,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
 
     public void setSelectedPosition(int position) {
         mSelectedPos = position;
+        scrollFactor = 0;
     }
 
     public void setSelectedItem(View v) {
