@@ -43,6 +43,8 @@ public class TabCard extends ViewGroup {
 
         mTitle = new TextView(getContext());
         mTitle.setHeight(mTitleHeight);
+        mTitle.setPadding(0,0,0,0);
+        mTitle.setIncludeFontPadding(false);
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.tab_thumbnail_title_text_size));
         //XXX mTitle set width wrap content

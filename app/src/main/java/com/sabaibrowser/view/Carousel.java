@@ -28,6 +28,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     private int mSlop;
     private int mMinFlingVelocity;
     private int mMaxFlingVelocity;
+    private int mPadding;
 
     public Carousel(Context context) {
         super(context);
@@ -40,6 +41,7 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
     }
 
     void init() {
+        mPadding = (int) getResources().getDimension(R.dimen.tab_carousel_padding);
         mTabCardSize = Tab.getTabCardThumbWidth(getContext())
                 + 2 * (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
 
@@ -78,12 +80,15 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
 
-        final int CENTER_X = dpToPx(0);
-        final int CENTER_Y = dpToPx(360);
-        final int RADIUS = dpToPx(240);
+        final int RADIUS_X = getMeasuredWidth() - 2 * mPadding - mTabCardSize;
+        final int RADIUS_Y = getMeasuredHeight() / 2 - mPadding - mTabCardSize / 2;
+        final int CENTER_X = mPadding + mTabCardSize / 2;
+        final int CENTER_Y = getMeasuredHeight() / 2;
         final double FI_MINUS_ONE = 0d;
         final double FI_ZERO = Math.PI * 3 / 4;
         final double FI_PLUS_ONE = Math.PI;
+        final double ratio = (double) (getMeasuredHeight())
+                / (getMeasuredWidth());
 
         double fi = FI_ZERO;
         if (percentage > 0) {
@@ -91,8 +96,8 @@ public class Carousel extends ViewGroup implements View.OnTouchListener {
         } else if (percentage < 0) {
             fi = FI_ZERO + percentage * (FI_ZERO - FI_MINUS_ONE);
         }
-        int x = CENTER_X + (int) (Math.sin(fi) * RADIUS);
-        int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS);
+        int x = CENTER_X + (int) (Math.sin(fi) * RADIUS_X);
+        int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS_Y);
 
         return new ScreenPosition(x, y);
     }
