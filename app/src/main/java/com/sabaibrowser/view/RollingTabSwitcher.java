@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.sabaibrowser.TabCard;
+
 public class RollingTabSwitcher extends TabSwitcher implements View.OnTouchListener {
 
     public RollingTabSwitcher(Context context) {
@@ -38,5 +40,24 @@ public class RollingTabSwitcher extends TabSwitcher implements View.OnTouchListe
         int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS_Y);
 
         return new ScreenPosition(x, y);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = getChildAt(i);
+
+            // correct placement of title
+            ((TabCard) child).setTitleDown(i > getFrontPosition());
+
+            // position
+            ScreenPosition coords = getScreenPosition(i, count, getSelectedPosition());
+            int perspective = (int) (Math.abs(coords.y + mTabCardSize / 2 - (getMeasuredHeight() / 2)) * .2d);
+            child.layout(coords.x + perspective,
+                    coords.y + perspective,
+                    coords.x - perspective + child.getMeasuredWidth(),
+                    coords.y - perspective + child.getMeasuredHeight());
+        }
     }
 }
