@@ -103,7 +103,7 @@ public class Tab implements PictureListener {
     // of the browser.
     private static final String CONSOLE_LOGTAG = "browser";
 
-    final static double THUMB_SCREEN_PERCENTAGE = .6d;
+    final static double THUMB_SCREEN_PERCENTAGE = .8d;
 
     private static final int MSG_CAPTURE = 42;
     private static final int CAPTURE_DELAY = 100;

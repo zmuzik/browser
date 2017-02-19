@@ -19,8 +19,8 @@
     android:layout_height="match_parent"
     android:background="@color/dark_gray">
 
-    <com.sabaibrowser.view.Carousel
-        android:id="@+id/carousel"
+    <com.sabaibrowser.view.RollingTabSwitcher
+        android:id="@+id/tab_switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

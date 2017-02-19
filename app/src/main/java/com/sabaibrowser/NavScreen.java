@@ -28,6 +28,8 @@ import android.widget.RelativeLayout;
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
 import com.sabaibrowser.view.BubbleMenu;
 import com.sabaibrowser.view.Carousel;
+import com.sabaibrowser.view.RollingTabSwitcher;
+import com.sabaibrowser.view.TabSwitcher;
 
 import java.util.HashMap;
 
@@ -39,7 +41,7 @@ public class NavScreen extends RelativeLayout
     Activity mActivity;
 
     BubbleMenu mBubbleMenu;
-    Carousel mCarousel;
+    TabSwitcher mTabSwitcher;
 
     int mOrientation;
     HashMap<Tab, View> mTabViews;
@@ -69,7 +71,7 @@ public class NavScreen extends RelativeLayout
 
     public void refreshAdapter() {
         TabControl tc = mUiController.getTabControl();
-        mCarousel.removeAllViews();
+        mTabSwitcher.removeAllViews();
         for (int i = 0; i < tc.getTabCount(); i++) {
             final int position = i;
             TabCard card = new TabCard(getContext());
@@ -84,16 +86,16 @@ public class NavScreen extends RelativeLayout
                 }
             });
 
-            mCarousel.addView(card);
+            mTabSwitcher.addView(card);
         }
-        mCarousel.setSelectedPosition(tc.getCurrentPosition());
+        mTabSwitcher.setSelectedPosition(tc.getCurrentPosition());
     }
 
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.nav_screen, this);
         setContentDescription(getContext().getResources().getString(
                 R.string.accessibility_transition_navscreen));
-        mCarousel = (Carousel) findViewById(R.id.carousel);
+        mTabSwitcher = (RollingTabSwitcher) findViewById(R.id.tab_switcher);
         TabControl tc = mUiController.getTabControl();
         mTabViews = new HashMap<Tab, View>(tc.getTabCount());
 
