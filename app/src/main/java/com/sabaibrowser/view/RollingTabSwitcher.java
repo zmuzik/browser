@@ -83,6 +83,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int count = getChildCount();
+        final int cornerOffset = -mTabCardSize / 2;
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
 
@@ -91,29 +92,27 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
 
             // position
             ScreenPosition coords = getScreenPosition(i, count, getSelectedPosition());
-            int perspective = (int) (Math.abs(coords.y + mTabCardSize / 2 - (getMeasuredHeight() / 2)) * .2d);
-            child.layout(coords.x + perspective,
-                    coords.y + perspective,
-                    coords.x - perspective + child.getMeasuredWidth(),
-                    coords.y - perspective + child.getMeasuredHeight());
+            //int perspective = (int) (Math.abs(coords.y + mTabCardSize / 2 - (getMeasuredHeight() / 2)) * .2d);
+            int perspective = 0;
+            child.layout(coords.x + cornerOffset + perspective,
+                    coords.y + cornerOffset + perspective,
+                    coords.x + cornerOffset - perspective + child.getMeasuredWidth(),
+                    coords.y + cornerOffset - perspective + child.getMeasuredHeight());
         }
     }
 
     /**
-     * return position of the upper left corner of the tab card
+     * return position of the center of the tab card
      * selected shoule be between 0 and count
      */
     ScreenPosition getScreenPosition(int position, int count, double selected) {
         selected = Math.min(selected, count);
         selected = Math.max(selected, 0);
 
-        // values to be added to get the coords of the upper left corner from the center coords
-        int cornerOffset = -mTabCardSize / 2;
-
         double arc = 1d / count * (position - selected) + 1d / count * (((double) getTotalScrollFactor()) / mStep);
 
         ScreenPosition center = getArcPosition(arc);
-        return new ScreenPosition(center.x + cornerOffset, center.y + cornerOffset);
+        return new ScreenPosition(center.x, center.y);
     }
 
     public int dpToPx(int dp) {
