@@ -27,9 +27,7 @@ import android.widget.RelativeLayout;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
 import com.sabaibrowser.view.BubbleMenu;
-import com.sabaibrowser.view.Carousel;
 import com.sabaibrowser.view.RollingTabSwitcher;
-import com.sabaibrowser.view.TabSwitcher;
 
 import java.util.HashMap;
 
@@ -41,7 +39,7 @@ public class NavScreen extends RelativeLayout
     Activity mActivity;
 
     BubbleMenu mBubbleMenu;
-    TabSwitcher mTabSwitcher;
+    RollingTabSwitcher mTabSwitcher;
 
     int mOrientation;
     HashMap<Tab, View> mTabViews;
