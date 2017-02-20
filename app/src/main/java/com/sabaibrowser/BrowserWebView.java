@@ -22,11 +22,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import java.util.Map;
 
 /**
  * Manage WebView scroll events
@@ -44,42 +41,16 @@ public class BrowserWebView extends WebView {
     private WebViewClient mWebViewClient;
     private boolean mPrivateBrowsing = false;
 
-    /**
-     * @param context
-     * @param attrs
-     * @param defStyle
-     * @param javascriptInterfaces
-     */
-    public BrowserWebView(Context context, AttributeSet attrs, int defStyle,
-            Map<String, Object> javascriptInterfaces, boolean privateBrowsing) {
-        super(context, attrs, defStyle);
-        // WebView doesn't support it, but save it here for internal use
-        mPrivateBrowsing = privateBrowsing;
-    }
-
-    /**
-     * @param context
-     * @param attrs
-     * @param defStyle
-     */
     public BrowserWebView(
             Context context, AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         super(context, attrs, defStyle);
-        // WebView doesn't support it, but save it here for internal use
         mPrivateBrowsing = privateBrowsing;
     }
 
-    /**
-     * @param context
-     * @param attrs
-     */
     public BrowserWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    /**
-     * @param context
-     */
     public BrowserWebView(Context context) {
         super(context);
     }
@@ -91,7 +62,7 @@ public class BrowserWebView extends WebView {
     }
 
     public WebChromeClient getWebChromeClient() {
-      return mWebChromeClient;
+        return mWebChromeClient;
     }
 
     @Override
@@ -101,7 +72,7 @@ public class BrowserWebView extends WebView {
     }
 
     public WebViewClient getWebViewClient() {
-      return mWebViewClient;
+        return mWebViewClient;
     }
 
     public void setTitleBar(TitleBar title) {
@@ -130,7 +101,6 @@ public class BrowserWebView extends WebView {
     }
 
     public void drawContent(Canvas c) {
-        //onDraw(c);
         draw(c);
     }
 
@@ -176,9 +146,7 @@ public class BrowserWebView extends WebView {
             this.getSettings().setDatabaseEnabled(false);
             this.getSettings().setGeolocationEnabled(false);
             this.getSettings().setSaveFormData(false);
-            this.getSettings().setSavePassword(false);
             this.getSettings().setSupportMultipleWindows(false);
-            this.getSettings().setAppCacheMaxSize(0);
             this.clearHistory();
         }
     }
