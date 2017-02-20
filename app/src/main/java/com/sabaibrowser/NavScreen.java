@@ -64,6 +64,7 @@ public class NavScreen extends RelativeLayout
             removeAllViews();
             mOrientation = newconfig.orientation;
             init();
+            refreshAdapter();
         }
     }
 
