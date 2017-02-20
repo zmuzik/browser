@@ -2,7 +2,6 @@ package com.sabaibrowser;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,18 @@ public class TabCard extends ViewGroup {
     private int mThumbnailHeight;
     private int mTitleHeight;
     private boolean mTitleDown = false;
+    private ImageView mCloseBtn;
+    private NavScreen mNavScreen;
+    private Tab mTab;
 
     public TabCard(Context context) {
         super(context);
         init();
     }
 
-    public TabCard(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public TabCard(Context context, NavScreen navScreen) {
+        super(context);
+        mNavScreen = navScreen;
         init();
     }
 
@@ -43,7 +46,7 @@ public class TabCard extends ViewGroup {
 
         mTitle = new TextView(getContext());
         mTitle.setHeight(mTitleHeight);
-        mTitle.setPadding(0,0,0,0);
+        mTitle.setPadding(0, 0, 0, 0);
         mTitle.setIncludeFontPadding(false);
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.tab_thumbnail_title_text_size));
@@ -54,6 +57,19 @@ public class TabCard extends ViewGroup {
         mThumbnail.setMinimumWidth(mThumbnailWidth);
         mThumbnail.setMinimumHeight(mThumbnailHeight);
         addView(mThumbnail);
+
+        mCloseBtn = new ImageView(getContext());
+        mCloseBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_window));
+        mCloseBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mNavScreen != null) {
+                    mNavScreen.closeTab(mTab);
+                    mNavScreen.refreshAdapter();
+                }
+            }
+        });
+        addView(mCloseBtn);
     }
 
     @Override
@@ -91,6 +107,9 @@ public class TabCard extends ViewGroup {
                 } else if (child == mTitle) {
                     x = mPadding;
                     y = mPadding + mThumbnailHeight;
+                } else if (child == mCloseBtn) {
+                    x = mThumbnailWidth + mPadding - dpToPx(24);
+                    y = mThumbnailWidth + mPadding - dpToPx(24);
                 }
             } else {
                 if (child == mThumbnail) {
@@ -99,6 +118,9 @@ public class TabCard extends ViewGroup {
                 } else if (child == mTitle) {
                     x = mPadding;
                     y = mPadding;
+                } else if (child == mCloseBtn) {
+                    x = mThumbnailWidth + mPadding - dpToPx(24);
+                    y = 0;
                 }
             }
             child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
@@ -111,6 +133,7 @@ public class TabCard extends ViewGroup {
 
     public void setTab(Tab tab) {
         if (tab == null) return;
+        mTab = tab;
         mTitle.setText((tab.getTitle() != null) ? tab.getTitle() : tab.getUrl());
         boolean isPrivate = tab.isPrivateBrowsingEnabled();
 

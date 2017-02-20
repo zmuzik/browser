@@ -72,7 +72,7 @@ public class NavScreen extends RelativeLayout
         mTabSwitcher.removeAllViews();
         for (int i = 0; i < tc.getTabCount(); i++) {
             final int position = i;
-            TabCard card = new TabCard(getContext());
+            TabCard card = new TabCard(getContext(), this);
             final Tab tab = tc.getTab(i);
             card.setTab(tab);
             card.setOnClickListener(new OnClickListener() {
@@ -120,7 +120,7 @@ public class NavScreen extends RelativeLayout
     public void onClick(View v) {
     }
 
-    private void onCloseTab(Tab tab) {
+    public void closeTab(Tab tab) {
         if (tab != null) {
             if (tab == mUiController.getCurrentTab()) {
                 mUiController.closeCurrentTab();
@@ -129,6 +129,7 @@ public class NavScreen extends RelativeLayout
             }
             mTabViews.remove(tab);
         }
+        refreshAdapter();
     }
 
     private void openNewTab(boolean incognito) {
