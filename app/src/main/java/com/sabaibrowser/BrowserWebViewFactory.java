@@ -30,18 +30,12 @@ public class BrowserWebViewFactory implements WebViewFactory {
 
     private final Context mContext;
 
-    public BrowserWebViewFactory(Context context) {
+    BrowserWebViewFactory(Context context) {
         mContext = context;
     }
 
-    protected WebView instantiateWebView(AttributeSet attrs, int defStyle,
-            boolean privateBrowsing) {
+    private WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         return new BrowserWebView(mContext, attrs, defStyle, privateBrowsing);
-    }
-
-    @Override
-    public WebView createSubWebView(boolean privateBrowsing) {
-        return createWebView(privateBrowsing);
     }
 
     @Override
@@ -55,19 +49,11 @@ public class BrowserWebViewFactory implements WebViewFactory {
     protected void initWebViewSettings(WebView w) {
         w.setScrollbarFadingEnabled(true);
         w.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-        w.setMapTrackballToArrowKeys(false); // use trackball directly
-        // Enable the built-in zoom
         w.getSettings().setBuiltInZoomControls(true);
-        final PackageManager pm = mContext.getPackageManager();
-        boolean supportsMultiTouch =
-                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH)
-                || pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
-        w.getSettings().setDisplayZoomControls(!supportsMultiTouch);
+        w.getSettings().setDisplayZoomControls(false);
 
-        // Add this WebView to the settings observer list and update the
-        // settings
-        final BrowserSettings s = BrowserSettings.getInstance();
-        s.startManagingSettings(w.getSettings());
+        // Add this WebView to the settings observer list and update the settings
+        BrowserSettings.getInstance().startManagingSettings(w.getSettings());
 
         if (Build.VERSION .SDK_INT >= 21) {
             CookieManager cookieManager = CookieManager.getInstance();
