@@ -1349,6 +1349,14 @@ public class Tab implements PictureListener {
     }
 
     /**
+     * hackish method to fix a problem with incorrectly displayed incognito tabs in the
+     * tab switcher
+     */
+    public void setPrivateBrowsingEnabled(boolean isPrivate) {
+        mCurrentState.mIncognito = isPrivate;
+    }
+
+    /**
      * @return The geolocation permissions prompt for this tab.
      */
     GeolocationPermissionsPrompt getGeolocationPermissionsPrompt() {

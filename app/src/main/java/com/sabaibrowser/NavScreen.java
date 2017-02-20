@@ -133,10 +133,11 @@ public class NavScreen extends RelativeLayout
     }
 
     private void openNewTab(boolean incognito) {
-        // need to call openTab explicitely with setactive false
         final Tab tab = incognito ?
                 mUiController.openIncognitoTab() :
                 mUiController.openTabToHomePage();
+        // very hackish fix, the wole Tab logic is weird and needs to be rewriten...
+        tab.setPrivateBrowsingEnabled(incognito);
     }
 
     private void gotoHomePage() {
