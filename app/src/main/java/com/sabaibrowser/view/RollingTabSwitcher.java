@@ -39,6 +39,21 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         init();
     }
 
+    void init() {
+        mPadding = (int) getResources().getDimension(R.dimen.tab_carousel_padding);
+        mTabCardSize = Tab.getTabCardThumbWidth(getContext())
+                + 2 * (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
+
+        ViewConfiguration vc = ViewConfiguration.get(getContext());
+        mSlop = vc.getScaledTouchSlop();
+        mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
+        mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
+
+        mStep = dpToPx(64);
+        setChildrenDrawingOrderEnabled(true);
+        setOnTouchListener(this);
+    }
+
     ScreenPosition getArcPosition(double percentage) {
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
@@ -82,21 +97,6 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
                     coords.x - perspective + child.getMeasuredWidth(),
                     coords.y - perspective + child.getMeasuredHeight());
         }
-    }
-
-    void init() {
-        mPadding = (int) getResources().getDimension(R.dimen.tab_carousel_padding);
-        mTabCardSize = Tab.getTabCardThumbWidth(getContext())
-                + 2 * (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
-
-        ViewConfiguration vc = ViewConfiguration.get(getContext());
-        mSlop = vc.getScaledTouchSlop();
-        mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
-        mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
-
-        mStep = dpToPx(64);
-        setChildrenDrawingOrderEnabled(true);
-        setOnTouchListener(this);
     }
 
     /**
@@ -167,24 +167,6 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         return result;
     }
 
-    public void setSelectedItem(View v) {
-        int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            View child = getChildAt(i);
-            if (child == v && child != null) {
-                mSelectedPos = i;
-            }
-        }
-    }
-
-    public View getSelectedItem() {
-        try {
-            return getChildAt(mSelectedPos);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent me) {
         switch (me.getAction()) {
@@ -210,11 +192,6 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     @Override
     public boolean onTouch(View view, MotionEvent me) {
         switch (me.getAction()) {
-            //handled in onInterceptTouchEvent
-//            case MotionEvent.ACTION_DOWN:
-//                gestureStartX = (int) me.getX();
-//                gestureStartY = (int) me.getY();
-//                break;
             case MotionEvent.ACTION_MOVE:
                 gestureScrollFactor = (int) (me.getY() - gestureStartY);
                 requestLayout();
