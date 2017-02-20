@@ -1,6 +1,7 @@
 package com.sabaibrowser.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     int mMinFlingVelocity;
     int mMaxFlingVelocity;
     int mPadding;
+    boolean isPortrait = true;
 
     public RollingTabSwitcher(Context context) {
         super(context);
@@ -40,6 +42,9 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     }
 
     void init() {
+        int orientation = getResources().getConfiguration().orientation;
+        isPortrait = (orientation != Configuration.ORIENTATION_LANDSCAPE);
+
         mPadding = (int) getResources().getDimension(R.dimen.tab_carousel_padding);
         mTabCardSize = Tab.getTabCardThumbWidth(getContext())
                 + 2 * (int) getResources().getDimension(R.dimen.tab_thumbnail_card_padding);
@@ -58,24 +63,31 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
 
-        //final int RADIUS_X = getMeasuredWidth() - 2 * mPadding - mTabCardSize;
+        final int RADIUS_X = getMeasuredWidth() / 2 - mPadding - mTabCardSize / 2;
         final int RADIUS_Y = getMeasuredHeight() / 2 - mPadding - mTabCardSize / 2;
         final int CENTER_X = getMeasuredWidth() / 2;
         final int CENTER_Y = getMeasuredHeight() / 2;
         final double FI_MINUS_ONE = 0d;
         final double FI_ZERO = Math.PI / 2;
         final double FI_PLUS_ONE = Math.PI;
-        final double ratio = (double) (getMeasuredHeight())
-                / (getMeasuredWidth());
 
+        int x = 0;
+        int y = 0;
         double fi = FI_ZERO;
+
         if (percentage > 0) {
             fi = FI_ZERO + percentage * (FI_PLUS_ONE - FI_ZERO);
         } else if (percentage < 0) {
             fi = FI_ZERO + percentage * (FI_ZERO - FI_MINUS_ONE);
         }
-        int x = CENTER_X;
-        int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS_Y);
+
+        if (isPortrait) {
+            x = CENTER_X;
+            y = CENTER_Y - (int) (Math.cos(fi) * RADIUS_Y);
+        } else {
+            x = CENTER_X - (int) (Math.cos(fi) * RADIUS_X);
+            y = CENTER_Y;
+        }
 
         return new ScreenPosition(x, y);
     }
@@ -192,7 +204,11 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     public boolean onTouch(View view, MotionEvent me) {
         switch (me.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                gestureScrollFactor = (int) (me.getY() - gestureStartY);
+                if (isPortrait) {
+                    gestureScrollFactor = (int) (me.getY() - gestureStartY);
+                } else {
+                    gestureScrollFactor = (int) (me.getX() - gestureStartX);
+                }
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
