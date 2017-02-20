@@ -110,7 +110,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         // values to be added to get the coords of the upper left corner from the center coords
         int cornerOffset = -mTabCardSize / 2;
 
-        double arc = 1d / count * (position - selected) + 1d / count * (((double) scrollFactor + gestureScrollFactor) / mStep);
+        double arc = 1d / count * (position - selected) + 1d / count * (((double) getTotalScrollFactor()) / mStep);
 
         ScreenPosition center = getArcPosition(arc);
         return new ScreenPosition(center.x + cornerOffset, center.y + cornerOffset);
@@ -160,7 +160,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
 
     public int getFrontPosition() {
         int result = mSelectedPos;
-        result -= (scrollFactor + gestureScrollFactor) / mStep;
+        result -= getTotalScrollFactor() / mStep;
         result = Math.min(result, getChildCount());
         result = Math.max(result, 0);
 
@@ -221,11 +221,15 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                scrollFactor = scrollFactor + gestureScrollFactor;
+                scrollFactor = getTotalScrollFactor();
                 gestureScrollFactor = 0;
                 break;
         }
         return true;
+    }
+
+    int getTotalScrollFactor() {
+        return scrollFactor + gestureScrollFactor;
     }
 
     class ScreenPosition {
