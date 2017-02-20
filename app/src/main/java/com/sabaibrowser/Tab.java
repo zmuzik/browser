@@ -1345,11 +1345,7 @@ public class Tab implements PictureListener {
      * @return True if private browsing is enabled.
      */
     boolean isPrivateBrowsingEnabled() {
-        if (mMainView != null && mMainView instanceof BrowserWebView) {
-            return mMainView.isPrivateBrowsingEnabled();
-        } else {
-            return mCurrentState.mIncognito;
-        }
+        return mCurrentState.mIncognito;
     }
 
     /**
