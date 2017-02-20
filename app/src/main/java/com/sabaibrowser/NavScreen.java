@@ -135,13 +135,7 @@ public class NavScreen extends RelativeLayout
         // need to call openTab explicitely with setactive false
         final Tab tab = incognito ?
                 mUiController.openIncognitoTab() :
-                mUiController.openTab(BrowserSettings.getInstance().getHomePage(),
-                        false, false, false);
-        if (tab != null) {
-            mUiController.setBlockEvents(true);
-            final int tix = mUi.mTabControl.getTabPosition(tab);
-            mUiController.setBlockEvents(false);
-        }
+                mUiController.openTabToHomePage();
     }
 
     private void gotoHomePage() {
