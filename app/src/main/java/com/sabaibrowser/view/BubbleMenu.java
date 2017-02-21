@@ -6,8 +6,10 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.sabaibrowser.R;
+import com.sabaibrowser.Utils;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,8 @@ public class BubbleMenu extends ViewGroup {
     protected int mainFabCenterY;
     protected int baseBubbleCenterX;
     protected int baseBubbleCenterY;
+    private ImageView upperArrow;
+    private ImageView lowerArrow;
 
     public BubbleMenu(Context context) {
         super(context);
@@ -63,14 +67,22 @@ public class BubbleMenu extends ViewGroup {
             }
         });
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isOpen) {
-                    toggleOpenMenu();
-                }
-            }
-        });
+        upperArrow = new ImageView(getContext());
+        upperArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_right));
+        addView(upperArrow);
+
+        lowerArrow = new ImageView(getContext());
+        lowerArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
+        addView(lowerArrow);
+
+//        setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (isOpen) {
+//                    toggleOpenMenu();
+//                }
+//            }
+//        });
     }
 
     private void toggleOpenMenu() {
@@ -129,6 +141,8 @@ public class BubbleMenu extends ViewGroup {
             final double elipsisParam = 1.8d;
             final int bubbleDistance = (int) (1.25f * bubbleSize);
 
+            boolean upperArrowVisible = false;
+            boolean lowerArrowVisible = false;
             int x = baseBubbleCenterX;
             int y = baseBubbleCenterY;
             int oldX = baseBubbleCenterX;
@@ -137,8 +151,11 @@ public class BubbleMenu extends ViewGroup {
             double fi = 0d;
 
             for (int i = 0; i < count; i++) {
-                // stop when we reach the peak of the curve, don't draw any more elements
-                if (y > oldY) break;
+                // stop when we reach the peak of the curve, don't draw any more elements, show the arrow
+                if (y > oldY) {
+                    upperArrowVisible = true;
+                    break;
+                }
                 View child = menuItems.get(i);
                 child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
                 oldX = x;
@@ -148,6 +165,26 @@ public class BubbleMenu extends ViewGroup {
                     x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
                     y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
                 } while (distance(x, y, oldX, oldY) < bubbleDistance);
+            }
+
+            if (upperArrowVisible) {
+                int size = Utils.dpToPx(getContext(), 24);
+                int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
+                int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
+                upperArrow.layout(arrowX - size / 2,
+                        arrowY - size / 2,
+                        arrowX + size / 2,
+                        arrowY + size / 2);
+            }
+
+            if (lowerArrowVisible) {
+                int size = Utils.dpToPx(getContext(), 24);
+                int arrowX = baseBubbleCenterX;
+                int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
+                lowerArrow.layout(arrowX - size / 2,
+                        arrowY - size / 2,
+                        arrowX + size / 2,
+                        arrowY + size / 2);
             }
 
         } else {
