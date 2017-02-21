@@ -163,8 +163,7 @@ public class BubbleMenu extends ViewGroup {
                     break;
                 }
                 View child = menuItems.get(i);
-                child.layout(coords.x - bubbleSize / 2, coords.y - bubbleSize / 2,
-                        coords.x + bubbleSize / 2, coords.y + bubbleSize / 2);
+                placeView(child, coords.x, coords.y, bubbleSize, bubbleSize);
                 oldCoords = coords;
                 do {
                     fi = fi + fiStep;
@@ -185,25 +184,25 @@ public class BubbleMenu extends ViewGroup {
     }
 
     void placeArrows() {
+        if (!upperArrowVisible && !lowerArrowVisible) return;
+        int size = Utils.dpToPx(getContext(), 24);
         if (upperArrowVisible) {
-            int size = Utils.dpToPx(getContext(), 24);
             int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
             int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
-            upperArrow.layout(arrowX - size / 2,
-                    arrowY - size / 2,
-                    arrowX + size / 2,
-                    arrowY + size / 2);
+            placeView(upperArrow, arrowX, arrowY, size, size);
         }
-
         if (lowerArrowVisible) {
-            int size = Utils.dpToPx(getContext(), 24);
             int arrowX = baseBubbleCenterX;
             int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
-            lowerArrow.layout(arrowX - size / 2,
-                    arrowY - size / 2,
-                    arrowX + size / 2,
-                    arrowY + size / 2);
+            placeView(lowerArrow, arrowX, arrowY, size, size);
         }
+    }
+
+    void placeView(View view, int centerX, int centerY, int width, int height) {
+        view.layout(centerX - width / 2,
+                centerY - height / 2,
+                centerX + width / 2,
+                centerY + height /2);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
