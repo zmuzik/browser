@@ -29,12 +29,18 @@ public class BubbleMenu extends ViewGroup {
     protected int paddingHoriz;
     protected int paddingVert;
 
+    protected double fiStep;
+    protected double elipsisParam;
+
     protected int mainFabCenterX;
     protected int mainFabCenterY;
     protected int baseBubbleCenterX;
     protected int baseBubbleCenterY;
     private ImageView upperArrow;
     private ImageView lowerArrow;
+    private boolean upperArrowVisible = false;
+    private boolean lowerArrowVisible = false;
+
 
     public BubbleMenu(Context context) {
         super(context);
@@ -57,6 +63,10 @@ public class BubbleMenu extends ViewGroup {
         paddingHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_horiz);
         paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
         fabDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance);
+
+        fiStep = Math.PI / 180;
+        elipsisParam = 1.8d;
+        bubbleDistance = (int) (1.25f * bubbleSize);
 
         LayoutInflater.from(getContext()).inflate(R.layout.bubble_menu, this);
         mainFab = (Bubble) findViewById(R.id.main_fab);
@@ -137,12 +147,6 @@ public class BubbleMenu extends ViewGroup {
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
 
-            final double fiStep = Math.PI / 180;
-            final double elipsisParam = 1.8d;
-            final int bubbleDistance = (int) (1.25f * bubbleSize);
-
-            boolean upperArrowVisible = false;
-            boolean lowerArrowVisible = false;
             int x = baseBubbleCenterX;
             int y = baseBubbleCenterY;
             int oldX = baseBubbleCenterX;
@@ -167,28 +171,31 @@ public class BubbleMenu extends ViewGroup {
                 } while (distance(x, y, oldX, oldY) < bubbleDistance);
             }
 
-            if (upperArrowVisible) {
-                int size = Utils.dpToPx(getContext(), 24);
-                int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
-                int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
-                upperArrow.layout(arrowX - size / 2,
-                        arrowY - size / 2,
-                        arrowX + size / 2,
-                        arrowY + size / 2);
-            }
-
-            if (lowerArrowVisible) {
-                int size = Utils.dpToPx(getContext(), 24);
-                int arrowX = baseBubbleCenterX;
-                int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
-                lowerArrow.layout(arrowX - size / 2,
-                        arrowY - size / 2,
-                        arrowX + size / 2,
-                        arrowY + size / 2);
-            }
-
+            placeArrows();
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
+        }
+    }
+
+    void placeArrows() {
+        if (upperArrowVisible) {
+            int size = Utils.dpToPx(getContext(), 24);
+            int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
+            int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
+            upperArrow.layout(arrowX - size / 2,
+                    arrowY - size / 2,
+                    arrowX + size / 2,
+                    arrowY + size / 2);
+        }
+
+        if (lowerArrowVisible) {
+            int size = Utils.dpToPx(getContext(), 24);
+            int arrowX = baseBubbleCenterX;
+            int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
+            lowerArrow.layout(arrowX - size / 2,
+                    arrowY - size / 2,
+                    arrowX + size / 2,
+                    arrowY + size / 2);
         }
     }
 
