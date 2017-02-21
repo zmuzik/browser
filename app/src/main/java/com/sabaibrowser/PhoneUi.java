@@ -94,6 +94,18 @@ public class PhoneUi extends BaseUi {
                 mUiController.openPreferences();
             }
         });
+        mBubbleMenu.addMenuItem(R.drawable.ic_home, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_search, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
     }
 
     @Override

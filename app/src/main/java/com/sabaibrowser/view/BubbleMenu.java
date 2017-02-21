@@ -21,6 +21,7 @@ public class BubbleMenu extends ViewGroup {
     protected int componentWidthPx;
     protected int componentHeightPx;
     protected int fabDistance;
+    protected int bubbleDistance;
 
     protected int bubbleSize;
     protected int paddingHoriz;
@@ -124,32 +125,39 @@ public class BubbleMenu extends ViewGroup {
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
 
-            // menu item bubbles
-            double fi = 0d, fiStep = 0d;
-            if (count == 1) {
-                fi = Math.PI / 4;
-            } else if (count == 2) {
-                fi = Math.PI / 8;
-                fiStep = Math.PI / 4;
-            } else if (count == 3) {
-                fi = Math.PI / 12;
-                fiStep = Math.PI / 6;
-            } else {
-                fiStep = Math.PI / 2 / (count - 1);
-            }
+            final double fiStep = Math.PI / 180;
+            final double elipsisParam = 1.8d;
+            final int bubbleDistance = (int) (1.25f * bubbleSize);
 
-            int x = 0, y = 0;
+            int x = baseBubbleCenterX;
+            int y = baseBubbleCenterY;
+            int oldX = baseBubbleCenterX;
+            int oldY = baseBubbleCenterY;
+
+            double fi = 0d;
 
             for (int i = 0; i < count; i++) {
+                // stop when we reach the peak of the curve, don't draw any more elements
+                if (y > oldY) break;
                 View child = menuItems.get(i);
-                x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
-                y = baseBubbleCenterY - (int) (fabDistance * Math.sin(fi));
                 child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
-                fi += fiStep;
+                oldX = x;
+                oldY = y;
+                do {
+                    fi = fi + fiStep;
+                    x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
+                    y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
+                } while (distance(x, y, oldX, oldY) < bubbleDistance);
             }
+
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
+    }
+
+    int distance(int x1, int y1, int x2, int y2) {
+        return (int) Math.sqrt(Math.pow((double) x1 - (double) x2, 2)
+                + Math.pow((double) y1 - (double) y2, 2));
     }
 
     public void addMenuItem(int icon, OnClickListener listener) {
