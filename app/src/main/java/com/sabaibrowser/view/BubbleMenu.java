@@ -3,7 +3,6 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -180,7 +179,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
                     break;
                 }
                 View child = menuItems.get(i);
-                placeView(child, coords.x, coords.y, bubbleSize, bubbleSize);
+                placeView(child, coords.x, coords.y, bubbleSize);
                 oldCoords = coords;
                 do {
                     fi = fi + fiStep;
@@ -206,12 +205,12 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         if (upperArrowVisible) {
             int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
             int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
-            placeView(upperArrow, arrowX, arrowY, size, size);
+            placeView(upperArrow, arrowX, arrowY, size);
         }
         if (lowerArrowVisible) {
             int arrowX = baseBubbleCenterX;
             int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
-            placeView(lowerArrow, arrowX, arrowY, size, size);
+            placeView(lowerArrow, arrowX, arrowY, size);
         }
     }
 
@@ -220,6 +219,10 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
                 centerY - height / 2,
                 centerX + width / 2,
                 centerY + height / 2);
+    }
+
+    void placeView(View view, int centerX, int centerY, int size) {
+        placeView(view, centerX, centerY, size, size);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
