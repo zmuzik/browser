@@ -108,8 +108,8 @@ public class TabCard extends ViewGroup {
                     x = mPadding;
                     y = mPadding + mThumbnailHeight;
                 } else if (child == mCloseBtn) {
-                    x = mThumbnailWidth + mPadding - dpToPx(24);
-                    y = mThumbnailWidth + mPadding - dpToPx(24);
+                    x = mThumbnailWidth + mPadding - Utils.dpToPx(getContext(), 24);
+                    y = mThumbnailWidth + mPadding - Utils.dpToPx(getContext(), 24);
                 }
             } else {
                 if (child == mThumbnail) {
@@ -119,16 +119,12 @@ public class TabCard extends ViewGroup {
                     x = mPadding;
                     y = mPadding;
                 } else if (child == mCloseBtn) {
-                    x = mThumbnailWidth + mPadding - dpToPx(24);
+                    x = mThumbnailWidth + mPadding - Utils.dpToPx(getContext(), 24);
                     y = 0;
                 }
             }
             child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
         }
-    }
-
-    int dpToPx(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     public void setTab(Tab tab) {

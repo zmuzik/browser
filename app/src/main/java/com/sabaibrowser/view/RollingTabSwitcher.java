@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.sabaibrowser.R;
 import com.sabaibrowser.Tab;
 import com.sabaibrowser.TabCard;
+import com.sabaibrowser.Utils;
 
 public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListener {
 
@@ -54,7 +55,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
 
-        mStep = dpToPx(64);
+        mStep = Utils.dpToPx(getContext(), 64);
         setChildrenDrawingOrderEnabled(true);
         setOnTouchListener(this);
     }
@@ -125,10 +126,6 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
 
         ScreenPosition center = getArcPosition(arc);
         return new ScreenPosition(center.x, center.y);
-    }
-
-    public int dpToPx(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     /**
