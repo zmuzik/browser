@@ -3,8 +3,11 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -13,7 +16,7 @@ import com.sabaibrowser.Utils;
 
 import java.util.ArrayList;
 
-public class BubbleMenu extends ViewGroup {
+public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
     protected boolean isOpen = false;
     protected Bubble mainFab;
@@ -40,6 +43,14 @@ public class BubbleMenu extends ViewGroup {
     private ImageView lowerArrow;
     private boolean upperArrowVisible = false;
     private boolean lowerArrowVisible = false;
+    private int gestureStartX;
+    private int gestureStartY;
+    private boolean mIsScrolling;
+    private int mSlop;
+    private int mMinFlingVelocity;
+    private int mMaxFlingVelocity;
+    private int gestureScrollFactor;
+    private int scrollFactor;
 
 
     public BubbleMenu(Context context) {
@@ -68,6 +79,11 @@ public class BubbleMenu extends ViewGroup {
         elipsisParam = 1.8d;
         bubbleDistance = (int) (1.24f * bubbleSize);
 
+        ViewConfiguration vc = ViewConfiguration.get(getContext());
+        mSlop = vc.getScaledTouchSlop();
+        mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
+        mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
+
         LayoutInflater.from(getContext()).inflate(R.layout.bubble_menu, this);
         mainFab = (Bubble) findViewById(R.id.main_fab);
         mainFab.setOnClickListener(new OnClickListener() {
@@ -84,6 +100,8 @@ public class BubbleMenu extends ViewGroup {
         lowerArrow = new ImageView(getContext());
         lowerArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
         addView(lowerArrow);
+
+        setOnTouchListener(this);
 
 //        setOnClickListener(new OnClickListener() {
 //            @Override
@@ -153,10 +171,9 @@ public class BubbleMenu extends ViewGroup {
             double fi = 0d;
 
             for (int i = 0; i < count; i++) {
-                // stop when we reach the peak of the curve, don't draw any more elements, show the arrow
                 if (coords.y > mainFabCenterY) {
-                    lowerArrowVisible= true;
-                    break;
+                    lowerArrowVisible = true;
+                    continue;
                 }
                 if (coords.x > mainFabCenterX) {
                     upperArrowVisible = true;
@@ -202,7 +219,7 @@ public class BubbleMenu extends ViewGroup {
         view.layout(centerX - width / 2,
                 centerY - height / 2,
                 centerX + width / 2,
-                centerY + height /2);
+                centerY + height / 2);
     }
 
     int distance(int x1, int y1, int x2, int y2) {
@@ -218,5 +235,47 @@ public class BubbleMenu extends ViewGroup {
         menuItems.add(item);
         addView(item);
         item.setOnClickListener(listener);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent me) {
+        switch (me.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                gestureStartX = (int) me.getX();
+                gestureStartY = (int) me.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mIsScrolling) return true;
+                if (Math.abs(gestureStartY - me.getY()) > mSlop) {
+                    mIsScrolling = true;
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mIsScrolling = false;
+                return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent me) {
+        switch (me.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                gestureScrollFactor = (int) (me.getY() - gestureStartY);
+                requestLayout();
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                scrollFactor = getTotalScrollFactor();
+                gestureScrollFactor = 0;
+                break;
+        }
+        return true;
+    }
+
+    int getTotalScrollFactor() {
+        return scrollFactor + gestureScrollFactor;
     }
 }
