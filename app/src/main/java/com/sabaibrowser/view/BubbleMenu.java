@@ -66,7 +66,7 @@ public class BubbleMenu extends ViewGroup {
 
         fiStep = Math.PI / 180;
         elipsisParam = 1.8d;
-        bubbleDistance = (int) (1.25f * bubbleSize);
+        bubbleDistance = (int) (1.24f * bubbleSize);
 
         LayoutInflater.from(getContext()).inflate(R.layout.bubble_menu, this);
         mainFab = (Bubble) findViewById(R.id.main_fab);
@@ -147,34 +147,41 @@ public class BubbleMenu extends ViewGroup {
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
 
-            int x = baseBubbleCenterX;
-            int y = baseBubbleCenterY;
-            int oldX = baseBubbleCenterX;
-            int oldY = baseBubbleCenterY;
+            ScreenPosition oldCoords = new ScreenPosition(baseBubbleCenterX, baseBubbleCenterY);
+            ScreenPosition coords = new ScreenPosition(baseBubbleCenterX, baseBubbleCenterY);
 
             double fi = 0d;
 
             for (int i = 0; i < count; i++) {
                 // stop when we reach the peak of the curve, don't draw any more elements, show the arrow
-                if (y > oldY) {
+                if (coords.y > mainFabCenterY) {
+                    lowerArrowVisible= true;
+                    break;
+                }
+                if (coords.x > mainFabCenterX) {
                     upperArrowVisible = true;
                     break;
                 }
                 View child = menuItems.get(i);
-                child.layout(x - bubbleSize / 2, y - bubbleSize / 2, x + bubbleSize / 2, y + bubbleSize / 2);
-                oldX = x;
-                oldY = y;
+                child.layout(coords.x - bubbleSize / 2, coords.y - bubbleSize / 2,
+                        coords.x + bubbleSize / 2, coords.y + bubbleSize / 2);
+                oldCoords = coords;
                 do {
                     fi = fi + fiStep;
-                    x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
-                    y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
-                } while (distance(x, y, oldX, oldY) < bubbleDistance);
+                    coords = getArcPosition(fi);
+                } while (distance(coords.x, coords.y, oldCoords.x, oldCoords.y) < bubbleDistance);
             }
 
             placeArrows();
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
+    }
+
+    ScreenPosition getArcPosition(double fi) {
+        int x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
+        int y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
+        return new ScreenPosition(x, y);
     }
 
     void placeArrows() {

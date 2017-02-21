@@ -220,13 +220,4 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
     int getTotalScrollFactor() {
         return scrollFactor + gestureScrollFactor;
     }
-
-    class ScreenPosition {
-        int x, y;
-
-        ScreenPosition(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 }
