@@ -3,6 +3,7 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,14 +48,14 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     private int mMaxFlingVelocity;
     private int gestureScrollFactor;
     private int scrollFactor;
+    private int maxScrollFactor;
 
     // elipsis and its approximation's parameters, mathematical explanation at
     // http://www.had2know.com/makeit/ellipse-approximation-normal-circular-arc.html
-    double a, b, r1, r2, c1x, c1y, c2x, c2y, th1, th2, ea1, ea2;
+    double a, b, r1, r2, c1x, c1y, c2x, c2y, th1, th2, ea1, ea2, c1Length, c2Length;
 
     double bubbleDistance = 30d;
     double fadeLength = 50d;
-
 
     public BubbleMenu(Context context) {
         super(context);
@@ -89,6 +90,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         r2 = ((Math.pow(a, 2) + Math.pow(b, 2) + (a - b) * Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))) / (2 * b));
         th2 = Math.atan(b / a);
         th1 = Math.atan(a / b);
+        c1Length = th1 * r1;
+        c2Length = th2 * r2;
         ea1 = getEquidistantAngle(r1, bubbleDistance);
         ea2 = getEquidistantAngle(r2, bubbleDistance);
         c2x = 0;
@@ -168,6 +171,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int count = (menuItems == null) ? 0 : menuItems.size();
+        maxScrollFactor = (int) ((count - 1) * bubbleDistance - c1Length - c2Length);
 
         if (isOpen) {
             // main bubble
@@ -196,9 +200,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     }
 
     Placement getPlacement(double distance) {
-        // circumferences of the two circle parts
-        int c1Length = (int) (th1 * r1);
-        int c2Length = (int) (th2 * r2);
+        // start from "the other end" of the arc
         distance = (c1Length + c2Length) - distance;
 
         if (distance < 0) {
@@ -306,7 +308,15 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     public boolean onTouch(View view, MotionEvent me) {
         switch (me.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                gestureScrollFactor = (int) (me.getY() - gestureStartY);
+                int diff = (int) (me.getY() - gestureStartY);
+                if (diff < - scrollFactor) {
+                    gestureScrollFactor = - scrollFactor;
+                } else if (diff > maxScrollFactor - scrollFactor) {
+                    gestureScrollFactor = maxScrollFactor - scrollFactor;
+                } else {
+                    gestureScrollFactor = diff;
+                }
+                Log.d("SCROLL", "factor: " + gestureScrollFactor);
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
