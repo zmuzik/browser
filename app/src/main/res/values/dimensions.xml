@@ -33,9 +33,12 @@
 
     <!-- bubble menu -->
     <dimen name="bubble_menu_bubble_size">56dp</dimen>
+    <dimen name="bubble_menu_bubble_distance">64dp</dimen>
     <dimen name="bubble_menu_padding_vert">24dp</dimen>
     <dimen name="bubble_menu_padding_horiz">24dp</dimen>
-    <dimen name="bubble_menu_fab_distance">160dp</dimen>
+    <dimen name="bubble_menu_fab_distance_horiz">160dp</dimen>
+    <dimen name="bubble_menu_fab_distance_vert">280dp</dimen>
+    <dimen name="bubble_menu_fade_length">24dp</dimen>
     <dimen name="bubble_menu_bubble_border">2dp</dimen>
 
 </resources>

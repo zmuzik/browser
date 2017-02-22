@@ -24,8 +24,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
     protected int componentWidthPx;
     protected int componentHeightPx;
-    protected int fabDistance;
-    protected int bubbleDistance;
+    protected int fabDistanceHoriz;
+    protected int fabDistanceVert;
 
     protected int bubbleSize;
     protected int paddingHoriz;
@@ -51,6 +51,12 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     private int gestureScrollFactor;
     private int scrollFactor;
 
+    // elipsis and its approximation's parameters
+    double a, b, r1, r2, c1x, c1y, c2x, c2y, th1, th2, ea1, ea2;
+
+    double bubbleDistance = 30d;
+    double fadeLength = 50d;
+
 
     public BubbleMenu(Context context) {
         super(context);
@@ -69,15 +75,30 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     }
 
     private void init() {
+        // init params defined as dimensions
         bubbleSize = getResources().getDimensionPixelSize(R.dimen.bubble_menu_bubble_size);
+        bubbleDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_bubble_distance);
         paddingHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_horiz);
         paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
-        fabDistance = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance);
+        fabDistanceHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance_horiz);
+        fabDistanceVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fab_distance_vert);
+        fadeLength = getResources().getDimensionPixelSize(R.dimen.bubble_menu_fade_length);
 
-        fiStep = Math.PI / 180;
-        elipsisParam = 1.8d;
-        bubbleDistance = (int) (1.24f * bubbleSize);
+        // elipsis approximation parameters initialization
+        a = fabDistanceHoriz;
+        b = fabDistanceVert;
+        r1 = ((Math.pow(a, 2) + Math.pow(b, 2) - (a - b) * Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))) / (2 * a));
+        r2 = ((Math.pow(a, 2) + Math.pow(b, 2) + (a - b) * Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))) / (2 * b));
+        th2 = Math.atan(b / a);
+        th1 = Math.atan(a / b);
+        ea1 = getEquidistantAngle(r1, bubbleDistance);
+        ea2 = getEquidistantAngle(r2, bubbleDistance);
+        c2x = 0;
+        c2y = b - r2;
+        c1x = a - r1;
+        c1y = 0;
 
+        // view configuration parameters initialization
         ViewConfiguration vc = ViewConfiguration.get(getContext());
         mSlop = vc.getScaledTouchSlop();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
@@ -101,15 +122,6 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         addView(lowerArrow);
 
         setOnTouchListener(this);
-
-//        setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (isOpen) {
-//                    toggleOpenMenu();
-//                }
-//            }
-//        });
     }
 
     private void toggleOpenMenu() {
@@ -145,7 +157,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         mainFabCenterX = componentWidthPx - paddingHoriz - bubbleSize / 2;
         mainFabCenterY = componentHeightPx - paddingVert - bubbleSize / 2;
 
-        baseBubbleCenterX = mainFabCenterX - fabDistance;
+        baseBubbleCenterX = mainFabCenterX - fabDistanceHoriz;
         baseBubbleCenterY = mainFabCenterY;
 
         if (isOpen) {
@@ -163,39 +175,52 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             // main bubble
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
-
-            Placement oldCoords = new Placement(baseBubbleCenterX, baseBubbleCenterY);
-            Placement coords = new Placement(baseBubbleCenterX, baseBubbleCenterY);
-
-            double fi = 0d;
-
-            for (int i = 0; i < count; i++) {
-                if (coords.y > mainFabCenterY) {
-                    lowerArrowVisible = true;
-                    continue;
-                }
-                if (coords.x > mainFabCenterX) {
-                    upperArrowVisible = true;
-                    break;
-                }
-                View child = menuItems.get(i);
-                placeView(child, coords.x, coords.y, bubbleSize);
-                oldCoords = coords;
-                do {
-                    fi = fi + fiStep;
-                    coords = getArcPosition(fi);
-                } while (distance(coords.x, coords.y, oldCoords.x, oldCoords.y) < bubbleDistance);
+            for (int i = 0; i < 3; i++) {
+                Placement placement = getPlacement(i * bubbleDistance);
+                if (placement == null) continue;
+                placeView(menuItems.get(i), placement.x, placement.y, bubbleSize);
             }
 
-            placeArrows();
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
     }
 
-    Placement getArcPosition(double fi) {
-        int x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
-        int y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
+    Placement getPlacement(double distance) {
+        // circumferences of the two circle parts
+        int c1Length = (int) (th1 * r1);
+        int c2Length = (int) (th2 * r2);
+
+        if (distance < 0) {
+            if (distance > -fadeLength) {
+                float opacity = (float) ((fadeLength + distance) / -fadeLength);
+                return new Placement((int) (c2x + distance), (int) b, opacity);
+            } else {
+                return null;
+            }
+        }
+
+        if (distance > (c1Length + c2Length)) {
+            if (distance < (c1Length + c2Length) + fadeLength) {
+                float opacity = (float) ((distance - (c1Length + c2Length)) / -fadeLength);
+                return new Placement((int) a, (int) (c1y - (distance - (c1Length + c2Length))), opacity);
+            } else {
+                return null;
+            }
+        }
+
+        int x = 0;
+        int y = 0;
+        if (distance <= c2Length) {
+            double fi = distance / c2Length * th2;
+            x = (int) (c2x + r2 * Math.sin(fi));
+            y = (int) (c2y + r2 * Math.cos(fi));
+        } else {
+            distance = distance - c2Length;
+            double fi = th2 + distance / c1Length * th1;
+            x = (int) (c1x + r1 * Math.sin(fi));
+            y = (int) (c1y + r1 * Math.cos(fi));
+        }
         return new Placement(x, y);
     }
 
@@ -204,7 +229,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         int size = Utils.dpToPx(getContext(), 24);
         if (upperArrowVisible) {
             int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
-            int arrowY = baseBubbleCenterY - (int) (elipsisParam * fabDistance);
+            int arrowY = baseBubbleCenterY - fabDistanceVert;
             placeView(upperArrow, arrowX, arrowY, size);
         }
         if (lowerArrowVisible) {
@@ -280,5 +305,9 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
     int getTotalScrollFactor() {
         return scrollFactor + gestureScrollFactor;
+    }
+
+    double getEquidistantAngle(double r, double distance) {
+        return Math.acos((2 * Math.pow(r, 2) - Math.pow(distance, 2)) / 2 * Math.pow(r, 2));
     }
 }
