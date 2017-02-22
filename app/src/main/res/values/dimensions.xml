@@ -33,7 +33,7 @@
 
     <!-- bubble menu -->
     <dimen name="bubble_menu_bubble_size">56dp</dimen>
-    <dimen name="bubble_menu_bubble_distance">72dp</dimen>
+    <dimen name="bubble_menu_bubble_distance">70dp</dimen>
     <dimen name="bubble_menu_padding_vert">24dp</dimen>
     <dimen name="bubble_menu_padding_horiz">24dp</dimen>
     <dimen name="bubble_menu_fab_distance_horiz">160dp</dimen>

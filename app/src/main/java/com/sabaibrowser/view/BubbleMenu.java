@@ -176,10 +176,11 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             for (int i = 0; i < count; i++) {
                 Placement placement = transformPlacement(getPlacement(i * bubbleDistance - getTotalScrollFactor()));
                 if (placement == null) {
+                    // XXX make it temporarily invisible
                     placeView(menuItems.get(i), 0, 0, 0);
                     continue;
                 }
-                placeView(menuItems.get(i), placement.x, placement.y, bubbleSize);
+                placeBubble(menuItems.get(i), placement);
             }
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
@@ -202,7 +203,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
         if (distance < 0) {
             if (distance > -fadeLength) {
-                float opacity = (float) ((fadeLength + distance) / -fadeLength);
+                float opacity = (float) ((fadeLength + distance) / fadeLength);
                 return new Placement((int) (c2x + distance), (int) b, opacity);
             } else {
                 return null;
@@ -211,7 +212,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
         if (distance > (c1Length + c2Length)) {
             if (distance < (c1Length + c2Length) + fadeLength) {
-                float opacity = (float) ((distance - (c1Length + c2Length)) / -fadeLength);
+                float opacity = (float) (((c1Length + c2Length + fadeLength) - distance) / fadeLength);
                 return new Placement((int) a, (int) (c1y - (distance - (c1Length + c2Length))), opacity);
             } else {
                 return null;
@@ -253,6 +254,11 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
                 centerY - height / 2,
                 centerX + width / 2,
                 centerY + height / 2);
+    }
+
+    void placeBubble(View view, Placement placement) {
+        placeView(view, placement.x, placement.y, bubbleSize);
+        view.setAlpha(placement.opacity);
     }
 
     void placeView(View view, int centerX, int centerY, int size) {
