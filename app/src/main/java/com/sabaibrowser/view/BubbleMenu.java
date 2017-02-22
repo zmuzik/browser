@@ -164,8 +164,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
 
-            ScreenPosition oldCoords = new ScreenPosition(baseBubbleCenterX, baseBubbleCenterY);
-            ScreenPosition coords = new ScreenPosition(baseBubbleCenterX, baseBubbleCenterY);
+            Placement oldCoords = new Placement(baseBubbleCenterX, baseBubbleCenterY);
+            Placement coords = new Placement(baseBubbleCenterX, baseBubbleCenterY);
 
             double fi = 0d;
 
@@ -193,10 +193,10 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         }
     }
 
-    ScreenPosition getArcPosition(double fi) {
+    Placement getArcPosition(double fi) {
         int x = baseBubbleCenterX + (fabDistance - (int) (fabDistance * Math.cos(fi)));
         int y = baseBubbleCenterY - (int) (elipsisParam * fabDistance * Math.sin(fi));
-        return new ScreenPosition(x, y);
+        return new Placement(x, y);
     }
 
     void placeArrows() {

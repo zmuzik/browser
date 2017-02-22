@@ -3,7 +3,6 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -60,7 +59,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
         setOnTouchListener(this);
     }
 
-    ScreenPosition getArcPosition(double percentage) {
+    Placement getArcPosition(double percentage) {
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
 
@@ -90,7 +89,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
             y = CENTER_Y;
         }
 
-        return new ScreenPosition(x, y);
+        return new Placement(x, y);
     }
 
     @Override
@@ -104,7 +103,7 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
             ((TabCard) child).setTitleDown(i > getFrontPosition());
 
             // position
-            ScreenPosition coords = getScreenPosition(i, count, getSelectedPosition());
+            Placement coords = getScreenPosition(i, count, getSelectedPosition());
             //int perspective = (int) (Math.abs(coords.y + mTabCardSize / 2 - (getMeasuredHeight() / 2)) * .2d);
             int perspective = 0;
             child.layout(coords.x + cornerOffset + perspective,
@@ -118,14 +117,14 @@ public class RollingTabSwitcher extends ViewGroup implements View.OnTouchListene
      * return position of the center of the tab card
      * selected shoule be between 0 and count
      */
-    ScreenPosition getScreenPosition(int position, int count, double selected) {
+    Placement getScreenPosition(int position, int count, double selected) {
         selected = Math.min(selected, count);
         selected = Math.max(selected, 0);
 
         double arc = 1d / count * (position - selected) + 1d / count * (((double) getTotalScrollFactor()) / mStep);
 
-        ScreenPosition center = getArcPosition(arc);
-        return new ScreenPosition(center.x, center.y);
+        Placement center = getArcPosition(arc);
+        return new Placement(center.x, center.y);
     }
 
     /**

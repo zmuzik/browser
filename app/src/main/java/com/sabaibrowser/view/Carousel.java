@@ -20,7 +20,7 @@ public class Carousel extends RollingTabSwitcher implements View.OnTouchListener
      * @param percentage -1...1; 0 representing the selected element
      * @return position of center of the tab on the arc
      */
-    ScreenPosition getArcPosition(double percentage) {
+    Placement getArcPosition(double percentage) {
         percentage = Math.max(-1d, percentage);
         percentage = Math.min(percentage, 1d);
 
@@ -43,7 +43,7 @@ public class Carousel extends RollingTabSwitcher implements View.OnTouchListener
         int x = CENTER_X + (int) (Math.sin(fi) * RADIUS_X);
         int y = CENTER_Y - (int) (Math.cos(fi) * RADIUS_Y);
 
-        return new ScreenPosition(x, y);
+        return new Placement(x, y);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Carousel extends RollingTabSwitcher implements View.OnTouchListener
             ((TabCard) child).setTitleDown(i > getFrontPosition());
 
             // position
-            ScreenPosition coords = getScreenPosition(i, count, getSelectedPosition());
+            Placement coords = getScreenPosition(i, count, getSelectedPosition());
             child.layout(coords.x,
                     coords.y,
                     coords.x + child.getMeasuredWidth(),
