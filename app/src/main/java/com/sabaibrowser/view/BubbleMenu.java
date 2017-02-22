@@ -31,9 +31,6 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     protected int paddingHoriz;
     protected int paddingVert;
 
-    protected double fiStep;
-    protected double elipsisParam;
-
     protected int mainFabCenterX;
     protected int mainFabCenterY;
     protected int baseBubbleCenterX;
@@ -51,7 +48,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     private int gestureScrollFactor;
     private int scrollFactor;
 
-    // elipsis and its approximation's parameters
+    // elipsis and its approximation's parameters, mathematical explanation at
+    // http://www.had2know.com/makeit/ellipse-approximation-normal-circular-arc.html
     double a, b, r1, r2, c1x, c1y, c2x, c2y, th1, th2, ea1, ea2;
 
     double bubbleDistance = 30d;
@@ -176,7 +174,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
             for (int i = 0; i < menuItems.size(); i++) {
-                Placement placement = transformPlacement(getPlacement(i * bubbleDistance));
+                Placement placement = transformPlacement(getPlacement(i * bubbleDistance - getTotalScrollFactor()));
                 if (placement == null) continue;
                 placeView(menuItems.get(i), placement.x, placement.y, bubbleSize);
             }
