@@ -175,8 +175,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             // main bubble
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
-            for (int i = 0; i < 3; i++) {
-                Placement placement = getPlacement(i * bubbleDistance);
+            for (int i = 0; i < menuItems.size(); i++) {
+                Placement placement = transformPlacement(getPlacement(i * bubbleDistance));
                 if (placement == null) continue;
                 placeView(menuItems.get(i), placement.x, placement.y, bubbleSize);
             }
@@ -184,6 +184,14 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
+    }
+
+    Placement transformPlacement(Placement original) {
+        if (original == null) return null;
+        int x = mainFabCenterX - original.x;
+        int y = mainFabCenterY - original.y;
+        float opacity = original.opacity;
+        return new Placement(x, y, opacity);
     }
 
     Placement getPlacement(double distance) {
