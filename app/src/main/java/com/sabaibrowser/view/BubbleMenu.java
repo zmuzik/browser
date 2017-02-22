@@ -198,6 +198,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         // circumferences of the two circle parts
         int c1Length = (int) (th1 * r1);
         int c2Length = (int) (th2 * r2);
+        distance = (c1Length + c2Length) - distance;
 
         if (distance < 0) {
             if (distance > -fadeLength) {
