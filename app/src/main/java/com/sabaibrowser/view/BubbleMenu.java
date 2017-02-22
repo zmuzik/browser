@@ -3,7 +3,6 @@ package com.sabaibrowser.view;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -177,15 +176,18 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
             // main bubble
             mainFab.layout(mainFabCenterX - bubbleSize / 2, mainFabCenterY - bubbleSize / 2,
                     mainFabCenterX + bubbleSize / 2, mainFabCenterY + bubbleSize / 2);
+
+            lowerArrowVisible = false;
+            upperArrowVisible = false;
             for (int i = 0; i < count; i++) {
                 Placement placement = transformPlacement(getPlacement(i * bubbleDistance - getTotalScrollFactor()));
                 if (placement == null) {
-                    // XXX make it temporarily invisible
                     placeView(menuItems.get(i), 0, 0, 0);
                     continue;
                 }
                 placeBubble(menuItems.get(i), placement);
             }
+            placeArrows();
         } else {
             mainFab.layout(0, 0, bubbleSize, bubbleSize);
         }
@@ -203,7 +205,8 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         // start from "the other end" of the arc
         distance = (c1Length + c2Length) - distance;
 
-        if (distance < 0) {
+        if (distance < -1) {
+            upperArrowVisible = true;
             if (distance > -fadeLength) {
                 float opacity = (float) ((fadeLength + distance) / fadeLength);
                 return new Placement((int) (c2x + distance), (int) b, opacity);
@@ -213,6 +216,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         }
 
         if (distance > (c1Length + c2Length)) {
+            lowerArrowVisible = true;
             if (distance < (c1Length + c2Length) + fadeLength) {
                 float opacity = (float) (((c1Length + c2Length + fadeLength) - distance) / fadeLength);
                 return new Placement((int) a, (int) (c1y - (distance - (c1Length + c2Length))), opacity);
@@ -237,17 +241,25 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     }
 
     void placeArrows() {
-        if (!upperArrowVisible && !lowerArrowVisible) return;
+        if (!upperArrowVisible && !lowerArrowVisible) {
+            placeView(upperArrow, 0, 0, 0);
+            placeView(lowerArrow, 0, 0, 0);
+            return;
+        }
         int size = Utils.dpToPx(getContext(), 24);
         if (upperArrowVisible) {
             int arrowX = mainFabCenterX + bubbleSize / 2 + size / 2;
             int arrowY = baseBubbleCenterY - fabDistanceVert;
             placeView(upperArrow, arrowX, arrowY, size);
+        } else {
+            placeView(upperArrow, 0, 0, 0);
         }
         if (lowerArrowVisible) {
             int arrowX = baseBubbleCenterX;
             int arrowY = baseBubbleCenterY + bubbleSize / 2 + size / 2;
             placeView(lowerArrow, arrowX, arrowY, size);
+        } else {
+            placeView(lowerArrow, 0, 0, 0);
         }
     }
 
@@ -309,14 +321,13 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         switch (me.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 int diff = (int) (me.getY() - gestureStartY);
-                if (diff < - scrollFactor) {
-                    gestureScrollFactor = - scrollFactor;
+                if (diff < -scrollFactor) {
+                    gestureScrollFactor = -scrollFactor;
                 } else if (diff > maxScrollFactor - scrollFactor) {
                     gestureScrollFactor = maxScrollFactor - scrollFactor;
                 } else {
                     gestureScrollFactor = diff;
                 }
-                Log.d("SCROLL", "factor: " + gestureScrollFactor);
                 requestLayout();
                 break;
             case MotionEvent.ACTION_UP:
