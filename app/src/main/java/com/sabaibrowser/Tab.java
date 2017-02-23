@@ -16,7 +16,6 @@
 
 package com.sabaibrowser;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -24,7 +23,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -47,14 +45,12 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.webkit.ClientCertRequest;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
-import android.webkit.GeolocationPermissions.Callback;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
@@ -64,31 +60,26 @@ import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
-import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebHistoryItem;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
-import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
+import com.sabaibrowser.os.WebAddress;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
-import java.security.Principal;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Vector;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Class for maintaining Tabs with a main WebView and a subwindow.
@@ -616,10 +607,28 @@ public class Tab implements PictureListener {
         }
 
         @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view,
-                String url) {
-//            return HomeProvider.shouldInterceptRequest(mContext, url);
-            return null;
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                String host = (new WebAddress(mCurrentState.mUrl).getHost());
+                return shouldInterceptRequest(request.getUrl().toString(), host);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            String host = (new WebAddress(mCurrentState.mUrl).getHost());
+            return shouldInterceptRequest(url, host);
+        }
+
+        private WebResourceResponse shouldInterceptRequest(String url, String host) {
+            if (mCurrentState.mUrl.equals(url)) return null;
+            if (Blocker.isBlocked(url, host)) {
+                return new WebResourceResponse("text/html", "UTF-8", null);
+            } else {
+                return null;
+            }
         }
 
         @Override

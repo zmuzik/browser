@@ -44,6 +44,7 @@ public class Browser extends Application {
         CookieSyncManager.createInstance(this);
         BrowserSettings.initialize(getApplicationContext());
         Preloader.initialize(getApplicationContext());
+        Blocker.init(this);
     }
 
     public static Browser get() {
