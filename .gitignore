@@ -52,4 +52,5 @@ google-services.json
 .idea/misc.xml
 
 # content blocking package
-app/src/main/java/com/sabaibrowser/cb
+app/src/main/java/contentblocker
+!app/src/main/java/contentblocker/Blocker.java
