@@ -51,3 +51,5 @@ google-services.json
 # this file keeps on changing
 .idea/misc.xml
 
+# content blocking package
+app/src/main/java/com/sabaibrowser/cb
