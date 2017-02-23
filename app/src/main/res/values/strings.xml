@@ -993,4 +993,7 @@
     <!-- Content description for navigating up in the bookmark folder hierarchy [CHAR LIMIT=NONE] -->
     <string name="accessibility_button_bookmarks_folder_up">Previous folder</string>
 
+    <!--id of file provider authority (used in the manifest and in UploadHandler-->
+    <string name="file_provider_authority">com.sabaibrowser-classic.file</string>
+
 </resources>

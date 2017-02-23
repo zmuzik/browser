@@ -1,5 +1,5 @@
 #!/bin/bash
-APP_ID="com.sabaibrowser"
+APP_ID="com.sabaibrowser.debug"
 
 if [ $# -eq 0 ]; then
   adb uninstall $APP_ID

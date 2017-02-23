@@ -4,6 +4,9 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
 
+    Properties customProps = new Properties()
+    customProps.load(new FileInputStream("../keystore/properties"))
+
     defaultConfig {
         applicationId "com.sabaibrowser"
         minSdkVersion 19
@@ -13,9 +16,23 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            storeFile file("../../keystore/keystore")
+            keyAlias customProps.KEY_ALIAS
+            storePassword customProps.STORE_PASSWORD
+            keyPassword customProps.KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
