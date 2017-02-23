@@ -51,6 +51,5 @@ google-services.json
 # this file keeps on changing
 .idea/misc.xml
 
-# content blocking package
+# hide Content Blocker code for now
 app/src/main/java/contentblocker
-!app/src/main/java/contentblocker/Blocker.java
