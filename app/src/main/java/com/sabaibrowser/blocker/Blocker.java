@@ -1,4 +1,4 @@
-package com.sabaibrowser;
+package com.sabaibrowser.blocker;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,7 +7,7 @@ import java.lang.reflect.Constructor;
 
 public class Blocker {
 
-    private static final String DEFAULT_CONTENT_BLOCKER = "contentblocker.DefaultContentBlocker";
+    private static final String DEFAULT_CONTENT_BLOCKER = "com.sabaibrowser.blocker.DefaultContentBlocker";
 
     static ContentBlocker mContentBlocker;
 

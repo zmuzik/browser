@@ -69,6 +69,7 @@ import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
+import com.sabaibrowser.blocker.Blocker;
 import com.sabaibrowser.os.WebAddress;
 
 import java.io.ByteArrayOutputStream;

@@ -20,6 +20,8 @@ import android.app.Application;
 import android.util.Log;
 import android.webkit.CookieSyncManager;
 
+import com.sabaibrowser.blocker.Blocker;
+
 public class Browser extends Application { 
 
     private final static String LOGTAG = "browser";
