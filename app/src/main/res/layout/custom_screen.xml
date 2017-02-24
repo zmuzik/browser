@@ -13,7 +13,8 @@
      limitations under the License.
 -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:id="@+id/fullscreen_custom_content"
@@ -34,11 +35,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <FrameLayout
+        <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/fixed_titlebar_container" />
+            android:layout_below="@id/fixed_titlebar_container"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.sabaibrowser.view.BubbleMenu
             android:id="@+id/bubble_menu"

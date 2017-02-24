@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class TitleBar extends RelativeLayout {
 
     private UiController mUiController;
     private BaseUi mBaseUi;
-    private FrameLayout mContentView;
+    private SwipeRefreshLayout mContentView;
     private PageProgressView mProgress;
     private AccessibilityManager mAccessibilityManager;
 
@@ -63,7 +64,7 @@ public class TitleBar extends RelativeLayout {
     private boolean mIsFixedTitleBar;
 
     public TitleBar(Context context, UiController controller, BaseUi ui,
-            FrameLayout contentView) {
+                    SwipeRefreshLayout contentView) {
         super(context, null);
         mUiController = controller;
         mBaseUi = ui;

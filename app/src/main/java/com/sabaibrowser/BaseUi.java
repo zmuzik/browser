@@ -19,43 +19,30 @@ package com.sabaibrowser;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.sabaibrowser.Tab.SecurityState;
 import com.sabaibrowser.view.Bubble;
 import com.sabaibrowser.view.BubbleMenu;
 
@@ -92,7 +79,7 @@ public abstract class BaseUi implements UI {
     protected Tab mActiveTab;
     private InputMethodManager mInputManager;
 
-    protected FrameLayout mContentView;
+    protected SwipeRefreshLayout mContentView;
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
     private FrameLayout mFixedTitlebarContainer;
@@ -129,7 +116,7 @@ public abstract class BaseUi implements UI {
                 .inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fixed_titlebar_container);
-        mContentView = (FrameLayout) frameLayout.findViewById(
+        mContentView = (SwipeRefreshLayout) frameLayout.findViewById(
                 R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fullscreen_custom_content);
@@ -141,6 +128,25 @@ public abstract class BaseUi implements UI {
         mTitleBar.setProgress(100);
         mNavigationBar = mTitleBar.getNavigationBar();
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
+        mContentView.setColorSchemeColors(browser.getResources().getColor(R.color.primary));
+        mContentView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mUiController.getCurrentTopWebView().reload();
+                mContentView.setRefreshing(false);
+            }
+        });
+        mContentView.getViewTreeObserver().addOnScrollChangedListener(
+                new ViewTreeObserver.OnScrollChangedListener() {
+                    @Override
+                    public void onScrollChanged() {
+                        if (getWebView().getScrollY() == 0) {
+                            mContentView.setEnabled(true);
+                        } else {
+                            mContentView.setEnabled(false);
+                        }
+                    }
+                });
     }
 
 
