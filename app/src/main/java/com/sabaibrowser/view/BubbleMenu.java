@@ -2,6 +2,8 @@ package com.sabaibrowser.view;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -106,6 +108,9 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
 
         LayoutInflater.from(getContext()).inflate(R.layout.bubble_menu, this);
         mainFab = (Bubble) findViewById(R.id.main_fab);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mainFab.setElevation(6f);
+        }
         mainFab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,6 +295,9 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         }
         Bubble item = new Bubble(getContext(), true, icon);
         menuItems.add(item);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            item.setElevation(6f);
+        }
         addView(item);
         item.setOnClickListener(listener);
     }
