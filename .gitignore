@@ -53,3 +53,4 @@ google-services.json
 
 # hide Content Blocker code for now
 app/src/main/java/contentblocker
+app/src/main/assets/blocklist.txt
