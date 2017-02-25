@@ -1,33 +1,19 @@
 package com.sabaibrowser.blocker;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.lang.reflect.Constructor;
+import com.sabaibrowser.blocker.disconnect.DisconnectContentBlocker;
 
 public class Blocker {
 
-    private static final String DEFAULT_CONTENT_BLOCKER = "com.sabaibrowser.blocker.DefaultContentBlocker";
+    private static ContentBlocker mContentBlocker;
 
-    static ContentBlocker mContentBlocker;
-
-    public static void init(Context ctx) {
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(DEFAULT_CONTENT_BLOCKER);
-        } catch (ClassNotFoundException e) {
-            Log.d("Blocker", "Default content blocker not found");
-            return;
-        }
-        Constructor<?> constructor = null;
-        try {
-            constructor = clazz.getConstructor(Context.class);
-            mContentBlocker = (ContentBlocker) constructor.newInstance(ctx);
-        } catch (Throwable e) {
-            Log.e("Blocker", "Error instantiating default blocker");
-            return;
-        }
-        Log.d("Blocker", "Default content blocker initialized");
+    public static void init(final Context ctx) {
+        new Thread(new Runnable() {
+            public void run() {
+                mContentBlocker = new DisconnectContentBlocker(ctx);
+            }
+        }).start();
     }
 
     public static boolean isAvailable() {
