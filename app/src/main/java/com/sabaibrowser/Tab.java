@@ -70,6 +70,8 @@ import android.webkit.WebViewClient;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
 import com.sabaibrowser.blocker.Blocker;
+import com.sabaibrowser.eventbus.BlockedElementEvent;
+import com.sabaibrowser.eventbus.MainThreadBus;
 import com.sabaibrowser.os.WebAddress;
 
 import java.io.ByteArrayOutputStream;
@@ -77,7 +79,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
@@ -211,6 +215,7 @@ public class Tab implements PictureListener {
         Bitmap mFavicon;
         boolean mIsBookmarkedSite;
         boolean mIncognito;
+        List<String> mTrackers;
 
         PageState(Context c, boolean incognito) {
             mIncognito = incognito;
@@ -221,6 +226,7 @@ public class Tab implements PictureListener {
                 mTitle = c.getString(R.string.new_tab);
             }
             mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
+            mTrackers = new ArrayList<>();
         }
 
         PageState(Context c, boolean incognito, String url, Bitmap favicon) {
@@ -232,6 +238,7 @@ public class Tab implements PictureListener {
                 mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
             }
             mFavicon = favicon;
+            mTrackers = new ArrayList<>();
         }
 
     }
@@ -626,6 +633,8 @@ public class Tab implements PictureListener {
         private WebResourceResponse shouldInterceptRequest(String url, String host) {
             if (mCurrentState.mUrl.equals(url)) return null;
             if (Blocker.isBlocked(url, host)) {
+                mCurrentState.mTrackers.add(url);
+                MainThreadBus.get().post(new BlockedElementEvent(Tab.this, url));
                 return new WebResourceResponse("text/html", "UTF-8", null);
             } else {
                 return null;

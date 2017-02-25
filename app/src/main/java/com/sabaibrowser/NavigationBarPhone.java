@@ -29,9 +29,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnDismissListener;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.TextView;
 
 import com.sabaibrowser.UrlInputView.StateListener;
 import com.sabaibrowser.view.Bubble;
+
+import org.w3c.dom.Text;
 
 public class NavigationBarPhone extends NavigationBarBase implements
         StateListener, OnMenuItemClickListener, OnDismissListener {
@@ -50,6 +53,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
     private Bubble mFab;
+    private TextView mBlockedCountIndicator;
 
     public NavigationBarPhone(Context context) {
         super(context);
@@ -89,6 +93,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
                 ((PhoneUi)mBaseUi).showNavScreen();
             }
         });
+        mBlockedCountIndicator = (TextView) findViewById(R.id.blocked_count_indicator);
     }
 
     @Override
@@ -232,6 +237,9 @@ public class NavigationBarPhone extends NavigationBarBase implements
         super.onTabDataChanged(tab);
         mIncognitoIcon.setVisibility(tab.isPrivateBrowsingEnabled()
                 ? View.VISIBLE : View.GONE);
+        if (tab != null && tab.mCurrentState != null) {
+            mBlockedCountIndicator.setText("" + tab.mCurrentState.mTrackers.size());
+        }
     }
 
     @Override

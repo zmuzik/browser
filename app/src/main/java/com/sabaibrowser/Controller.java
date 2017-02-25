@@ -788,7 +788,6 @@ public class Controller
         String url = tab.getUrl();
         // update the bookmark database for favicon
         maybeUpdateFavicon(tab, null, url, favicon);
-
     }
 
     @Override
