@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.JsonReader;
 
 import com.sabaibrowser.blocker.Blocker;
+import com.sabaibrowser.os.WebAddress;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,8 +75,15 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
 
     @Override
     public boolean isBlocked(String elementUrl, String pageDomain) {
+        String elementDomain = new WebAddress(elementUrl).getHost();
+        if (elementDomain.endsWith(pageDomain)) return false;
+        for (Tracker tracker : mTrackers) {
+            for (String trackerDomain : tracker.urls) {
+                if (elementDomain.endsWith(trackerDomain) && !tracker.urls.contains(pageDomain)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
-
-
 }
