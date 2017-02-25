@@ -47,7 +47,7 @@ public class TitleBar extends RelativeLayout {
 
     private UiController mUiController;
     private BaseUi mBaseUi;
-    private SwipeRefreshLayout mContentView;
+    private FrameLayout mContentView;
     private PageProgressView mProgress;
     private AccessibilityManager mAccessibilityManager;
 
@@ -64,7 +64,7 @@ public class TitleBar extends RelativeLayout {
     private boolean mIsFixedTitleBar;
 
     public TitleBar(Context context, UiController controller, BaseUi ui,
-                    SwipeRefreshLayout contentView) {
+                    FrameLayout contentView) {
         super(context, null);
         mUiController = controller;
         mBaseUi = ui;

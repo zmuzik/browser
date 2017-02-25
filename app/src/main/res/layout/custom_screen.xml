@@ -36,11 +36,19 @@
             android:layout_alignParentTop="true" />
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/main_content"
+            android:id="@+id/swipe_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/fixed_titlebar_container"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
+                android:id="@+id/main_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <com.sabaibrowser.view.BubbleMenu
             android:id="@+id/bubble_menu"

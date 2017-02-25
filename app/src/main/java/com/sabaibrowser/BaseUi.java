@@ -79,7 +79,8 @@ public abstract class BaseUi implements UI {
     protected Tab mActiveTab;
     private InputMethodManager mInputManager;
 
-    protected SwipeRefreshLayout mContentView;
+    protected SwipeRefreshLayout mSwipeContainer;
+    protected FrameLayout mContentView;
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
     private FrameLayout mFixedTitlebarContainer;
@@ -116,7 +117,7 @@ public abstract class BaseUi implements UI {
                 .inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fixed_titlebar_container);
-        mContentView = (SwipeRefreshLayout) frameLayout.findViewById(
+        mContentView = (FrameLayout) frameLayout.findViewById(
                 R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fullscreen_custom_content);
@@ -128,22 +129,23 @@ public abstract class BaseUi implements UI {
         mTitleBar.setProgress(100);
         mNavigationBar = mTitleBar.getNavigationBar();
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
-        mContentView.setColorSchemeColors(browser.getResources().getColor(R.color.primary));
-        mContentView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeContainer = (SwipeRefreshLayout) frameLayout.findViewById(R.id.swipe_container);
+        mSwipeContainer.setColorSchemeColors(browser.getResources().getColor(R.color.primary));
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mUiController.getCurrentTopWebView().reload();
-                mContentView.setRefreshing(false);
+                mSwipeContainer.setRefreshing(false);
             }
         });
-        mContentView.getViewTreeObserver().addOnScrollChangedListener(
+        mSwipeContainer.getViewTreeObserver().addOnScrollChangedListener(
                 new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
                     public void onScrollChanged() {
                         if (getWebView().getScrollY() == 0) {
-                            mContentView.setEnabled(true);
+                            mSwipeContainer.setEnabled(true);
                         } else {
-                            mContentView.setEnabled(false);
+                            mSwipeContainer.setEnabled(false);
                         }
                     }
                 });
