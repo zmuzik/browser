@@ -142,7 +142,7 @@ public abstract class BaseUi implements UI {
                 new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
                     public void onScrollChanged() {
-                        if (getWebView().getScrollY() == 0) {
+                        if (getWebView() != null && getWebView().getScrollY() == 0) {
                             mSwipeContainer.setEnabled(true);
                         } else {
                             mSwipeContainer.setEnabled(false);
