@@ -80,6 +80,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -215,7 +216,7 @@ public class Tab implements PictureListener {
         Bitmap mFavicon;
         boolean mIsBookmarkedSite;
         boolean mIncognito;
-        List<String> mTrackers;
+        HashSet<String> mTrackers;
 
         PageState(Context c, boolean incognito) {
             mIncognito = incognito;
@@ -226,7 +227,7 @@ public class Tab implements PictureListener {
                 mTitle = c.getString(R.string.new_tab);
             }
             mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
-            mTrackers = new ArrayList<>();
+            mTrackers = new HashSet<>();
         }
 
         PageState(Context c, boolean incognito, String url, Bitmap favicon) {
@@ -238,7 +239,7 @@ public class Tab implements PictureListener {
                 mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
             }
             mFavicon = favicon;
-            mTrackers = new ArrayList<>();
+            mTrackers = new HashSet<>();
         }
 
     }
@@ -633,8 +634,10 @@ public class Tab implements PictureListener {
         private WebResourceResponse shouldInterceptRequest(String url, String host) {
             if (mCurrentState.mUrl.equals(url)) return null;
             if (Blocker.isBlocked(url, host)) {
-                mCurrentState.mTrackers.add(url);
-                MainThreadBus.get().post(new BlockedElementEvent(Tab.this, url));
+                if (!mCurrentState.mTrackers.contains(url)) {
+                    mCurrentState.mTrackers.add(url);
+                    MainThreadBus.get().post(new BlockedElementEvent(Tab.this, url));
+                }
                 return new WebResourceResponse("text/html", "UTF-8", null);
             } else {
                 return null;
