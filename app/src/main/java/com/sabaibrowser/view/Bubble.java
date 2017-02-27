@@ -13,7 +13,7 @@ public class Bubble extends ImageView {
 
     public Bubble(Context context) {
         super(context);
-        init(false);
+        init(true);
     }
 
     public Bubble(Context context, boolean solid, int drawableId) {

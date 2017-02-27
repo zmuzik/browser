@@ -23,7 +23,6 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -33,8 +32,6 @@ import android.widget.TextView;
 
 import com.sabaibrowser.UrlInputView.StateListener;
 import com.sabaibrowser.view.Bubble;
-
-import org.w3c.dom.Text;
 
 public class NavigationBarPhone extends NavigationBarBase implements
         StateListener, OnMenuItemClickListener, OnDismissListener {
@@ -54,6 +51,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
     private View mIncognitoIcon;
     private Bubble mFab;
     private TextView mBlockedCountIndicator;
+    private ImageView mShieldIcon;
 
     public NavigationBarPhone(Context context) {
         super(context);
@@ -90,10 +88,17 @@ public class NavigationBarPhone extends NavigationBarBase implements
         mUrlInput.setOnTouchListener(new SwipeListener(getContext()) {
             public void onSwipeDown() {
                 stopEditingUrl();
-                ((PhoneUi)mBaseUi).showNavScreen();
+                ((PhoneUi) mBaseUi).showNavScreen();
             }
         });
         mBlockedCountIndicator = (TextView) findViewById(R.id.blocked_count_indicator);
+        mShieldIcon = (ImageView) findViewById(R.id.shield);
+        mShieldIcon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mBaseUi != null) mBaseUi.showBlockedInfo();
+            }
+        });
     }
 
     @Override
@@ -118,8 +123,9 @@ public class NavigationBarPhone extends NavigationBarBase implements
 
     /**
      * Update the text displayed in the title bar.
+     *
      * @param title String to display.  If null, the new tab string will be
-     *      shown.
+     *              shown.
      */
     @Override
     void setDisplayTitle(String title) {
@@ -204,31 +210,31 @@ public class NavigationBarPhone extends NavigationBarBase implements
 
     @Override
     public void onStateChanged(int state) {
-        switch(state) {
-        case StateListener.STATE_NORMAL:
-            mStopButton.setVisibility(View.GONE);
-            mClearButton.setVisibility(View.GONE);
-            mMagnify.setVisibility(View.GONE);
-            mTitleContainer.setBackgroundDrawable(null);
-            //mFabFilling.setVisibility(View.VISIBLE);
-            if (mFab != null) {
-                mFab.setVisibility(View.VISIBLE);
-            }
-            break;
-        case StateListener.STATE_HIGHLIGHTED:
-            mStopButton.setVisibility(View.VISIBLE);
-            mClearButton.setVisibility(View.GONE);
-            mMagnify.setVisibility(View.GONE);
-            //mFabFilling.setVisibility(View.GONE);
-            mFab.setVisibility(View.GONE);
-            break;
-        case StateListener.STATE_EDITED:
-            mStopButton.setVisibility(View.GONE);
-            mClearButton.setVisibility(View.VISIBLE);
-            mMagnify.setVisibility(View.VISIBLE);
-            //mFabFilling.setVisibility(View.GONE);
-            mFab.setVisibility(View.GONE);
-            break;
+        switch (state) {
+            case StateListener.STATE_NORMAL:
+                mStopButton.setVisibility(View.GONE);
+                mClearButton.setVisibility(View.GONE);
+                mMagnify.setVisibility(View.GONE);
+                mTitleContainer.setBackgroundDrawable(null);
+                //mFabFilling.setVisibility(View.VISIBLE);
+                if (mFab != null) {
+                    mFab.setVisibility(View.VISIBLE);
+                }
+                break;
+            case StateListener.STATE_HIGHLIGHTED:
+                mStopButton.setVisibility(View.VISIBLE);
+                mClearButton.setVisibility(View.GONE);
+                mMagnify.setVisibility(View.GONE);
+                //mFabFilling.setVisibility(View.GONE);
+                mFab.setVisibility(View.GONE);
+                break;
+            case StateListener.STATE_EDITED:
+                mStopButton.setVisibility(View.GONE);
+                mClearButton.setVisibility(View.VISIBLE);
+                mMagnify.setVisibility(View.VISIBLE);
+                //mFabFilling.setVisibility(View.GONE);
+                mFab.setVisibility(View.GONE);
+                break;
         }
     }
 

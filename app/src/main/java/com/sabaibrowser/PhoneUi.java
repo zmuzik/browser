@@ -67,6 +67,13 @@ public class PhoneUi extends BaseUi {
                 showNavScreen();
             }
         });
+        mBubbleMenu.addMenuItem(R.drawable.ic_shield_white, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                showBlockedInfo();
+            }
+        });
         mBubbleMenu.addMenuItem(R.drawable.ic_new_window, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

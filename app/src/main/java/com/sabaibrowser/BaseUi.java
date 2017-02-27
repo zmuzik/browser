@@ -43,6 +43,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.sabaibrowser.view.BlockedElementsDialog;
 import com.sabaibrowser.view.Bubble;
 import com.sabaibrowser.view.BubbleMenu;
 
@@ -56,15 +57,15 @@ public abstract class BaseUi implements UI {
     private static final String LOGTAG = "BaseUi";
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
-        new FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT);
+            new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER =
-        new FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        Gravity.CENTER);
+            new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER);
 
     private static final int MSG_HIDE_TITLEBAR = 1;
     private static final int MSG_HIDE_CUSTOM_VIEW = 2;
@@ -103,6 +104,7 @@ public abstract class BaseUi implements UI {
     protected TitleBar mTitleBar;
     private NavigationBarBase mNavigationBar;
     private boolean mBlockFocusAnimations;
+    private BlockedElementsDialog mBlockedElementsDialog;
 
     public BaseUi(Activity browser, UiController controller) {
         mActivity = browser;
@@ -150,7 +152,6 @@ public abstract class BaseUi implements UI {
                     }
                 });
     }
-
 
 
     private void cancelStopToast() {
@@ -324,7 +325,7 @@ public abstract class BaseUi implements UI {
             return;
         }
         View container = tab.getViewContainer();
-        WebView mainView  = tab.getWebView();
+        WebView mainView = tab.getWebView();
         // Attach the WebView to the container and then attach the
         // container to the content view.
         FrameLayout wrapper =
@@ -442,7 +443,7 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showCustomView(View view, int requestedOrientation,
-            WebChromeClient.CustomViewCallback callback) {
+                               WebChromeClient.CustomViewCallback callback) {
         // if a view already exists then immediately terminate the new one
         if (mCustomView != null) {
             callback.onCustomViewHidden();
@@ -644,10 +645,10 @@ public abstract class BaseUi implements UI {
         FrameLayout decor = (FrameLayout) mActivity.getWindow().getDecorView();
         int systemUiVisibility = decor.getSystemUiVisibility();
         final int bits = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         if (enabled) {
             systemUiVisibility |= bits;
         } else {
@@ -656,14 +657,14 @@ public abstract class BaseUi implements UI {
         decor.setSystemUiVisibility(systemUiVisibility);
     }
 
-    protected void setImmersiveFullscreen (boolean enabled) {
+    protected void setImmersiveFullscreen(boolean enabled) {
         FrameLayout decor = (FrameLayout) mActivity.getWindow().getDecorView();
         int systemUiVisibility = decor.getSystemUiVisibility();
         final int bits = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         if (enabled) {
             systemUiVisibility |= bits;
         } else {
@@ -711,7 +712,8 @@ public abstract class BaseUi implements UI {
         }
     };
 
-    protected void handleMessage(Message msg) {}
+    protected void handleMessage(Message msg) {
+    }
 
     @Override
     public void showWeb(boolean animate) {
@@ -753,6 +755,22 @@ public abstract class BaseUi implements UI {
     @Override
     public void onVoiceResult(String result) {
         mNavigationBar.onVoiceResult(result);
+    }
+
+    public void showBlockedInfo() {
+        mBlockedElementsDialog = new BlockedElementsDialog(getActivity(), this);
+        mBlockedElementsDialog.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.BOTTOM));
+        mContentView.addView(mBlockedElementsDialog);
+        mBubbleMenu.setVisibility(View.GONE);
+    }
+
+    public void hideBlockedInfo() {
+        mContentView.removeView(mBlockedElementsDialog);
+        mBlockedElementsDialog = null;
+        mBubbleMenu.setVisibility(View.VISIBLE);
     }
 
 }
