@@ -40,7 +40,7 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
                 String category = reader.nextName();
                 reader.beginArray();
                 while (reader.hasNext()) {
-                    result.add(getThirdParty(reader));
+                    result.add(getTracker(reader));
                 }
                 reader.endArray();
             }
@@ -54,7 +54,7 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
         return result;
     }
 
-    private Tracker getThirdParty(JsonReader reader) throws IOException {
+    private Tracker getTracker(JsonReader reader) throws IOException {
         Tracker result = new Tracker();
         reader.beginObject();
         while (reader.hasNext()) {
@@ -76,7 +76,7 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
     @Override
     public boolean isBlocked(String elementUrl, String pageDomain) {
         String elementDomain = new WebAddress(elementUrl).getHost();
-        if (elementDomain.endsWith(pageDomain)) return false;
+        if (elementDomain.endsWith(pageDomain) || pageDomain.endsWith(elementDomain)) return false;
         for (Tracker tracker : mTrackers) {
             for (String trackerDomain : tracker.urls) {
                 if (elementDomain.endsWith(trackerDomain) && !tracker.urls.contains(pageDomain)) {

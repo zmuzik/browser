@@ -618,8 +618,8 @@ public class Tab implements PictureListener {
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                String host = (new WebAddress(mCurrentState.mUrl).getHost());
-                return shouldInterceptRequest(request.getUrl().toString(), host);
+                String pageHost = (new WebAddress(mCurrentState.mUrl).getHost());
+                return shouldInterceptRequest(request.getUrl().toString(), pageHost);
             } else {
                 return null;
             }
@@ -627,16 +627,17 @@ public class Tab implements PictureListener {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            String host = (new WebAddress(mCurrentState.mUrl).getHost());
-            return shouldInterceptRequest(url, host);
+            String pageHost = (new WebAddress(mCurrentState.mUrl).getHost());
+            return shouldInterceptRequest(url, pageHost);
         }
 
-        private WebResourceResponse shouldInterceptRequest(String url, String host) {
-            if (mCurrentState.mUrl.equals(url)) return null;
-            if (Blocker.isBlocked(url, host)) {
-                if (!mCurrentState.mTrackers.contains(url)) {
-                    mCurrentState.mTrackers.add(url);
-                    MainThreadBus.get().post(new BlockedElementEvent(Tab.this, url));
+        private WebResourceResponse shouldInterceptRequest(String elementUrl, String pageHost) {
+            if (mCurrentState.mUrl.equals(elementUrl)) return null;
+            if (Blocker.isBlocked(elementUrl, pageHost)) {
+                String elementHost = (new WebAddress(elementUrl).getHost());
+                if (!mCurrentState.mTrackers.contains(elementHost)) {
+                    mCurrentState.mTrackers.add(elementHost);
+                    MainThreadBus.get().post(new BlockedElementEvent(Tab.this, elementUrl));
                 }
                 return new WebResourceResponse("text/html", "UTF-8", null);
             } else {
