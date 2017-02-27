@@ -53,8 +53,7 @@ public class BlockedElementsDialog extends ViewGroup {
         addView(mCloseFab);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setElevation(12f);
-            mCloseFab.setElevation(24f);
+            setElevation(24f);
         }
     }
 

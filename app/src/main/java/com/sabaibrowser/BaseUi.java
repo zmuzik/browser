@@ -758,6 +758,7 @@ public abstract class BaseUi implements UI {
     }
 
     public void showBlockedInfo() {
+        if (mBlockedElementsDialog != null) return;
         mBlockedElementsDialog = new BlockedElementsDialog(getActivity(), this);
         mBlockedElementsDialog.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -768,6 +769,7 @@ public abstract class BaseUi implements UI {
     }
 
     public void hideBlockedInfo() {
+        if (mBlockedElementsDialog == null) return;
         mContentView.removeView(mBlockedElementsDialog);
         mBlockedElementsDialog = null;
         mBubbleMenu.setVisibility(View.VISIBLE);
