@@ -76,10 +76,15 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
     @Override
     public boolean isBlocked(String elementUrl, String pageDomain) {
         String elementDomain = new WebAddress(elementUrl).getHost();
-        if (elementDomain.endsWith(pageDomain) || pageDomain.endsWith(elementDomain)) return false;
+        // don't block elements from the same domain
+        if (elementDomain.equals(pageDomain)) return false;
         for (Tracker tracker : mTrackers) {
             for (String trackerDomain : tracker.urls) {
-                if (elementDomain.endsWith(trackerDomain) && !tracker.urls.contains(pageDomain)) {
+                if (elementDomain.endsWith(trackerDomain)) {
+                    for (String otherTrackerDomain : tracker.urls) {
+                        if (trackerDomain.equals(otherTrackerDomain)) continue;
+                        if (elementDomain.endsWith(otherTrackerDomain)) return false;
+                    }
                     return true;
                 }
             }
