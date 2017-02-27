@@ -16,6 +16,7 @@
 
 package com.sabaibrowser;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -616,13 +617,10 @@ public class Tab implements PictureListener {
         }
 
         @Override
+        @TargetApi(21)
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                String pageHost = (new WebAddress(mCurrentState.mUrl).getHost());
-                return shouldInterceptRequest(request.getUrl().toString(), pageHost);
-            } else {
-                return null;
-            }
+            String pageHost = (new WebAddress(mCurrentState.mUrl).getHost());
+            return shouldInterceptRequest(request.getUrl().toString(), pageHost);
         }
 
         @Override
