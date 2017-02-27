@@ -14,6 +14,7 @@ import java.util.List;
 
 public class DisconnectContentBlocker implements Blocker.ContentBlocker {
 
+    private final String TAG = getClass().getSimpleName();
     private List<Tracker> mTrackers;
     private Context mContext;
 
@@ -38,11 +39,15 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
             // iterate categories
             while (reader.hasNext()) {
                 String category = reader.nextName();
-                reader.beginArray();
-                while (reader.hasNext()) {
-                    result.add(getTracker(reader));
+                if ("Content".equals(category)) {
+                    reader.skipValue();
+                } else {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        result.add(getTracker(reader));
+                    }
+                    reader.endArray();
                 }
-                reader.endArray();
             }
             // end categories
             reader.endObject();
