@@ -2,6 +2,7 @@ package com.sabaibrowser.blocker.disconnect;
 
 import android.content.Context;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.sabaibrowser.blocker.Blocker;
 import com.sabaibrowser.os.WebAddress;
@@ -83,12 +84,13 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
         String elementDomain = new WebAddress(elementUrl).getHost();
         // don't block elements from the same domain
         if (elementDomain.equals(pageDomain)) return false;
+
         for (Tracker tracker : mTrackers) {
             for (String trackerDomain : tracker.urls) {
                 if (elementDomain.endsWith(trackerDomain)) {
                     for (String otherTrackerDomain : tracker.urls) {
-                        if (trackerDomain.equals(otherTrackerDomain)) continue;
-                        if (elementDomain.endsWith(otherTrackerDomain)) return false;
+                        // not blocked if page host itself matches with any of the tracker's urls
+                        if (pageDomain.endsWith(otherTrackerDomain)) return false;
                     }
                     return true;
                 }
