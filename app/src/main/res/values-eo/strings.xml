@@ -491,4 +491,15 @@
   <!-- Content description for frozen state [CHAR LIMIT=NONE] -->
   <!-- Content description for tab switcher transition [CHAR LIMIT=NONE] -->
   <!-- Content description for navigating up in the bookmark folder hierarchy [CHAR LIMIT=NONE] -->
+  <!-- strings imported from cm_strings.xml -->
+  <!-- Content description for home screen button [CHAR LIMIT=NONE] -->
+  <!-- Context Menu item to open the currently selected link in a new
+            incognito window. -->
+  <!-- Context Menu item to open the currently selected link in a new
+         background window. [CHAR LIMIT=50] -->
+  <!-- User agent label -->
+  <!-- Interface preferences -->
+  <!-- FullScreen -->
+  <!-- OneHand -->
+  <!-- Permission check -->
 </resources>

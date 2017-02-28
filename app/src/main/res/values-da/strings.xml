@@ -409,4 +409,29 @@
     <string name="accessibility_state_frozen" msgid="8041539250447035570">"Gemt side"</string>
     <string name="accessibility_transition_navscreen" msgid="2734915619351519547">"Administrering af faner"</string>
     <string name="accessibility_button_bookmarks_folder_up" msgid="9179389954714270505">"Forrige mappe"</string>
+  <!-- strings imported from cm_strings.xml -->
+  <!-- Content description for home screen button [CHAR LIMIT=NONE] -->
+  <string name="accessibility_button_homescreen">Startskærm</string>
+  <!-- Context Menu item to open the currently selected link in a new
+            incognito window. -->
+  <string name="contextmenu_openlink_incognito_newwindow">Åbn i ny inkognitofane</string>
+  <!-- Context Menu item to open the currently selected link in a new
+         background window. [CHAR LIMIT=50] -->
+  <string name="contextmenu_openlink_incognito_newwindow_background">Åbn i ny inkognito baggrundsfane</string>
+  <!-- User agent label -->
+  <string name="pref_content_ua">Brugeragent</string>
+  <!-- Interface preferences -->
+  <string name="pref_interface_title">Brugerflade</string>
+  <!-- FullScreen -->
+  <string name="full_screen_title">Fuld skærm</string>
+  <string name="full_screen_summary">Aktiver fuldskærmsnavigering</string>
+  <!-- OneHand -->
+  <string name="onehand_title">Enhåndsnavigation</string>
+  <string name="onehand_summary">Nemmere web-navigation med strøg og hurtige handlinger</string>
+  <!-- Permission check -->
+  <string name="permission_not_granted_dialog_title">Tilladelse ikke givet</string>
+  <string name="permission_not_granted_dialog_message">Tilladelsen til at skrive til eksternt lager var ikke givet. Kan ikke hente.</string>
+  <string name="browser_error_title">Browser fejl</string>
+  <string name="dialog_dismiss">Afvis</string>
+  <string name="error_permissions">App\'en har ikke de nødvendige tilladelser for at køre. Kontrollér venligst dine tilladelsesindstillinger.</string>
 </resources>

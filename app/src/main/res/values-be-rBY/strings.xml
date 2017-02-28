@@ -443,4 +443,29 @@
   <!-- Content description for frozen state [CHAR LIMIT=NONE] -->
   <!-- Content description for tab switcher transition [CHAR LIMIT=NONE] -->
   <!-- Content description for navigating up in the bookmark folder hierarchy [CHAR LIMIT=NONE] -->
+  <!-- strings imported from cm_strings.xml -->
+  <!-- Content description for home screen button [CHAR LIMIT=NONE] -->
+  <string name="accessibility_button_homescreen">Дамоў</string>
+  <!-- Context Menu item to open the currently selected link in a new
+            incognito window. -->
+  <string name="contextmenu_openlink_incognito_newwindow">Адчыніць новую ўкладку (інкогніта)</string>
+  <!-- Context Menu item to open the currently selected link in a new
+         background window. [CHAR LIMIT=50] -->
+  <string name="contextmenu_openlink_incognito_newwindow_background">Адчыніць у фанавой ўкладцы (інкогніта)</string>
+  <!-- User agent label -->
+  <string name="pref_content_ua">Карыстальнік</string>
+  <!-- Interface preferences -->
+  <string name="pref_interface_title">Інтэрфэйс</string>
+  <!-- FullScreen -->
+  <string name="full_screen_title">Поўнаэкранны рэжым</string>
+  <string name="full_screen_summary">Улучыць рэжым \"апускання\"</string>
+  <!-- OneHand -->
+  <string name="onehand_title">Кіраваньне адной рукою</string>
+  <string name="onehand_summary">Лягчэйшая вэб-навігацыя з дапамогаю жэстаў да хуткіх дзеяньняў</string>
+  <!-- Permission check -->
+  <string name="permission_not_granted_dialog_title">Доступ забаронены</string>
+  <string name="permission_not_granted_dialog_message">Запіс на зьнешні носьбіт забаронены. Памылка пампаваньня.</string>
+  <string name="browser_error_title">Памылка браўзэру</string>
+  <string name="dialog_dismiss">Скасаваць</string>
+  <string name="error_permissions">Дадатак ня мае дазволаў якія неабходныя для запуску. Калі ласка, праверце правы доступу.</string>
 </resources>
