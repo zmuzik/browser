@@ -85,6 +85,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -1564,6 +1565,10 @@ public class Tab implements PictureListener {
                 DataController.getInstance(mContext).loadThumbnail(this);
             }
         }
+    }
+
+    public Set<String> getTrackers() {
+        return mCurrentState.mTrackers;
     }
 
     private void restoreUserAgent() {

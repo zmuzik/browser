@@ -759,7 +759,7 @@ public abstract class BaseUi implements UI {
 
     public void showBlockedInfo() {
         if (mBlockedElementsDialog != null) return;
-        mBlockedElementsDialog = new BlockedElementsDialog(getActivity(), this);
+        mBlockedElementsDialog = new BlockedElementsDialog(getActivity(), this, getActiveTab());
         mBlockedElementsDialog.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,

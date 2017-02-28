@@ -4,11 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.sabaibrowser.BaseUi;
 import com.sabaibrowser.R;
+import com.sabaibrowser.Tab;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BlockedElementsDialog extends ViewGroup {
 
@@ -19,17 +23,19 @@ public class BlockedElementsDialog extends ViewGroup {
     private int paddingVert;
     private int closeFabPosX;
     private int closeFabPosY;
-
+    private Set<String> mTrackers;
     private Bubble mCloseFab;
+    private TextView mListTv;
 
     public BlockedElementsDialog(Context context) {
         super(context);
         init();
     }
 
-    public BlockedElementsDialog(Context context, BaseUi ui) {
+    public BlockedElementsDialog(Context context, BaseUi ui, Tab tab) {
         super(context);
         mUi = new WeakReference<BaseUi>(ui);
+        mTrackers = tab.getTrackers();
         init();
     }
 
@@ -54,6 +60,17 @@ public class BlockedElementsDialog extends ViewGroup {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setElevation(24f);
+        }
+
+        mListTv = new TextView(getContext());
+        addView(mListTv);
+        if (mTrackers != null) {
+            StringBuffer sb = new StringBuffer();
+            for (String tracker : mTrackers) {
+                sb.append(tracker);
+                sb.append('\n');
+            }
+            mListTv.setText(sb.toString());
         }
     }
 
@@ -80,6 +97,9 @@ public class BlockedElementsDialog extends ViewGroup {
             if (child == mCloseFab) {
                 mCloseFab.layout(closeFabPosX, closeFabPosY,
                         closeFabPosX + bubbleSize, closeFabPosY + bubbleSize);
+            }
+            if (child == mListTv) {
+                mListTv.layout(20, 20, getMeasuredWidth() - 40, getMeasuredHeight() - 40);
             }
         }
     }
