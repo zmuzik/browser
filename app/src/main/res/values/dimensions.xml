@@ -10,6 +10,7 @@
     License.
 -->
 <resources>
+    <dimen name="standard_padding">8dp</dimen>
 
     <dimen name="bookmarkThumbnailWidth">90dip</dimen>
     <dimen name="bookmarkThumbnailHeight">80dip</dimen>

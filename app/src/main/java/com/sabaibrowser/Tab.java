@@ -219,7 +219,7 @@ public class Tab implements PictureListener {
         Bitmap mFavicon;
         boolean mIsBookmarkedSite;
         boolean mIncognito;
-        HashSet<Tracker> mTrackers;
+        List<Tracker> mTrackers;
 
         PageState(Context c, boolean incognito) {
             mIncognito = incognito;
@@ -230,7 +230,7 @@ public class Tab implements PictureListener {
                 mTitle = c.getString(R.string.new_tab);
             }
             mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
-            mTrackers = new HashSet<>();
+            mTrackers = new ArrayList<>();
         }
 
         PageState(Context c, boolean incognito, String url, Bitmap favicon) {
@@ -242,7 +242,7 @@ public class Tab implements PictureListener {
                 mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
             }
             mFavicon = favicon;
-            mTrackers = new HashSet<>();
+            mTrackers = new ArrayList<>();
         }
 
     }
@@ -1569,7 +1569,7 @@ public class Tab implements PictureListener {
         }
     }
 
-    public Set<Tracker> getTrackers() {
+    public List<Tracker> getTrackers() {
         return mCurrentState.mTrackers;
     }
 
