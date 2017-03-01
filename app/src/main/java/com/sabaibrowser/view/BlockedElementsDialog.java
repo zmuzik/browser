@@ -13,6 +13,9 @@ import com.sabaibrowser.R;
 import com.sabaibrowser.Tab;
 import com.sabaibrowser.UI;
 import com.sabaibrowser.blocker.Tracker;
+import com.sabaibrowser.eventbus.BlockedElementEvent;
+import com.sabaibrowser.eventbus.MainThreadBus;
+import com.squareup.otto.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -73,6 +76,25 @@ public class BlockedElementsDialog extends ViewGroup {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        MainThreadBus.get().register(this);
+    }
+
+    @Subscribe
+    public void updateBlockedElementsCount(BlockedElementEvent event) {
+        if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        MainThreadBus.get().unregister(this);
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int componentWidthPx = ((View) getParent().getParent()).getWidth();
@@ -109,8 +131,7 @@ public class BlockedElementsDialog extends ViewGroup {
         public TrackersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View root = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.tracker_list_item, parent, false);
-            ViewHolder vh = new ViewHolder(root);
-            return vh;
+            return new ViewHolder(root);
         }
 
         @Override
