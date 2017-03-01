@@ -74,12 +74,6 @@ public interface UI {
 
     public void onProgressChanged(Tab tab);
 
-    public void showActiveTabsPage();
-
-    public void removeActiveTabsPage();
-
-    public void showComboView(ComboViews startingView, Bundle extra);
-
     public void showCustomView(View view, int requestedOrientation,
             CustomViewCallback callback);
 
@@ -137,8 +131,6 @@ public interface UI {
     void setFullscreen(boolean enabled);
 
     public boolean shouldCaptureThumbnails();
-
-    boolean blockFocusAnimations();
 
     void onVoiceResult(String result);
 }

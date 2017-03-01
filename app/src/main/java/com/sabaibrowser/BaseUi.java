@@ -28,7 +28,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.ActionMode;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +40,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -52,9 +57,16 @@ import java.util.List;
 /**
  * UI interface definitions
  */
-public abstract class BaseUi implements UI {
+public class BaseUi implements UI {
 
-    private static final String LOGTAG = "BaseUi";
+    private static final String LOGTAG = "UI";
+
+    private static final int MSG_INIT_NAVSCREEN = 100;
+
+    private NavScreen mNavScreen;
+    private int mActionBarHeight;
+
+    boolean mShowNav = false;
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
             new FrameLayout.LayoutParams(
@@ -103,8 +115,13 @@ public abstract class BaseUi implements UI {
     private boolean mActivityPaused;
     protected TitleBar mTitleBar;
     private NavigationBar mNavigationBar;
-    private boolean mBlockFocusAnimations;
     private BlockedElementsDialog mBlockedElementsDialog;
+
+    public static enum ComboViews {
+        History,
+        Bookmarks,
+        Snapshots,
+    }
 
     public BaseUi(Activity browser, UiController controller) {
         mActivity = browser;
@@ -150,9 +167,79 @@ public abstract class BaseUi implements UI {
                             mSwipeContainer.setEnabled(false);
                         }
                     }
-                });
+                }
+        );
+
+        mNavigationBar = mTitleBar.getNavigationBar();
+        mNavigationBar.setFab(mFab);
+        initBubbleMenu();
+        TypedValue heightValue = new TypedValue();
+        browser.getTheme().resolveAttribute(
+                android.R.attr.actionBarSize, heightValue, true);
+        mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data,
+                browser.getResources().getDisplayMetrics());
     }
 
+    private void initBubbleMenu() {
+        mBubbleMenu.addMenuItem(R.drawable.ic_windows, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                showNavScreen();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_shield_white, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                showBlockedInfo();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_new_window, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openTabToHomePage();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_incognito, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openIncognitoTab();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_bookmarks, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_settings, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+                mUiController.openPreferences();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_home, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
+        mBubbleMenu.addMenuItem(R.drawable.ic_search, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBubbleMenu.closeMenu();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        hideTitleBar();
+    }
 
     private void cancelStopToast() {
         if (mStopToast != null) {
@@ -197,10 +284,23 @@ public abstract class BaseUi implements UI {
 
     @Override
     public boolean onBackKey() {
+        if (showingNavScreen()) {
+            mNavScreen.close(mUiController.getTabControl().getCurrentPosition());
+            return true;
+        }
         if (mCustomView != null) {
             mUiController.hideCustomView();
             return true;
         }
+        return false;
+    }
+
+    private boolean showingNavScreen() {
+        return mNavScreen != null && mNavScreen.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public boolean dispatchKey(int code, KeyEvent event) {
         return false;
     }
 
@@ -225,6 +325,9 @@ public abstract class BaseUi implements UI {
         if (tab.inForeground()) {
             mTitleBar.setProgress(progress);
         }
+        if (mNavScreen == null && getTitleBar().getHeight() > 0) {
+            mHandler.sendEmptyMessage(MSG_INIT_NAVSCREEN);
+        }
     }
 
     @Override
@@ -247,6 +350,11 @@ public abstract class BaseUi implements UI {
 
     @Override
     public boolean needsRestoreAllTabs() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCaptureThumbnails() {
         return true;
     }
 
@@ -256,9 +364,10 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void setActiveTab(final Tab tab) {
+        mTitleBar.cancelTitleBarAnimation(true);
+        mTitleBar.setSkipTitleBarAnimations(true);
         if (tab == null) return;
         // block unnecessary focus change animations during tab switch
-        mBlockFocusAnimations = true;
         mHandler.removeMessages(MSG_HIDE_TITLEBAR);
         if ((tab != mActiveTab) && (mActiveTab != null)) {
             removeTabFromContentView(mActiveTab);
@@ -282,7 +391,24 @@ public abstract class BaseUi implements UI {
         onProgressChanged(tab);
         mNavigationBar.setIncognitoMode(tab.isPrivateBrowsingEnabled());
         updateAutoLogin(tab, false);
-        mBlockFocusAnimations = false;
+
+        //if at Nav screen show, detach tab like what showNavScreen() do.
+        if (mShowNav) {
+            detachTab(mActiveTab);
+        }
+
+        BrowserWebView view = (BrowserWebView) tab.getWebView();
+        // TabControl.setCurrentTab has been called before this,
+        // so the tab is guaranteed to have a webview
+        if (view == null) {
+            Log.e(LOGTAG, "active tab with no webview detected");
+            return;
+        }
+        // Request focus on the top window.
+        view.setTitleBar(mTitleBar);
+        // update nav bar state
+        mNavigationBar.onStateChanged(UrlInputView.StateListener.STATE_NORMAL);
+        mTitleBar.setSkipTitleBarAnimations(false);
     }
 
     protected void updateUrlBarAutoShowManagerTarget() {
@@ -390,6 +516,7 @@ public abstract class BaseUi implements UI {
     }
 
     public void editUrl(boolean clearInput, boolean forceIME) {
+        if (mShowNav) return;
         if (mUiController.isInCustomActionMode()) {
             mUiController.endActionMode();
         }
@@ -397,6 +524,7 @@ public abstract class BaseUi implements UI {
         if ((getActiveTab() != null) && !getActiveTab().isSnapshot()) {
             mNavigationBar.startEditingUrl(clearInput, forceIME);
         }
+
     }
 
     boolean canShowTitleBar() {
@@ -434,11 +562,6 @@ public abstract class BaseUi implements UI {
 
     public TitleBar getTitleBar() {
         return mTitleBar;
-    }
-
-    @Override
-    public void showComboView(ComboViews startingView, Bundle extras) {
-
     }
 
     @Override
@@ -500,7 +623,7 @@ public abstract class BaseUi implements UI {
 
     @Override
     public boolean isWebShowing() {
-        return mCustomView == null;
+        return mCustomView == null && !showingNavScreen();
     }
 
     @Override
@@ -534,29 +657,66 @@ public abstract class BaseUi implements UI {
     }
 
     @Override
+    public void onActionModeStarted(ActionMode mode) {
+        if (!isEditingUrl()) {
+            hideTitleBar();
+        } else {
+            mTitleBar.animate().translationY(mActionBarHeight);
+        }
+    }
+
+    @Override
     public void onActionModeFinished(boolean inLoad) {
-    }
-
-    // active tabs page
-
-    public void showActiveTabsPage() {
-    }
-
-    /**
-     * Remove the active tabs page.
-     */
-    public void removeActiveTabsPage() {
+        mTitleBar.animate().translationY(0);
+        if (inLoad) {
+            showTitleBar();
+        }
     }
 
     // menu handling callbacks
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        updateMenuState(mActiveTab, menu);
         return true;
     }
 
     @Override
     public void updateMenuState(Tab tab, Menu menu) {
+        MenuItem bm = menu.findItem(R.id.bookmarks_menu_id);
+        if (bm != null) {
+            bm.setVisible(!showingNavScreen());
+        }
+        MenuItem abm = menu.findItem(R.id.add_bookmark_menu_id);
+        if (abm != null) {
+            abm.setVisible((tab != null) && !tab.isSnapshot() && !showingNavScreen());
+        }
+        MenuItem info = menu.findItem(R.id.page_info_menu_id);
+        if (info != null) {
+            info.setVisible(false);
+        }
+        MenuItem newTab = menu.findItem(R.id.new_tab_menu_id);
+        if (newTab != null) {
+            newTab.setVisible(false);
+        }
+        MenuItem newIncognitoTab = menu.findItem(R.id.new_incognito_tab_menu_id);
+        if (newIncognitoTab != null) {
+            newIncognitoTab.setVisible(false);
+        }
+        MenuItem closeOthers = menu.findItem(R.id.close_other_tabs_id);
+        if (closeOthers != null) {
+            boolean isLastTab = true;
+            if (tab != null) {
+                isLastTab = (mTabControl.getTabCount() <= 1);
+            }
+            closeOthers.setEnabled(!isLastTab);
+        }
+        if (showingNavScreen()) {
+            menu.setGroupVisible(R.id.LIVE_MENU, false);
+            menu.setGroupVisible(R.id.SNAPSHOT_MENU, false);
+            menu.setGroupVisible(R.id.NAV_MENU, false);
+            menu.setGroupVisible(R.id.COMBO_MENU, true);
+        }
     }
 
     @Override
@@ -569,6 +729,11 @@ public abstract class BaseUi implements UI {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (showingNavScreen()
+                && (item.getItemId() != R.id.history_menu_id)
+                && (item.getItemId() != R.id.snapshots_menu_id)) {
+            hideNavScreen(mUiController.getTabControl().getCurrentPosition(), false);
+        }
         return false;
     }
 
@@ -582,10 +747,14 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void onContextMenuCreated(Menu menu) {
+        hideTitleBar();
     }
 
     @Override
     public void onContextMenuClosed(Menu menu, boolean inLoad) {
+        if (inLoad) {
+            showTitleBar();
+        }
     }
 
     // error console
@@ -713,11 +882,58 @@ public abstract class BaseUi implements UI {
     };
 
     protected void handleMessage(Message msg) {
+        if (msg.what == MSG_INIT_NAVSCREEN) {
+            if (mNavScreen == null) {
+                mNavScreen = new NavScreen(mActivity, mUiController, this);
+                mCustomViewContainer.addView(mNavScreen, COVER_SCREEN_PARAMS);
+                mNavScreen.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
     public void showWeb(boolean animate) {
         mUiController.hideCustomView();
+        hideNavScreen(mUiController.getTabControl().getCurrentPosition(), animate);
+    }
+
+    void showNavScreen() {
+        mShowNav = true;
+        mUiController.setBlockEvents(true);
+        if (mNavScreen == null) {
+            mNavScreen = new NavScreen(mActivity, mUiController, this);
+            mCustomViewContainer.addView(mNavScreen, COVER_SCREEN_PARAMS);
+        } else {
+            mNavScreen.setVisibility(View.VISIBLE);
+            mNavScreen.setAlpha(1f);
+            mNavScreen.refreshAdapter();
+        }
+        mActiveTab.capture();
+        mCustomViewContainer.setVisibility(View.VISIBLE);
+        mCustomViewContainer.bringToFront();
+        detachTab(mActiveTab);
+        mContentView.setVisibility(View.GONE);
+        if (showingNavScreen()) {
+            mNavScreen.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+            mTabControl.setOnThumbnailUpdatedListener(mNavScreen);
+        }
+        mUiController.setBlockEvents(false);
+    }
+
+    void hideNavScreen(int position, boolean animate) {
+        mShowNav = false;
+        if (!showingNavScreen()) return;
+        final Tab tab = mUiController.getTabControl().getTab(position);
+        if (tab != null) {
+            setActiveTab(tab);
+        } else if (mTabControl.getTabCount() > 0) {
+            setActiveTab(mTabControl.getCurrentTab());
+        }
+        mContentView.setVisibility(View.VISIBLE);
+        mTabControl.setOnThumbnailUpdatedListener(null);
+        mNavScreen.setVisibility(View.GONE);
+        mCustomViewContainer.setAlpha(1f);
+        mCustomViewContainer.setVisibility(View.GONE);
     }
 
     static class FullscreenHolder extends FrameLayout {
@@ -745,11 +961,6 @@ public abstract class BaseUi implements UI {
             params.topMargin = margin;
             mContentView.setLayoutParams(params);
         }
-    }
-
-    @Override
-    public boolean blockFocusAnimations() {
-        return mBlockFocusAnimations;
     }
 
     @Override

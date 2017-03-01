@@ -118,7 +118,7 @@ public class NavigationBar extends LinearLayout implements
         mUrlInput.setOnTouchListener(new SwipeListener(getContext()) {
             public void onSwipeDown() {
                 stopEditingUrl();
-                ((PhoneUi) mBaseUi).showNavScreen();
+                mBaseUi.showNavScreen();
             }
         });
         mBlockedCountIndicator = (TextView) findViewById(R.id.blocked_count_indicator);

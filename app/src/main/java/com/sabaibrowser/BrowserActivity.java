@@ -83,7 +83,7 @@ public class BrowserActivity extends Activity
 
     private Controller createController() {
         Controller controller = new Controller(this);
-        UI ui = new PhoneUi(this, controller);
+        UI ui = new BaseUi(this, controller);
         controller.setUi(ui);
         return controller;
     }
