@@ -22,7 +22,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,7 @@ public class TitleBar extends RelativeLayout {
     private AccessibilityManager mAccessibilityManager;
 
     private AutologinBar mAutoLogin;
-    private NavigationBarBase mNavBar;
+    private NavigationBar mNavBar;
     private boolean mUseQuickControls;
 
     //state
@@ -78,7 +77,7 @@ public class TitleBar extends RelativeLayout {
         LayoutInflater factory = LayoutInflater.from(context);
         factory.inflate(R.layout.title_bar, this);
         mProgress = (PageProgressView) findViewById(R.id.progress);
-        mNavBar = (NavigationBarBase) findViewById(R.id.taburlbar);
+        mNavBar = (NavigationBar) findViewById(R.id.taburlbar);
         mNavBar.setTitleBar(this);
     }
 
@@ -384,7 +383,7 @@ public class TitleBar extends RelativeLayout {
         return mProgress;
     }
 
-    public NavigationBarBase getNavigationBar() {
+    public NavigationBar getNavigationBar() {
         return mNavBar;
     }
 

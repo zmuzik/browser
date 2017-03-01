@@ -102,7 +102,7 @@ public abstract class BaseUi implements UI {
 
     private boolean mActivityPaused;
     protected TitleBar mTitleBar;
-    private NavigationBarBase mNavigationBar;
+    private NavigationBar mNavigationBar;
     private boolean mBlockFocusAnimations;
     private BlockedElementsDialog mBlockedElementsDialog;
 

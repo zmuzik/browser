@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<com.sabaibrowser.NavigationBarPhone
+<com.sabaibrowser.NavigationBar
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:background="@color/light_gray"
@@ -113,4 +113,4 @@
         android:layout_height="match_parent"
         android:src="@color/trasparent"/>
     -->
-</com.sabaibrowser.NavigationBarPhone>
+</com.sabaibrowser.NavigationBar>

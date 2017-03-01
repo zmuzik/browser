@@ -38,7 +38,7 @@ public class PhoneUi extends BaseUi {
     private static final int MSG_INIT_NAVSCREEN = 100;
 
     private NavScreen mNavScreen;
-    private NavigationBarPhone mNavigationBar;
+    private NavigationBar mNavigationBar;
     private int mActionBarHeight;
 
     boolean mShowNav = false;
@@ -49,7 +49,7 @@ public class PhoneUi extends BaseUi {
      */
     public PhoneUi(Activity browser, UiController controller) {
         super(browser, controller);
-        mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
+        mNavigationBar = mTitleBar.getNavigationBar();
         mNavigationBar.setFab(mFab);
         initBubbleMenu();
         TypedValue heightValue = new TypedValue();
