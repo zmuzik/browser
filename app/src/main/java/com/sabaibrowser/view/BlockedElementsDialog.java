@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.sabaibrowser.UI;
 import com.sabaibrowser.R;
 import com.sabaibrowser.Tab;
+import com.sabaibrowser.blocker.Tracker;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class BlockedElementsDialog extends ViewGroup {
     private int paddingVert;
     private int closeFabPosX;
     private int closeFabPosY;
-    private Set<String> mTrackers;
+    private Set<Tracker> mTrackers;
     private Bubble mCloseFab;
     private TextView mListTv;
 
@@ -65,8 +66,8 @@ public class BlockedElementsDialog extends ViewGroup {
         addView(mListTv);
         if (mTrackers != null) {
             StringBuffer sb = new StringBuffer();
-            for (String tracker : mTrackers) {
-                sb.append(tracker);
+            for (Tracker tracker : mTrackers) {
+                sb.append(tracker.category + " - " + tracker.name);
                 sb.append('\n');
             }
             mListTv.setText(sb.toString());

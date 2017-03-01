@@ -1,11 +1,11 @@
 package com.sabaibrowser.blocker.disconnect;
 
+import com.sabaibrowser.blocker.Tracker;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class Tracker {
-    public String category;
-    public String name;
+public class DisconnectTracker extends Tracker {
     public String mainUrl;
     public List<String> urls = new ArrayList<>();
 }

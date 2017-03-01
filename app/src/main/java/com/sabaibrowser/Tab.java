@@ -71,6 +71,7 @@ import android.webkit.WebViewClient;
 
 import com.sabaibrowser.TabControl.OnThumbnailUpdatedListener;
 import com.sabaibrowser.blocker.Blocker;
+import com.sabaibrowser.blocker.Tracker;
 import com.sabaibrowser.eventbus.BlockedElementEvent;
 import com.sabaibrowser.eventbus.MainThreadBus;
 import com.sabaibrowser.os.WebAddress;
@@ -218,7 +219,7 @@ public class Tab implements PictureListener {
         Bitmap mFavicon;
         boolean mIsBookmarkedSite;
         boolean mIncognito;
-        HashSet<String> mTrackers;
+        HashSet<Tracker> mTrackers;
 
         PageState(Context c, boolean incognito) {
             mIncognito = incognito;
@@ -632,11 +633,12 @@ public class Tab implements PictureListener {
 
         private WebResourceResponse shouldInterceptRequest(String elementUrl, String pageHost) {
             if (mCurrentState.mUrl.equals(elementUrl)) return null;
-            if (Blocker.isBlocked(elementUrl, pageHost)) {
+            Tracker tracker = Blocker.getTracker(elementUrl, pageHost);
+            if (tracker != null) {
                 String elementHost = (new WebAddress(elementUrl).getHost());
-                if (!mCurrentState.mTrackers.contains(elementHost)) {
-                    mCurrentState.mTrackers.add(elementHost);
-                    MainThreadBus.get().post(new BlockedElementEvent(Tab.this, elementUrl));
+                if (!mCurrentState.mTrackers.contains(tracker)) {
+                    mCurrentState.mTrackers.add(tracker);
+                    MainThreadBus.get().post(new BlockedElementEvent(Tab.this, tracker));
                 }
                 return new WebResourceResponse("text/html", "UTF-8", null);
             } else {
@@ -1567,7 +1569,7 @@ public class Tab implements PictureListener {
         }
     }
 
-    public Set<String> getTrackers() {
+    public Set<Tracker> getTrackers() {
         return mCurrentState.mTrackers;
     }
 

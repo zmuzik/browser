@@ -1,16 +1,17 @@
 package com.sabaibrowser.eventbus;
 
 import com.sabaibrowser.Tab;
+import com.sabaibrowser.blocker.Tracker;
 
 import java.lang.ref.WeakReference;
 
 public class BlockedElementEvent {
     WeakReference<Tab> mTab;
-    String mUrl;
+    Tracker mTracker;
 
-    public BlockedElementEvent(Tab tab, String url) {
+    public BlockedElementEvent(Tab tab, Tracker tracker) {
         mTab = new WeakReference<Tab>(tab);
-        mUrl = url;
+        mTracker = tracker;
     }
 
     public Tab getTab() {

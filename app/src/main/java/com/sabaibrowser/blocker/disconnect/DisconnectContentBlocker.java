@@ -2,9 +2,9 @@ package com.sabaibrowser.blocker.disconnect;
 
 import android.content.Context;
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.sabaibrowser.blocker.Blocker;
+import com.sabaibrowser.blocker.Tracker;
 import com.sabaibrowser.os.WebAddress;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.List;
 public class DisconnectContentBlocker implements Blocker.ContentBlocker {
 
     private final String TAG = getClass().getSimpleName();
-    private List<Tracker> mTrackers;
+    private List<DisconnectTracker> mTrackers;
     private Context mContext;
 
     public DisconnectContentBlocker(Context context) {
@@ -24,8 +24,8 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
         mTrackers = readTrackers("lists/services.json");
     }
 
-    private List<Tracker> readTrackers(String fileName) {
-        List<Tracker> result = new ArrayList<Tracker>();
+    private List<DisconnectTracker> readTrackers(String fileName) {
+        List<DisconnectTracker> result = new ArrayList<DisconnectTracker>();
         try {
             final InputStream in = mContext.getAssets().open(fileName);
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
@@ -40,12 +40,15 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
             // iterate categories
             while (reader.hasNext()) {
                 String category = reader.nextName();
+                // skip "Content" category
                 if ("Content".equals(category)) {
                     reader.skipValue();
                 } else {
                     reader.beginArray();
                     while (reader.hasNext()) {
-                        result.add(getTracker(reader));
+                        DisconnectTracker tracker = getTracker(reader);
+                        tracker.category = category;
+                        result.add(tracker);
                     }
                     reader.endArray();
                 }
@@ -60,8 +63,8 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
         return result;
     }
 
-    private Tracker getTracker(JsonReader reader) throws IOException {
-        Tracker result = new Tracker();
+    private DisconnectTracker getTracker(JsonReader reader) throws IOException {
+        DisconnectTracker result = new DisconnectTracker();
         reader.beginObject();
         while (reader.hasNext()) {
             ArrayList<String> urls = new ArrayList<String>();
@@ -80,22 +83,28 @@ public class DisconnectContentBlocker implements Blocker.ContentBlocker {
     }
 
     @Override
-    public boolean isBlocked(String elementUrl, String pageDomain) {
+    public Tracker getTracker(String elementUrl, String pageDomain) {
         String elementDomain = new WebAddress(elementUrl).getHost();
         // don't block elements from the same domain
-        if (elementDomain.equals(pageDomain)) return false;
+        if (elementDomain.equals(pageDomain)) return null;
 
-        for (Tracker tracker : mTrackers) {
+        for (DisconnectTracker tracker : mTrackers) {
             for (String trackerDomain : tracker.urls) {
                 if (elementDomain.endsWith(trackerDomain)) {
                     for (String otherTrackerDomain : tracker.urls) {
                         // not blocked if page host itself matches with any of the tracker's urls
-                        if (pageDomain.endsWith(otherTrackerDomain)) return false;
+                        if (pageDomain.endsWith(otherTrackerDomain)) return null;
                     }
-                    return true;
+                    return tracker;
                 }
             }
         }
-        return false;
+        return null;
+    }
+
+    @Override
+    public boolean isBlocked(String elementUrl, String pageDomain) {
+        Tracker tracker = getTracker(elementUrl, pageDomain);
+        return tracker != null;
     }
 }

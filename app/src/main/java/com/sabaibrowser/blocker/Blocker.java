@@ -31,7 +31,18 @@ public class Blocker {
         return blocked;
     }
 
+    public static Tracker getTracker(String url, String pageHost) {
+        if (mContentBlocker == null) return null;
+        Tracker tracker = mContentBlocker.getTracker(url, pageHost);
+        if (tracker != null && logBlockedItems) {
+            Log.d(TAG, "blocked: " + url);
+        }
+        return tracker;
+    }
+
     public interface ContentBlocker {
+        public Tracker getTracker(String url, String pageHost);
+
         public boolean isBlocked(String url, String pageHost);
     }
 }
