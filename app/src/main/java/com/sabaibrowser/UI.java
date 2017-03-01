@@ -47,9 +47,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.sabaibrowser.eventbus.BlockedElementEvent;
+import com.sabaibrowser.eventbus.MainThreadBus;
 import com.sabaibrowser.view.BlockedElementsDialog;
 import com.sabaibrowser.view.Bubble;
 import com.sabaibrowser.view.BubbleMenu;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -93,6 +96,7 @@ public class UI {
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
     private FrameLayout mFixedTitlebarContainer;
+    private FrameLayout mBlockedElementsContainer;
 
     private View mCustomView;
     private View mDecorView;
@@ -136,6 +140,8 @@ public class UI {
                 R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
                 R.id.fullscreen_custom_content);
+        mBlockedElementsContainer = (FrameLayout)
+                frameLayout.findViewById(R.id.blocked_dialog_container);
         mFab = (Bubble) frameLayout.findViewById(R.id.main_fab);
         mBubbleMenu = (BubbleMenu) frameLayout.findViewById(R.id.bubble_menu);
         setImmersiveFullscreen(BrowserSettings.getInstance().useFullscreen());
@@ -174,6 +180,8 @@ public class UI {
                 android.R.attr.actionBarSize, heightValue, true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data,
                 browser.getResources().getDisplayMetrics());
+
+        MainThreadBus.get().register(this);
     }
 
     private void initBubbleMenu() {
@@ -233,6 +241,7 @@ public class UI {
     }
 
     public void onDestroy() {
+        MainThreadBus.get().unregister(this);
         hideTitleBar();
     }
 
@@ -921,6 +930,14 @@ public class UI {
         mNavigationBar.onVoiceResult(result);
     }
 
+    public void toggleBlockedInfo() {
+        if (mBlockedElementsDialog == null) {
+            showBlockedInfo();
+        } else {
+            hideBlockedInfo();
+        }
+    }
+
     public void showBlockedInfo() {
         if (mBlockedElementsDialog != null) return;
         mBlockedElementsDialog = new BlockedElementsDialog(getActivity(), this, getActiveTab());
@@ -928,15 +945,25 @@ public class UI {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.BOTTOM));
-        mContentView.addView(mBlockedElementsDialog);
+        mBlockedElementsContainer.addView(mBlockedElementsDialog);
+        mBlockedElementsContainer.setVisibility(View.VISIBLE);
         mBubbleMenu.setVisibility(View.GONE);
     }
 
     public void hideBlockedInfo() {
         if (mBlockedElementsDialog == null) return;
         mContentView.removeView(mBlockedElementsDialog);
+        mBlockedElementsContainer.removeView(mBlockedElementsDialog);
         mBlockedElementsDialog = null;
+        mBlockedElementsContainer.setVisibility(View.GONE);
         mBubbleMenu.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe
+    public void updateBlockedElementsCount(BlockedElementEvent event) {
+        if (!showingNavScreen() && !isActivityPaused()) {
+            mNavigationBar.onTabDataChanged(event.getTab());
+        }
     }
 
 }

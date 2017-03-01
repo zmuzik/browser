@@ -43,7 +43,7 @@ public class BlockedElementsDialog extends ViewGroup {
         paddingHoriz = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_horiz);
         paddingVert = getResources().getDimensionPixelSize(R.dimen.bubble_menu_padding_vert);
 
-        setBackgroundColor(getResources().getColor(R.color.white));
+        setBackgroundColor(getResources().getColor(R.color.light_gray));
 
         mCloseFab = new Bubble(getContext());
         mCloseFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_white));
@@ -77,7 +77,7 @@ public class BlockedElementsDialog extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int componentWidthPx = ((View) getParent().getParent()).getWidth();
-        int componentHeightPx = ((View) getParent().getParent()).getHeight() / 2;
+        int componentHeightPx = ((View) getParent().getParent()).getHeight();
         closeFabPosX = componentWidthPx - bubbleSize - paddingHoriz;
         closeFabPosY = componentHeightPx - bubbleSize - paddingVert;
         setMeasuredDimension(componentWidthPx, componentHeightPx);

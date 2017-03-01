@@ -126,7 +126,7 @@ public class NavigationBar extends LinearLayout implements
         mShieldIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mUi != null) mUi.showBlockedInfo();
+                if (mUi != null) mUi.toggleBlockedInfo();
             }
         });
     }
