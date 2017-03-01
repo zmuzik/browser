@@ -45,7 +45,7 @@ public class TitleBar extends RelativeLayout {
     private static final float ANIM_TITLEBAR_DECELERATE = 2.5f;
 
     private UiController mUiController;
-    private BaseUi mBaseUi;
+    private UI mUi;
     private FrameLayout mContentView;
     private PageProgressView mProgress;
     private AccessibilityManager mAccessibilityManager;
@@ -62,11 +62,11 @@ public class TitleBar extends RelativeLayout {
     private Animator mTitleBarAnimator;
     private boolean mIsFixedTitleBar;
 
-    public TitleBar(Context context, UiController controller, BaseUi ui,
+    public TitleBar(Context context, UiController controller, UI ui,
                     FrameLayout contentView) {
         super(context, null);
         mUiController = controller;
-        mBaseUi = ui;
+        mUi = ui;
         mContentView = contentView;
         mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         initLayout(context);
@@ -102,9 +102,9 @@ public class TitleBar extends RelativeLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 //        if (mIsFixedTitleBar) {
 //            int margin = getMeasuredHeight() - calculateEmbeddedHeight();
-//            mBaseUi.setContentViewMarginTop(-margin);
+//            mUi.setContentViewMarginTop(-margin);
 //        } else {
-//            mBaseUi.setContentViewMarginTop(0);
+//            mUi.setContentViewMarginTop(0);
 //        }
     }
 
@@ -123,15 +123,15 @@ public class TitleBar extends RelativeLayout {
             parent.removeView(this);
         }
         if (mIsFixedTitleBar) {
-            mBaseUi.addFixedTitleBar(this);
+            mUi.addFixedTitleBar(this);
         } else {
             mContentView.addView(this, makeLayoutParams());
-            mBaseUi.setContentViewMarginTop(0);
+            mUi.setContentViewMarginTop(0);
         }
     }
 
-    public BaseUi getUi() {
-        return mBaseUi;
+    public UI getUi() {
+        return mUi;
     }
 
     public UiController getUiController() {
@@ -246,7 +246,7 @@ public class TitleBar extends RelativeLayout {
 
     private int getVisibleTitleHeight() {
         //getVisibleTitleHeight should always return 0
-        //Tab tab = mBaseUi.getActiveTab();
+        //Tab tab = mUi.getActiveTab();
         //WebView webview = tab != null ? tab.getWebView() : null;
         //return webview != null ? webview.getVisibleTitleHeight() : 0;
         return 0;
@@ -314,7 +314,7 @@ public class TitleBar extends RelativeLayout {
 
     public void showAutoLogin(boolean animate) {
         if (mUseQuickControls) {
-            mBaseUi.showTitleBar();
+            mUi.showTitleBar();
         }
         if (mAutoLogin == null) {
             inflateAutoLoginBar();
@@ -328,9 +328,9 @@ public class TitleBar extends RelativeLayout {
 
     public void hideAutoLogin(boolean animate) {
         if (mUseQuickControls) {
-            mBaseUi.hideTitleBar();
+            mUi.hideTitleBar();
             mAutoLogin.setVisibility(View.GONE);
-            mBaseUi.refreshWebView();
+            mUi.refreshWebView();
         } else {
             if (animate) {
                 Animation anim = AnimationUtils.loadAnimation(getContext(),
@@ -339,7 +339,7 @@ public class TitleBar extends RelativeLayout {
                     @Override
                     public void onAnimationEnd(Animation a) {
                         mAutoLogin.setVisibility(View.GONE);
-                        mBaseUi.refreshWebView();
+                        mUi.refreshWebView();
                     }
 
                     @Override
@@ -353,7 +353,7 @@ public class TitleBar extends RelativeLayout {
                 mAutoLogin.startAnimation(anim);
             } else if (mAutoLogin.getAnimation() == null) {
                 mAutoLogin.setVisibility(View.GONE);
-                mBaseUi.refreshWebView();
+                mUi.refreshWebView();
             }
         }
     }
@@ -371,7 +371,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public WebView getCurrentWebView() {
-        Tab t = mBaseUi.getActiveTab();
+        Tab t = mUi.getActiveTab();
         if (t != null) {
             return t.getWebView();
         } else {

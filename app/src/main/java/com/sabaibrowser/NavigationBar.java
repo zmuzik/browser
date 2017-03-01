@@ -48,7 +48,7 @@ public class NavigationBar extends LinearLayout implements
         StateListener, OnMenuItemClickListener, OnClickListener, UrlInputListener,
         OnDismissListener, OnFocusChangeListener, TextWatcher {
 
-    protected BaseUi mBaseUi;
+    protected UI mUi;
     protected TitleBar mTitleBar;
     protected UiController mUiController;
     protected UrlInputView mUrlInput;
@@ -118,7 +118,7 @@ public class NavigationBar extends LinearLayout implements
         mUrlInput.setOnTouchListener(new SwipeListener(getContext()) {
             public void onSwipeDown() {
                 stopEditingUrl();
-                mBaseUi.showNavScreen();
+                mUi.showNavScreen();
             }
         });
         mBlockedCountIndicator = (TextView) findViewById(R.id.blocked_count_indicator);
@@ -126,14 +126,14 @@ public class NavigationBar extends LinearLayout implements
         mShieldIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mBaseUi != null) mBaseUi.showBlockedInfo();
+                if (mUi != null) mUi.showBlockedInfo();
             }
         });
     }
 
     public void setTitleBar(TitleBar titleBar) {
         mTitleBar = titleBar;
-        mBaseUi = mTitleBar.getUi();
+        mUi = mTitleBar.getUi();
         mUiController = mTitleBar.getUiController();
         mUrlInput.setController(mUiController);
     }
@@ -154,7 +154,7 @@ public class NavigationBar extends LinearLayout implements
             if (mTitleBar.isInLoad()) {
                 mUiController.stopLoading();
             } else {
-                WebView web = mBaseUi.getWebView();
+                WebView web = mUi.getWebView();
                 if (web != null) {
                     stopEditingUrl();
                     web.reload();
@@ -182,7 +182,7 @@ public class NavigationBar extends LinearLayout implements
             setFocusState(hasFocus);
         }
         if (hasFocus) {
-            mBaseUi.showTitleBar();
+            mUi.showTitleBar();
         } else if (!mUrlInput.needsUpdate()) {
             mUrlInput.dismissDropDown();
             mUrlInput.hideIME();
@@ -192,7 +192,7 @@ public class NavigationBar extends LinearLayout implements
                     setDisplayTitle(currentTab.getUrl());
                 }
             }
-            mBaseUi.suggestHideTitleBar();
+            mUi.suggestHideTitleBar();
         }
         mUrlInput.clearNeedsUpdate();
     }
@@ -242,7 +242,7 @@ public class NavigationBar extends LinearLayout implements
         stopEditingUrl();
         if (UrlInputView.TYPED.equals(source)) {
             String url = UrlUtils.smartUrlFilter(text, false);
-            Tab t = mBaseUi.getActiveTab();
+            Tab t = mUi.getActiveTab();
             // Only shortcut javascript URIs for now, as there is special
             // logic in UrlHandler for other schemas
             if (url != null && t != null && url.startsWith("javascript:")) {
@@ -269,8 +269,8 @@ public class NavigationBar extends LinearLayout implements
 
     @Override
     public void onDismiss() {
-        final Tab currentTab = mBaseUi.getActiveTab();
-        mBaseUi.hideTitleBar();
+        final Tab currentTab = mUi.getActiveTab();
+        mUi.hideTitleBar();
         post(new Runnable() {
             public void run() {
                 clearFocus();
@@ -283,7 +283,7 @@ public class NavigationBar extends LinearLayout implements
 
     private void onMenuHidden() {
         mOverflowMenuShowing = false;
-        mBaseUi.showTitleBarForDuration();
+        mUi.showTitleBarForDuration();
     }
 
     /**
@@ -312,7 +312,7 @@ public class NavigationBar extends LinearLayout implements
     }
 
     /**
-     * called from the Ui when the user wants to edit
+     * called from the UI when the user wants to edit
      *
      * @param clearInput clear the input field
      */

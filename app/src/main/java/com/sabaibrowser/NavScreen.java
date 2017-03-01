@@ -35,7 +35,7 @@ public class NavScreen extends RelativeLayout
         implements OnClickListener, OnMenuItemClickListener, OnThumbnailUpdatedListener {
 
     UiController mUiController;
-    BaseUi mUi;
+    UI mUi;
     Activity mActivity;
 
     BubbleMenu mBubbleMenu;
@@ -44,7 +44,7 @@ public class NavScreen extends RelativeLayout
     int mOrientation;
     HashMap<Tab, View> mTabViews;
 
-    public NavScreen(Activity activity, UiController ctl, BaseUi ui) {
+    public NavScreen(Activity activity, UiController ctl, UI ui) {
         super(activity);
         mActivity = activity;
         mUiController = ctl;

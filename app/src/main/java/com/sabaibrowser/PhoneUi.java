@@ -30,9 +30,9 @@ import android.view.accessibility.AccessibilityEvent;
 import com.sabaibrowser.UrlInputView.StateListener;
 
 /**
- * Ui for regular phone screen sizes
+ * UI for regular phone screen sizes
  */
-public class PhoneUi extends BaseUi {
+public class PhoneUi extends UI {
 
     private static final String LOGTAG = "PhoneUi";
     private static final int MSG_INIT_NAVSCREEN = 100;

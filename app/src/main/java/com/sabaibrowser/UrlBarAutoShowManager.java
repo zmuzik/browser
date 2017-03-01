@@ -36,7 +36,7 @@ public class UrlBarAutoShowManager implements OnTouchListener,
     private static long IGNORE_INTERVAL = 250;
 
     private BrowserWebView mTarget;
-    private BaseUi mUi;
+    private UI mUi;
 
     private int mSlop;
 
@@ -48,7 +48,7 @@ public class UrlBarAutoShowManager implements OnTouchListener,
     private long mTriggeredTime;
     private boolean mIsScrolling;
 
-    public UrlBarAutoShowManager(BaseUi ui) {
+    public UrlBarAutoShowManager(UI ui) {
         mUi = ui;
         ViewConfiguration config = ViewConfiguration.get(mUi.getActivity());
         mSlop = config.getScaledTouchSlop() * 2;
@@ -76,7 +76,7 @@ public class UrlBarAutoShowManager implements OnTouchListener,
             // If it is showing, extend it
             if (mUi.isTitleBarShowing()) {
                 long remaining = mLastScrollTime - mTriggeredTime;
-                remaining = Math.max(BaseUi.HIDE_TITLEBAR_DELAY - remaining,
+                remaining = Math.max(UI.HIDE_TITLEBAR_DELAY - remaining,
                         SCROLL_TIMEOUT_DURATION);
                 mUi.showTitleBarForDuration(remaining);
             }

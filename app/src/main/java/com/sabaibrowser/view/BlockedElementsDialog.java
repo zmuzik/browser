@@ -6,17 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sabaibrowser.BaseUi;
+import com.sabaibrowser.UI;
 import com.sabaibrowser.R;
 import com.sabaibrowser.Tab;
 
 import java.lang.ref.WeakReference;
-import java.util.HashSet;
 import java.util.Set;
 
 public class BlockedElementsDialog extends ViewGroup {
 
-    WeakReference<BaseUi> mUi;
+    WeakReference<UI> mUi;
 
     private int bubbleSize;
     private int paddingHoriz;
@@ -32,9 +31,9 @@ public class BlockedElementsDialog extends ViewGroup {
         init();
     }
 
-    public BlockedElementsDialog(Context context, BaseUi ui, Tab tab) {
+    public BlockedElementsDialog(Context context, UI ui, Tab tab) {
         super(context);
-        mUi = new WeakReference<BaseUi>(ui);
+        mUi = new WeakReference<UI>(ui);
         mTrackers = tab.getTrackers();
         init();
     }
