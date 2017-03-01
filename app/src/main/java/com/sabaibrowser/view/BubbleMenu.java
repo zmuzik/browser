@@ -142,6 +142,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         setBackgroundColor(getResources().getColor(R.color.bubble_menu_bg));
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_white));
         isOpen = true;
+        scrollFactor = 0;
         invalidate();
     }
 
