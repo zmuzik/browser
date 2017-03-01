@@ -258,6 +258,8 @@ public class UI {
         if (isCustomViewShowing()) {
             onHideCustomView();
         }
+        hideBlockedInfo();
+        if (mBubbleMenu != null) mBubbleMenu.closeMenu();
         cancelStopToast();
         mActivityPaused = true;
     }
@@ -278,6 +280,8 @@ public class UI {
     }
 
     public void onConfigurationChanged(Configuration config) {
+        hideBlockedInfo();
+        if (mBubbleMenu!= null) mBubbleMenu.closeMenu();
     }
 
     public Activity getActivity() {

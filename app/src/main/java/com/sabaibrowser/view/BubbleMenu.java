@@ -138,6 +138,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     }
 
     private void openMenu() {
+        if (isOpen) return;
         setBackgroundColor(getResources().getColor(R.color.bubble_menu_bg));
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_white));
         isOpen = true;
@@ -145,6 +146,7 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
     }
 
     public void closeMenu() {
+        if (!isOpen) return;
         setBackground(null);
         mainFab.setImageDrawable(getResources().getDrawable(R.drawable.logo_fab_icon));
         isOpen = false;
