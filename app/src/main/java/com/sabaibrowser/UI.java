@@ -384,7 +384,6 @@ public class UI {
         onTabDataChanged(tab);
         onProgressChanged(tab);
         mNavigationBar.setIncognitoMode(tab.isPrivateBrowsingEnabled());
-        updateAutoLogin(tab, false);
 
         //if at Nav screen show, detach tab like what showNavScreen() do.
         if (mShowNav) {
@@ -611,21 +610,9 @@ public class UI {
         return mCustomView == null && !showingNavScreen();
     }
 
-    public void showAutoLogin(Tab tab) {
-        updateAutoLogin(tab, true);
-    }
-
-    public void hideAutoLogin(Tab tab) {
-        updateAutoLogin(tab, true);
-    }
-
     // -------------------------------------------------------------------------
 
     protected void updateNavigationState(Tab tab) {
-    }
-
-    protected void updateAutoLogin(Tab tab, boolean animate) {
-        mTitleBar.updateAutoLogin(tab, animate);
     }
 
     protected void setUrlTitle(Tab tab) {
@@ -820,8 +807,7 @@ public class UI {
      * as if the user is editing the URL bar or if the page is loading
      */
     public void suggestHideTitleBar() {
-        if (!isLoading() && !isEditingUrl() && !mTitleBar.wantsToBeVisible()
-                && !mNavigationBar.isMenuShowing()) {
+        if (!isLoading() && !isEditingUrl() && !mNavigationBar.isMenuShowing()) {
             hideTitleBar();
         }
     }

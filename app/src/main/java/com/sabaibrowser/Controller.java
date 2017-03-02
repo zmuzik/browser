@@ -274,14 +274,8 @@ public class Controller
             CookieManager.getInstance().removeSessionCookie();
         }
 
-        GoogleAccountLogin.startLoginIfNeeded(mActivity,
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        onPreloginFinished(icicle, intent, currentTabId,
-                                restoreIncognitoTabs);
-                    }
-                });
+        onPreloginFinished(icicle, intent, currentTabId,
+                restoreIncognitoTabs);
     }
 
     private void onPreloginFinished(Bundle icicle, Intent intent, long currentTabId,
@@ -993,19 +987,6 @@ public class Controller
     public void showSslCertificateOnError(WebView view, SslErrorHandler handler,
                                           SslError error) {
         mPageDialogsHandler.showSSLCertificateOnError(view, handler, error);
-    }
-
-    @Override
-    public void showAutoLogin(Tab tab) {
-        assert tab.inForeground();
-        // Update the title bar to show the auto-login request.
-        mUi.showAutoLogin(tab);
-    }
-
-    @Override
-    public void hideAutoLogin(Tab tab) {
-        assert tab.inForeground();
-        mUi.hideAutoLogin(tab);
     }
 
     // helper method

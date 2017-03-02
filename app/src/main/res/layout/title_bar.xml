@@ -25,13 +25,6 @@
         android:id="@+id/taburlbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height" />
-    <ViewStub
-        android:id="@+id/autologin_stub"
-        android:layout="@layout/title_bar_autologin"
-        android:paddingTop="3dip"
-        android:layout_below="@id/taburlbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
     <com.sabaibrowser.PageProgressView
         android:id="@+id/progress"
         android:layout_width="match_parent"

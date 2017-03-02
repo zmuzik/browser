@@ -22,7 +22,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 
 import com.sabaibrowser.BrowserSettings;
-import com.sabaibrowser.GoogleAccountLogin;
 import com.sabaibrowser.PreferenceKeys;
 import com.sabaibrowser.R;
 
@@ -41,12 +40,12 @@ public class DebugPreferencesFragment extends PreferenceFragment
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (PreferenceKeys.PREF_RESET_PRELOGIN.equals(preference.getKey())) {
-            BrowserSettings.getInstance().getPreferences().edit()
-                    .remove(GoogleAccountLogin.PREF_AUTOLOGIN_TIME)
-                    .apply();
-            return true;
-        }
+//        if (PreferenceKeys.PREF_RESET_PRELOGIN.equals(preference.getKey())) {
+//            BrowserSettings.getInstance().getPreferences().edit()
+//                    .remove(GoogleAccountLogin.PREF_AUTOLOGIN_TIME)
+//                    .apply();
+//            return true;
+//        }
         return false;
     }
 }

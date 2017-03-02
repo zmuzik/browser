@@ -182,8 +182,6 @@ public class Tab implements PictureListener {
     // Listener used to know when we move forward or back in the history list.
     private final WebBackForwardListClient mWebBackForwardListClient;
     private DataController mDataController;
-    // State of the auto-login request.
-    private DeviceAccountLogin mDeviceAccountLogin;
 
     // AsyncTask for downloading touch icons
     DownloadTouchIcon mTouchIconLoader;
@@ -362,13 +360,6 @@ public class Tab implements PictureListener {
             if (mTouchIconLoader != null) {
                 mTouchIconLoader.mTab = null;
                 mTouchIconLoader = null;
-            }
-
-            // Cancel the auto-login process.
-            if (mDeviceAccountLogin != null) {
-                mDeviceAccountLogin.cancel();
-                mDeviceAccountLogin = null;
-                mWebViewController.hideAutoLogin(Tab.this);
             }
 
             // finally update the UI in the activity if it is in the foreground
@@ -664,13 +655,6 @@ public class Tab implements PictureListener {
             }
         }
 
-        @Override
-        public void onReceivedLoginRequest(WebView view, String realm,
-                String account, String args) {
-            new DeviceAccountLogin(mWebViewController.getActivity(), view, Tab.this, mWebViewController)
-                    .handleLogin(realm, account, args);
-        }
-
     };
 
     private void syncCurrentState(WebView view, String url) {
@@ -689,17 +673,6 @@ public class Tab implements PictureListener {
             mCurrentState.mSslCertificateError = null;
         }
         mCurrentState.mIncognito = view.isPrivateBrowsingEnabled();
-    }
-
-    // Called by DeviceAccountLogin when the Tab needs to have the auto-login UI
-    // displayed.
-    void setDeviceAccountLogin(DeviceAccountLogin login) {
-        mDeviceAccountLogin = login;
-    }
-
-    // Returns non-null if the title bar should display the auto-login UI.
-    DeviceAccountLogin getDeviceAccountLogin() {
-        return mDeviceAccountLogin;
     }
 
     // -------------------------------------------------------------------------

@@ -50,7 +50,6 @@ public class TitleBar extends RelativeLayout {
     private PageProgressView mProgress;
     private AccessibilityManager mAccessibilityManager;
 
-    private AutologinBar mAutoLogin;
     private NavigationBar mNavBar;
     private boolean mUseQuickControls;
 
@@ -79,16 +78,6 @@ public class TitleBar extends RelativeLayout {
         mProgress = (PageProgressView) findViewById(R.id.progress);
         mNavBar = (NavigationBar) findViewById(R.id.taburlbar);
         mNavBar.setTitleBar(this);
-    }
-
-    private void inflateAutoLoginBar() {
-        if (mAutoLogin != null) {
-            return;
-        }
-
-        ViewStub stub = (ViewStub) findViewById(R.id.autologin_stub);
-        mAutoLogin = (AutologinBar) stub.inflate();
-        mAutoLogin.setTitleBar(this);
     }
 
     @Override
@@ -149,7 +138,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     void setShowProgressOnly(boolean progress) {
-        if (progress && !wantsToBeVisible()) {
+        if (progress) {
             mNavBar.setVisibility(View.GONE);
         } else {
             mNavBar.setVisibility(View.VISIBLE);
@@ -263,7 +252,7 @@ public class TitleBar extends RelativeLayout {
             mHideLoad=false;
             mNavBar.onProgressStopped();
             // check if needs to be hidden
-            if (!isEditingUrl() && !wantsToBeVisible()) {
+            if (!isEditingUrl()) {
                 if (mUseQuickControls) {
                     hide();
                 }
@@ -295,75 +284,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     private int calculateEmbeddedHeight() {
-        int height = mNavBar.getHeight();
-        if (mAutoLogin != null && mAutoLogin.getVisibility() == View.VISIBLE) {
-            height += mAutoLogin.getHeight();
-        }
-        return height;
-    }
-
-    public void updateAutoLogin(Tab tab, boolean animate) {
-        if (mAutoLogin == null) {
-            if  (tab.getDeviceAccountLogin() == null) {
-                return;
-            }
-            inflateAutoLoginBar();
-        }
-        mAutoLogin.updateAutoLogin(tab, animate);
-    }
-
-    public void showAutoLogin(boolean animate) {
-        if (mUseQuickControls) {
-            mUi.showTitleBar();
-        }
-        if (mAutoLogin == null) {
-            inflateAutoLoginBar();
-        }
-        mAutoLogin.setVisibility(View.VISIBLE);
-        if (animate) {
-            mAutoLogin.startAnimation(AnimationUtils.loadAnimation(
-                    getContext(), R.anim.autologin_enter));
-        }
-    }
-
-    public void hideAutoLogin(boolean animate) {
-        if (mUseQuickControls) {
-            mUi.hideTitleBar();
-            mAutoLogin.setVisibility(View.GONE);
-            mUi.refreshWebView();
-        } else {
-            if (animate) {
-                Animation anim = AnimationUtils.loadAnimation(getContext(),
-                        R.anim.autologin_exit);
-                anim.setAnimationListener(new AnimationListener() {
-                    @Override
-                    public void onAnimationEnd(Animation a) {
-                        mAutoLogin.setVisibility(View.GONE);
-                        mUi.refreshWebView();
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation a) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation a) {
-                    }
-                });
-                mAutoLogin.startAnimation(anim);
-            } else if (mAutoLogin.getAnimation() == null) {
-                mAutoLogin.setVisibility(View.GONE);
-                mUi.refreshWebView();
-            }
-        }
-    }
-
-    public boolean wantsToBeVisible() {
-        return inAutoLogin();
-    }
-
-    private boolean inAutoLogin() {
-        return mAutoLogin != null && mAutoLogin.getVisibility() == View.VISIBLE;
+        return mNavBar.getHeight();
     }
 
     public boolean isEditingUrl() {
