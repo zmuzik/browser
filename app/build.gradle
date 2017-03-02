@@ -42,6 +42,7 @@ android {
         targetSdkVersion 25
 
         versionCode getVersionCode()
+        archivesBaseName = "sabai-$versionCode"
 
         testApplicationId "com.sabaibrowser.tests"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
