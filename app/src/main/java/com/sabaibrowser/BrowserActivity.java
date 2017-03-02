@@ -37,7 +37,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
+import com.crashlytics.android.Crashlytics;
 import com.sabaibrowser.stub.NullController;
+
+import io.fabric.sdk.android.Fabric;
 
 public class BrowserActivity extends Activity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -63,6 +66,10 @@ public class BrowserActivity extends Activity
                     + (icicle == null ? "false" : "true"));
         }
         super.onCreate(icicle);
+
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         if (shouldIgnoreIntents()) {
             finish();
