@@ -21,6 +21,7 @@ import android.content.res.Resources.NotFoundException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.sabaibrowser.BuildConfig;
 import com.sabaibrowser.R;
 
 import java.net.URLEncoder;
@@ -63,8 +64,7 @@ public class SearchEngineInfo {
         mName = name;
         Resources res = context.getResources();
 
-        String packageName = R.class.getPackage().getName();
-        int id_data = res.getIdentifier(name, "array", packageName);
+        int id_data = res.getIdentifier(name, "array", BuildConfig.APPLICATION_ID);
         if (id_data == 0) {
             throw new IllegalArgumentException("No resources found for " + name);
         }
