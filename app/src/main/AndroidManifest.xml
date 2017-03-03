@@ -16,23 +16,27 @@
  */
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sabaibrowser">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sabaibrowser">
 
     <original-package android:name="com.sabaibrowser" />
 
-    <uses-feature android:name="android.software.leanback"
-    android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
 
-    <uses-feature android:name="android.hardware.touchscreen"
-    android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
-    <uses-feature android:name="android.hardware.screen.portrait"
-    android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- other possible needed
             <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -41,22 +45,25 @@
             <uses-permission android:name="android.permission.WAKE_LOCK"/>
     -->
 
-    <application   android:name="Browser"
-                   android:label="@string/app_name"
-                   android:icon="@mipmap/ic_launcher"
-                   android:backupAgent=".BrowserBackupAgent"
-                   android:hardwareAccelerated="true"
-                   android:taskAffinity="android.task.browser"
-                   android:usesCleartextTraffic="true"
-                   android:supportsRtl="true" >
+    <application
+        android:name="Browser"
+        android:backupAgent=".BrowserBackupAgent"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:taskAffinity="android.task.browser"
+        android:theme="@style/BrowserTheme"
+        android:usesCleartextTraffic="true">
 
-        <activity android:name="BrowserActivity"
-                  android:label="@string/app_name"
-                  android:launchMode="singleTask"
-                  android:alwaysRetainTaskState="true"
-                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-                  android:theme="@style/BrowserTheme"
-                  android:windowSoftInputMode="adjustResize" >
+        <activity
+            android:name="BrowserActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/BrowserTheme"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.speech.action.VOICE_SEARCH_RESULTS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -65,8 +72,10 @@
                  supplied, we are a good candidate. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:scheme="about" />
@@ -75,18 +84,21 @@
                   have been supplied, we are a good candidate. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:mimeType="text/html"/>
-                <data android:mimeType="text/plain"/>
-                <data android:mimeType="application/xhtml+xml"/>
-                <data android:mimeType="application/vnd.wap.xhtml+xml"/>
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="application/vnd.wap.xhtml+xml" />
             </intent-filter>
             <!-- We are also the main entry point of the browser. -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
@@ -103,8 +115,10 @@
             -->
             <intent-filter>
                 <action android:name="android.intent.action.WEB_SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
@@ -117,35 +131,41 @@
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                    android:resource="@xml/searchable" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name="BrowserPreferencesPage"
-                  android:label="@string/menu_preferences"
-                  android:theme="@style/PreferencesTheme">
+        <activity
+            android:name="BrowserPreferencesPage"
+            android:label="@string/menu_preferences"
+            android:theme="@style/PreferencesTheme">
             <intent-filter>
-               <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
-               <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <!-- Makes .BrowserActivity the search target for any activity in Browser -->
-        <meta-data android:name="android.app.default_searchable" android:value=".BrowserActivity" />
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".BrowserActivity" />
 
         <receiver android:name=".OpenDownloadReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
 
-        <provider android:name="android.support.v4.content.FileProvider"
-                  android:authorities="@string/file_provider_authority"
-                  android:exported="false"
-                  android:grantUriPermissions="true">
-             <meta-data
-                 android:name="android.support.FILE_PROVIDER_PATHS"
-                 android:resource="@xml/file_paths" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="@string/file_provider_authority"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 
