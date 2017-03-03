@@ -32,10 +32,4 @@
         android:entryValues="@array/pref_link_prefetch_values"
         android:dialogTitle="@string/pref_link_prefetch_dialogtitle" />
 
-    <CheckBoxPreference
-        android:key="load_images"
-        android:defaultValue="true"
-        android:title="@string/pref_content_load_images"
-        android:summary="@string/pref_content_load_images_summary" />
-
 </PreferenceScreen>

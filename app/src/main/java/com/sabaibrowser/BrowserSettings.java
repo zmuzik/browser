@@ -250,7 +250,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
-        settings.setLoadsImagesAutomatically(loadImages());
+        settings.setLoadsImagesAutomatically(true);
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setSavePassword(rememberPasswords());
         settings.setSaveFormData(saveFormdata());
@@ -626,10 +626,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     public boolean blockPopupWindows() {
         return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
-    }
-
-    public boolean loadImages() {
-        return mPrefs.getBoolean(PREF_LOAD_IMAGES, true);
     }
 
     public String getDefaultTextEncoding() {
