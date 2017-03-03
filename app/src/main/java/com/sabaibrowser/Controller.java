@@ -36,8 +36,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.provider.Browser;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Intents.Insert;
@@ -100,7 +98,6 @@ public class Controller
 
     // Message Ids
     private static final int FOCUS_NODE_HREF = 102;
-    private static final int RELEASE_WAKELOCK = 107;
 
     static final int UPDATE_BOOKMARK_THUMBNAIL = 108;
 
@@ -113,8 +110,6 @@ public class Controller
     final static int PREFERENCES_PAGE = 3;
     final static int FILE_SELECTED = 4;
     final static int VOICE_RESULT = 6;
-
-    private final static int WAKELOCK_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
     // As the ids are dynamically created, we can't guarantee that they will
     // be in sequence, so this static array maps ids to a window number.
@@ -147,8 +142,6 @@ public class Controller
     private TabControl mTabControl;
     private BrowserSettings mSettings;
     private WebViewFactory mFactory;
-
-    private WakeLock mWakeLock;
 
     private UrlHandler mUrlHandler;
     private UploadHandler mUploadHandler;
@@ -462,16 +455,6 @@ public class Controller
                         stopLoading();
                         break;
 
-                    case RELEASE_WAKELOCK:
-                        if (mWakeLock != null && mWakeLock.isHeld()) {
-                            mWakeLock.release();
-                            // if we reach here, Browser should be still in the
-                            // background loading after WAKELOCK_TIMEOUT (5-min).
-                            // To avoid burning the battery, stop loading.
-                            mTabControl.stopAllLoading();
-                        }
-                        break;
-
                     case UPDATE_BOOKMARK_THUMBNAIL:
                         Tab tab = (Tab) msg.obj;
                         if (tab != null) {
@@ -574,16 +557,7 @@ public class Controller
         Tab tab = mTabControl.getCurrentTab();
         if (tab != null) {
             tab.pause();
-            if (!pauseWebViewTimers(tab)) {
-                if (mWakeLock == null) {
-                    PowerManager pm = (PowerManager) mActivity
-                            .getSystemService(Context.POWER_SERVICE);
-                    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Browser");
-                }
-                mWakeLock.acquire();
-                mHandler.sendMessageDelayed(mHandler
-                        .obtainMessage(RELEASE_WAKELOCK), WAKELOCK_TIMEOUT);
-            }
+            pauseWebViewTimers(tab);
         }
         mUi.onPause();
         mNetworkHandler.onPause();
@@ -634,7 +608,6 @@ public class Controller
             current.resume();
             resumeWebViewTimers(current);
         }
-        releaseWakeLock();
 
         mUi.onResume();
         mNetworkHandler.onResume();
@@ -642,13 +615,6 @@ public class Controller
         if (mVoiceResult != null) {
             mUi.onVoiceResult(mVoiceResult);
             mVoiceResult = null;
-        }
-    }
-
-    private void releaseWakeLock() {
-        if (mWakeLock != null && mWakeLock.isHeld()) {
-            mHandler.removeMessages(RELEASE_WAKELOCK);
-            mWakeLock.release();
         }
     }
 
@@ -805,10 +771,8 @@ public class Controller
             // onPageFinished has executed)
             if (tab.inPageLoad()) {
                 updateInLoadMenuItems(mCachedMenu, tab);
-            } else if (mActivityPaused && pauseWebViewTimers(tab)) {
-                // pause the WebView timer and release the wake lock if it is
-                // finished while BrowserActivity is in pause state.
-                releaseWakeLock();
+            } else if (mActivityPaused) {
+                pauseWebViewTimers(tab);
             }
             if (!tab.isPrivateBrowsingEnabled()
                     && !TextUtils.isEmpty(tab.getUrl())
