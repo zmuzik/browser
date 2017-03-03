@@ -458,10 +458,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         updateSearchEngine(false);
     }
 
-    public void toggleDebugSettings() {
-        setDebugEnabled(!isDebugEnabled());
-    }
-
     public boolean hasDesktopUseragent(WebView view) {
         return view != null && mCustomUserAgents.get(view.getSettings()) != null;
     }
@@ -655,30 +651,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return mPrefs.getBoolean(PREF_ENABLE_HARDWARE_ACCEL, true);
     }
 
-    public boolean isSkiaHardwareAccelerated() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_HARDWARE_ACCEL_SKIA, false);
-    }
-
     // -----------------------------
     // getter/setters for hidden_debug_preferences.xml
     // -----------------------------
-
-    public boolean enableVisualIndicator() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_VISUAL_INDICATOR, false);
-    }
-
-    public boolean enableCpuUploadPath() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_CPU_UPLOAD_PATH, false);
-    }
 
     public boolean enableJavascriptConsole() {
         if (!isDebugEnabled()) {
@@ -699,13 +674,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
             return false;
         }
         return mPrefs.getBoolean(PREF_NORMAL_LAYOUT, false);
-    }
-
-    public boolean isTracing() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_TRACING, false);
     }
 
     public boolean enableLightTouch() {

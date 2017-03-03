@@ -1420,7 +1420,6 @@ public class Controller
         nav.setVisible(isNavDump);
         nav.setEnabled(isNavDump);
 
-        boolean showDebugSettings = mSettings.isDebugEnabled();
         final MenuItem uaSwitcher = menu.findItem(R.id.ua_desktop_menu_id);
         uaSwitcher.setChecked(isDesktopUa);
 

@@ -54,13 +54,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
     @Override
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.preference_headers, target);
-
-        if (BrowserSettings.getInstance().isDebugEnabled()) {
-            Header debug = new Header();
-            debug.title = getText(R.string.pref_development_title);
-            debug.fragment = DebugPreferencesFragment.class.getName();
-            target.add(debug);
-        }
         mHeaders = target;
     }
 
