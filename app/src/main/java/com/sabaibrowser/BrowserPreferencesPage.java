@@ -24,8 +24,6 @@ import android.view.MenuItem;
 
 import com.sabaibrowser.preferences.AccessibilityPreferencesFragment;
 import com.sabaibrowser.preferences.AdvancedPreferencesFragment;
-import com.sabaibrowser.preferences.BandwidthPreferencesFragment;
-import com.sabaibrowser.preferences.DebugPreferencesFragment;
 import com.sabaibrowser.preferences.GeneralPreferencesFragment;
 import com.sabaibrowser.preferences.PrivacySecurityPreferencesFragment;
 import com.sabaibrowser.preferences.WebsiteSettingsFragment;
@@ -58,20 +56,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
     }
 
     @Override
-    public Header onGetInitialHeader() {
-        String action = getIntent().getAction();
-        if (Intent.ACTION_MANAGE_NETWORK_USAGE.equals(action)) {
-            String fragName = BandwidthPreferencesFragment.class.getName();
-            for (Header h : mHeaders) {
-                if (fragName.equals(h.fragment)) {
-                    return h;
-                }
-            }
-        }
-        return super.onGetInitialHeader();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -100,8 +84,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return AccessibilityPreferencesFragment.class.getName().equals(fragmentName) ||
                 AdvancedPreferencesFragment.class.getName().equals(fragmentName) ||
-                BandwidthPreferencesFragment.class.getName().equals(fragmentName) ||
-                DebugPreferencesFragment.class.getName().equals(fragmentName) ||
                 GeneralPreferencesFragment.class.getName().equals(fragmentName) ||
                 PrivacySecurityPreferencesFragment.class.getName().equals(fragmentName) ||
                 WebsiteSettingsFragment.class.getName().equals(fragmentName);
