@@ -144,7 +144,7 @@ public class UI {
                 frameLayout.findViewById(R.id.blocked_dialog_container);
         mFab = (Bubble) frameLayout.findViewById(R.id.main_fab);
         mBubbleMenu = (BubbleMenu) frameLayout.findViewById(R.id.bubble_menu);
-        setImmersiveFullscreen(BrowserSettings.getInstance().useFullscreen());
+        setImmersiveFullscreen(false);
         mTitleBar = new TitleBar(mActivity, mUiController, this,
                 mContentView);
         mTitleBar.setProgress(100);
@@ -764,22 +764,22 @@ public class UI {
 //        mActivity.getMenuInflater().inflate(R.menu.browser, menu);
 //        return menu;
 //    }
-
-    public void setFullscreen(boolean enabled) {
-        FrameLayout decor = (FrameLayout) mActivity.getWindow().getDecorView();
-        int systemUiVisibility = decor.getSystemUiVisibility();
-        final int bits = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        if (enabled) {
-            systemUiVisibility |= bits;
-        } else {
-            systemUiVisibility &= ~bits;
-        }
-        decor.setSystemUiVisibility(systemUiVisibility);
-    }
+//
+//    public void setFullscreen(boolean enabled) {
+//        FrameLayout decor = (FrameLayout) mActivity.getWindow().getDecorView();
+//        int systemUiVisibility = decor.getSystemUiVisibility();
+//        final int bits = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+//        if (enabled) {
+//            systemUiVisibility |= bits;
+//        } else {
+//            systemUiVisibility &= ~bits;
+//        }
+//        decor.setSystemUiVisibility(systemUiVisibility);
+//    }
 
     protected void setImmersiveFullscreen(boolean enabled) {
         FrameLayout decor = (FrameLayout) mActivity.getWindow().getDecorView();

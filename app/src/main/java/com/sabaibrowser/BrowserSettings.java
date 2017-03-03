@@ -330,10 +330,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         syncManagedSettings();
         if (PREF_SEARCH_ENGINE.equals(key)) {
             updateSearchEngine(false);
-        } else if (PREF_FULLSCREEN.equals(key)) {
-            if (mController != null && mController.getUi() != null) {
-                mController.getUi().setFullscreen(useFullscreen());
-            }
         } else if (PREF_LINK_PREFETCH.equals(key)) {
             updateConnectionType();
         }
@@ -752,10 +748,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     public boolean useMostVisitedHomepage() {
         //return HomeProvider.MOST_VISITED.equals(getHomePage());
         return false;
-    }
-
-    public boolean useFullscreen() {
-        return mPrefs.getBoolean(PREF_FULLSCREEN, false);
     }
 
     public boolean useInvertedRendering() {

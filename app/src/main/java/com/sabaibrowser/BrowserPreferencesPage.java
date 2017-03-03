@@ -27,7 +27,6 @@ import com.sabaibrowser.preferences.AdvancedPreferencesFragment;
 import com.sabaibrowser.preferences.BandwidthPreferencesFragment;
 import com.sabaibrowser.preferences.DebugPreferencesFragment;
 import com.sabaibrowser.preferences.GeneralPreferencesFragment;
-import com.sabaibrowser.preferences.InterfacePreferencesFragment;
 import com.sabaibrowser.preferences.PrivacySecurityPreferencesFragment;
 import com.sabaibrowser.preferences.WebsiteSettingsFragment;
 
@@ -111,7 +110,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
                 BandwidthPreferencesFragment.class.getName().equals(fragmentName) ||
                 DebugPreferencesFragment.class.getName().equals(fragmentName) ||
                 GeneralPreferencesFragment.class.getName().equals(fragmentName) ||
-                InterfacePreferencesFragment.class.getName().equals(fragmentName) ||
                 PrivacySecurityPreferencesFragment.class.getName().equals(fragmentName) ||
                 WebsiteSettingsFragment.class.getName().equals(fragmentName);
 

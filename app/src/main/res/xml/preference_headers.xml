@@ -36,8 +36,4 @@
         android:title="@string/pref_data_title"
     />
 
-    <header android:fragment="com.sabaibrowser.preferences.InterfacePreferencesFragment"
-        android:title="@string/pref_interface_title"
-    />
-
 </preference-headers>

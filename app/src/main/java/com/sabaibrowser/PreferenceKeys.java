@@ -80,11 +80,6 @@ public interface PreferenceKeys {
     static final String PREF_RESET_PRELOGIN = "reset_prelogin";
 
     // ----------------------
-    // Keys for lab_preferences.xml
-    // ----------------------
-    static final String PREF_FULLSCREEN = "fullscreen";
-
-    // ----------------------
     // Keys for privacy_security_preferences.xml
     // ----------------------
     static final String PREF_ACCEPT_COOKIES = "accept_cookies";
