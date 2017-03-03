@@ -68,6 +68,7 @@ public class SeekBarSummaryPreference extends SeekBarPreference {
     protected void onBindView(View view) {
         super.onBindView(view);
         mSummaryView = (TextView) view.findViewById(R.id.text);
+        if (mSummaryView == null) return;
         if (TextUtils.isEmpty(mSummary)) {
             mSummaryView.setVisibility(View.GONE);
         } else {
