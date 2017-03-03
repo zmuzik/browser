@@ -644,14 +644,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         mPrefs.edit().putString(PREF_HOMEPAGE, value).apply();
     }
 
-    public boolean isAutofillEnabled() {
-        return mPrefs.getBoolean(PREF_AUTOFILL_ENABLED, true);
-    }
-
-    public void setAutofillEnabled(boolean value) {
-        mPrefs.edit().putBoolean(PREF_AUTOFILL_ENABLED, value).apply();
-    }
-
     // -----------------------------
     // getter/setters for debug_preferences.xml
     // -----------------------------

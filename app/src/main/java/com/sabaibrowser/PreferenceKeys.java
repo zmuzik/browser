@@ -58,11 +58,7 @@ public interface PreferenceKeys {
     // ----------------------
     // Keys for general_preferences.xml
     // ----------------------
-    static final String PREF_AUTOFILL_ENABLED = "autofill_enabled";
-    static final String PREF_AUTOFILL_PROFILE = "autofill_profile";
     static final String PREF_HOMEPAGE = "homepage";
-    static final String PREF_SYNC_WITH_CHROME = "sync_with_chrome";
-    static final String PREF_FULL_SCREEN = "full_screen";
 
     // ----------------------
     // Keys for hidden_debug_preferences.xml
