@@ -552,10 +552,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return getAdjustedMinimumFontSize(minFont);
     }
 
-    public boolean forceEnableUserScalable() {
-        return mPrefs.getBoolean(PREF_FORCE_USERSCALABLE, false);
-    }
-
     public int getTextZoom() {
         requireInitialization();
         int textZoom = mPrefs.getInt(PREF_TEXT_ZOOM, 10);
@@ -564,16 +560,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     public void setTextZoom(int percent) {
         mPrefs.edit().putInt(PREF_TEXT_ZOOM, getRawTextZoom(percent)).apply();
-    }
-
-    public int getDoubleTapZoom() {
-        requireInitialization();
-        int doubleTapZoom = mPrefs.getInt(PREF_DOUBLE_TAP_ZOOM, 5);
-        return getAdjustedDoubleTapZoom(doubleTapZoom);
-    }
-
-    public void setDoubleTapZoom(int percent) {
-        mPrefs.edit().putInt(PREF_DOUBLE_TAP_ZOOM, getRawDoubleTapZoom(percent)).apply();
     }
 
     // -----------------------------
@@ -706,13 +692,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return false;
     }
 
-    public boolean useInvertedRendering() {
-        return mPrefs.getBoolean(PREF_INVERTED, false);
-    }
-
-    public float getInvertedContrast() {
-        return 1 + (mPrefs.getInt(PREF_INVERTED_CONTRAST, 0) / 10f);
-    }
 
     // -----------------------------
     // getter/setters for privacy_security_preferences.xml

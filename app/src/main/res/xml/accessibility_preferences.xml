@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2011 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,54 +13,28 @@
      limitations under the License.
 -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference android:key="force_userscalable"
-        android:title="@string/pref_force_userscalable"
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="force_userscalable"
         android:summary="@string/pref_force_userscalable_summary"
-        android:defaultValue="false" />
+        android:title="@string/pref_force_userscalable" />
 
     <PreferenceCategory android:title="@string/pref_font_size_category">
-        <com.sabaibrowser.preferences.FontSizePreview
-            android:title="@string/preview" />
+        <com.sabaibrowser.preferences.FontSizePreview android:title="@string/preview" />
 
         <com.sabaibrowser.preferences.SeekBarSummaryPreference
-            android:key="text_zoom"
-            android:title="@string/pref_text_zoom"
             android:defaultValue="10"
-            android:max="30" />
+            android:key="text_zoom"
+            android:max="30"
+            android:title="@string/pref_text_zoom" />
 
         <com.sabaibrowser.preferences.SeekBarSummaryPreference
-            android:key="double_tap_zoom"
-            android:title="@string/pref_zoom_on_double_tap"
-            android:defaultValue="5"
-            android:max="10" />
-
-        <com.sabaibrowser.preferences.SeekBarSummaryPreference
+            android:defaultValue="0"
             android:key="min_font_size"
-            android:title="@string/pref_min_font_size"
-            android:defaultValue="0"
-            android:max="20" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_inverted_category">
-        <com.sabaibrowser.preferences.InvertedContrastPreview
-            android:title="@string/preview" />
-
-        <CheckBoxPreference
-            android:key="inverted"
-            android:defaultValue="false"
-            android:title="@string/pref_inverted"
-            android:summary="@string/pref_inverted_summary" />
-
-        <com.sabaibrowser.preferences.SeekBarSummaryPreference
-            android:key="inverted_contrast"
-            android:title="@string/pref_inverted_contrast"
-            android:dependency="inverted"
-            android:defaultValue="0"
-            android:max="20" />
+            android:max="20"
+            android:title="@string/pref_min_font_size" />
 
     </PreferenceCategory>
 
