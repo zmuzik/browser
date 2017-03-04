@@ -17,8 +17,6 @@
 package com.sabaibrowser.preferences;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
@@ -26,7 +24,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,9 +34,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.sabaibrowser.BrowserPreferencesPage;
+import com.sabaibrowser.BrowserSettingsActivity;
 import com.sabaibrowser.BrowserSettings;
-import com.sabaibrowser.PreferenceKeys;
 import com.sabaibrowser.R;
 import com.sabaibrowser.UrlUtils;
 
@@ -68,7 +64,7 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         mChoices = res.getStringArray(R.array.pref_homepage_choices);
         mValues = res.getStringArray(R.array.pref_homepage_values);
         mCurrentPage = getActivity().getIntent()
-                .getStringExtra(BrowserPreferencesPage.CURRENT_PAGE);
+                .getStringExtra(BrowserSettingsActivity.CURRENT_PAGE);
 
         // Load the XML preferences file
         addPreferencesFromResource(R.xml.general_preferences);

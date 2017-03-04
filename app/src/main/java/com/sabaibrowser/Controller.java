@@ -1591,8 +1591,8 @@ public class Controller
 
     @Override
     public void openPreferences() {
-        Intent intent = new Intent(mActivity, BrowserPreferencesPage.class);
-        intent.putExtra(BrowserPreferencesPage.CURRENT_PAGE,
+        Intent intent = new Intent(mActivity, BrowserSettingsActivity.class);
+        intent.putExtra(BrowserSettingsActivity.CURRENT_PAGE,
                 getCurrentTopWebView().getUrl());
         mActivity.startActivityForResult(intent, PREFERENCES_PAGE);
     }

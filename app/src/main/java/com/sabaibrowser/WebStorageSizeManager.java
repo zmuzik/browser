@@ -402,7 +402,7 @@ public class WebStorageSizeManager {
             CharSequence text = mContext.getString(
                     R.string.webstorage_outofspace_notification_text);
             long when = System.currentTimeMillis();
-            Intent intent = new Intent(mContext, BrowserPreferencesPage.class);
+            Intent intent = new Intent(mContext, BrowserSettingsActivity.class);
             intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
                     WebsiteSettingsFragment.class.getName());
             PendingIntent contentIntent =

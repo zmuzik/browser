@@ -35,30 +35,41 @@ import com.sabaibrowser.preferences.PrivacySecurityPreferencesFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrowserPreferencesPage extends Activity {
+public class BrowserSettingsActivity extends Activity {
 
     public static final String CURRENT_PAGE = "currentPage";
     private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
+    private BottomNavigationView bottomNavigationView;
+    private MenuItem prevMenuItem;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.settings_screen);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        BottomNavigationView bottomNavigationView =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         setupViewPager(viewPager);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
-//                            case R.id.action_favorites:
-//
-//                            case R.id.action_schedules:
-//
-//                            case R.id.action_music:
-
+                            case R.id.action_settings_general:
+                                viewPager.setCurrentItem(0);
+                                break;
+                            case R.id.action_settings_security:
+                                viewPager.setCurrentItem(1);
+                                break;
+                            case R.id.action_settings_accessibility:
+                                viewPager.setCurrentItem(2);
+                                break;
+                            case R.id.action_settings_advanced:
+                                viewPager.setCurrentItem(3);
+                                break;
+                            case R.id.action_settings_info:
+                                viewPager.setCurrentItem(4);
+                                break;
                         }
                         return true;
                     }
@@ -66,20 +77,41 @@ public class BrowserPreferencesPage extends Activity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
+        adapter = new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(new GeneralPreferencesFragment(), "general");
         adapter.addFragment(new PrivacySecurityPreferencesFragment(), "security");
         adapter.addFragment(new AdvancedPreferencesFragment(), "advanced");
         adapter.addFragment(new AccessibilityPreferencesFragment(), "accessibility");
         adapter.addFragment(new AppInfoFragment(), "info");
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (prevMenuItem != null) {
+                    prevMenuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -93,7 +125,7 @@ public class BrowserPreferencesPage extends Activity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

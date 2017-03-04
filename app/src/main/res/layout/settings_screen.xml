@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/white"
-        app:itemIconTint="@color/secondary_text"
-        app:itemTextColor="@color/secondary_text"
+        app:itemIconTint="@drawable/bottom_nav_color_selector"
+        app:itemTextColor="@drawable/bottom_nav_color_selector"
         app:menu="@menu/settings_navigation" />
 
     <android.support.v4.view.ViewPager

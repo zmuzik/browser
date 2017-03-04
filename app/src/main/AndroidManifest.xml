@@ -138,7 +138,7 @@
         </activity>
 
         <activity
-            android:name="BrowserPreferencesPage"
+            android:name=".BrowserSettingsActivity"
             android:label="@string/menu_preferences"
             android:theme="@style/PreferencesTheme">
             <intent-filter>
