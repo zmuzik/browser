@@ -29,11 +29,9 @@ public interface PreferenceKeys {
     static final String PREF_ENABLE_JAVASCRIPT = "enable_javascript";
     static final String PREF_LOAD_PAGE = "load_page";
     static final String PREF_OPEN_IN_BACKGROUND = "open_in_background";
-    static final String PREF_PLUGIN_STATE = "plugin_state";
     static final String PREF_RESET_DEFAULT_PREFERENCES = "reset_default_preferences";
     static final String PREF_SEARCH_ENGINE = "search_engine";
     static final String PREF_WEBSITE_SETTINGS = "website_settings";
-    static final String PREF_ALLOW_APP_TABS = "allow_apptabs";
 
     // ----------------------
     // Keys for privacy_security_preferences.xml

@@ -221,7 +221,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         settings.setDefaultZoom(getDefaultZoom());
         settings.setMinimumFontSize(getMinimumFontSize());
         settings.setMinimumLogicalFontSize(getMinimumFontSize());
-        settings.setPluginState(getPluginState());
+        // previously was ON and changeable in the settings
+        settings.setPluginState(PluginState.OFF);
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
@@ -524,22 +525,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return 0;
     }
 
-    public boolean allowAppTabs() {
-        return mPrefs.getBoolean(PREF_ALLOW_APP_TABS, false);
-    }
-
     public boolean openInBackground() {
         return mPrefs.getBoolean(PREF_OPEN_IN_BACKGROUND, false);
     }
 
     public boolean enableJavascript() {
         return mPrefs.getBoolean(PREF_ENABLE_JAVASCRIPT, true);
-    }
-
-    // TODO: Cache
-    public PluginState getPluginState() {
-        String state = mPrefs.getString(PREF_PLUGIN_STATE, "ON");
-        return PluginState.valueOf(state);
     }
 
     // TODO: Cache

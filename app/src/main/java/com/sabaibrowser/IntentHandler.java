@@ -145,15 +145,8 @@ public class IntentHandler {
                     return;
                 }
             }
-            if (Intent.ACTION_VIEW.equals(action)
-                     && !mActivity.getPackageName().equals(appId)) {
-                if (!mSettings.allowAppTabs()) {
-                    Tab appTab = mTabControl.getTabFromAppId(appId);
-                    if (appTab != null) {
-                        mController.reuseTab(appTab, urlData);
-                        return;
-                    }
-                }
+            if (Intent.ACTION_VIEW.equals(action) && !mActivity.getPackageName().equals(appId)) {
+
                 // No matching application tab, try to find a regular tab
                 // with a matching url.
                 Tab appTab = mTabControl.findTabWithUrl(urlData.mUrl);

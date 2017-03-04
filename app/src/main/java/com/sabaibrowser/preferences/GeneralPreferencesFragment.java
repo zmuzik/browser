@@ -106,10 +106,6 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         pref = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
         pref.setOnPreferenceChangeListener(this);
         updateListPreferenceSummary((ListPreference) pref);
-
-        pref = findPreference(PreferenceKeys.PREF_PLUGIN_STATE);
-        pref.setOnPreferenceChangeListener(this);
-        updateListPreferenceSummary((ListPreference) pref);
     }
 
     @Override
@@ -181,12 +177,6 @@ public class GeneralPreferencesFragment extends PreferenceFragment
                         getActivity(), BrowserActivity.class));
                 return true;
             }
-        } else if (pref.getKey().equals(PreferenceKeys.PREF_PLUGIN_STATE)
-                || pref.getKey().equals(PreferenceKeys.PREF_SEARCH_ENGINE)) {
-            ListPreference lp = (ListPreference) pref;
-            lp.setValue((String) objValue);
-            updateListPreferenceSummary(lp);
-            return false;
         }
 
         return true;
