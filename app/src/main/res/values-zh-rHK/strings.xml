@@ -422,4 +422,6 @@
   <!-- Permission check -->
 
     <string name="info" msgid="1357564480946178121">"資訊"</string>
+
+    <string name="application_version_title">应用版本</string>
 </resources>

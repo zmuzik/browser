@@ -436,4 +436,6 @@
   <string name="error_permissions">У приложения нет разрешений, необходимых для запуска. Проверьте настройки разрешений.</string>
 
     <string name="info" msgid="1357564480946178121">"Детали"</string>
+
+    <string name="application_version_title">Версия приложения</string>
 </resources>

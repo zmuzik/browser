@@ -436,4 +436,6 @@
   <string name="error_permissions">應用程式沒有運行所需的關鍵權限，請檢查權限設定。</string>
 
     <string name="info" msgid="1357564480946178121">"資訊"</string>
+
+    <string name="application_version_title">應用程式版本</string>
 </resources>

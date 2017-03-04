@@ -436,4 +436,6 @@
   <string name="error_permissions">La aplicación no tiene los permisos críticos necesarios para funcionar. Por favor, comprueba tu configuración de permisos.</string>
 
     <string name="info" msgid="1357564480946178121">"Información"</string>
+
+    <string name="application_version_title">Versión de la aplicación</string>
 </resources>

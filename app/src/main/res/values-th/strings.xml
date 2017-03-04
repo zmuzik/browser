@@ -436,4 +436,6 @@
   <string name="error_permissions">แอปไม่ได้รับอนุญาตให้เข้าถึงสิทธิพื้นฐานที่ต้องใช้ กรุณาตรวจสอบที่การตั้งค่าการอนุญาต</string>
 
     <string name="info" msgid="1357564480946178121">"ข้อมูล"</string>
+
+    <string name="application_version_title">เวอร์ชันของแอปพลิเคชัน</string>
 </resources>

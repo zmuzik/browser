@@ -422,4 +422,6 @@
   <!-- Permission check -->
 
     <string name="info" msgid="1357564480946178121">"जानकारी"</string>
+
+    <string name="application_version_title">ऐप्‍लिकेशन वर्शन</string>
 </resources>

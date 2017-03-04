@@ -436,4 +436,6 @@
   <string name="error_permissions">Tato aplikace nemá udělené kritické oprávnění ke běhu. Prosím zkontrolujte nastavení oprávnění.</string>
 
     <string name="info" msgid="1357564480946178121">"Informace"</string>
+
+    <string name="application_version_title">Verze aplikace</string>
 </resources>

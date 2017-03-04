@@ -1030,4 +1030,6 @@
 
 
     <string name="info">Info</string>
+
+    <string name="application_version_title">Application version</string>
 </resources>

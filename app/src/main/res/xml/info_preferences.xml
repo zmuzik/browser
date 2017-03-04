@@ -17,7 +17,7 @@
 
     <Preference
         android:key="pref_version"
-        android:title="App Version" />
+        android:title="@string/application_version_title" />
 
     <Preference
         android:key="pref_build"

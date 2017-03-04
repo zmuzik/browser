@@ -436,4 +436,6 @@
   <string name="error_permissions">アプリは実行に必要となる重要な権限が与えられていません。権限の設定を確認してください。</string>
 
     <string name="info" msgid="1357564480946178121">"情報"</string>
+
+    <string name="application_version_title">アプリケーションのバージョン</string>
 </resources>

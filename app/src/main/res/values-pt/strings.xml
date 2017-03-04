@@ -411,4 +411,6 @@
     <string name="accessibility_button_bookmarks_folder_up" msgid="9179389954714270505">"Pasta anterior"</string>
 
     <string name="info" msgid="1357564480946178121">"Informações"</string>
+
+    <string name="application_version_title">Versão da aplicação</string>
 </resources>
