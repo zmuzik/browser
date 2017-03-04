@@ -164,8 +164,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
                     new WebStorageSizeManager.WebKitAppCacheInfo(getAppCachePath()));
             // Workaround b/5254577
             mPrefs.registerOnSharedPreferenceChangeListener(BrowserSettings.this);
-            if (Build.VERSION.CODENAME.equals("REL")) {
-                // This is a release build, always startup with debug disabled
+            if (!BuildConfig.DEBUG) {
                 setDebugEnabled(false);
             }
             if (mPrefs.contains(PREF_TEXT_SIZE)) {
@@ -375,14 +374,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return mPrefs.getBoolean(PREF_DEBUG_MENU, false);
     }
 
-    public void setDebugEnabled(boolean value) {
-        Editor edit = mPrefs.edit();
-        edit.putBoolean(PREF_DEBUG_MENU, value);
-        if (!value) {
-            // Reset to "safe" value
-            edit.putBoolean(PREF_ENABLE_HARDWARE_ACCEL_SKIA, false);
-        }
-        edit.apply();
+    public void setDebugEnabled(boolean debugEnabled) {
+        mPrefs.edit().putBoolean(PREF_DEBUG_MENU, debugEnabled).apply();
     }
 
     public void clearCache() {
@@ -595,17 +588,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     public void setHomePage(String value) {
         mPrefs.edit().putString(PREF_HOMEPAGE, value).apply();
-    }
-
-    // -----------------------------
-    // getter/setters for debug_preferences.xml
-    // -----------------------------
-
-    public boolean isHardwareAccelerated() {
-        if (!isDebugEnabled()) {
-            return true;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_HARDWARE_ACCEL, true);
     }
 
     // -----------------------------

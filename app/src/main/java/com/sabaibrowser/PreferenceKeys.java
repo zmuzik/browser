@@ -69,12 +69,6 @@ public interface PreferenceKeys {
     static final String PREF_DEBUG_MENU = "debug_menu";
 
     // ----------------------
-    // Keys for debug_preferences.xml
-    // ----------------------
-    static final String PREF_ENABLE_HARDWARE_ACCEL = "enable_hardware_accel";
-    static final String PREF_ENABLE_HARDWARE_ACCEL_SKIA = "enable_hardware_accel_skia";
-
-    // ----------------------
     // Keys for hidden_debug_preferences.xml
     // ----------------------
     static final String PREF_ENABLE_LIGHT_TOUCH = "enable_light_touch";
