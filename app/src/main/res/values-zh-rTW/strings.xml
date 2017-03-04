@@ -434,4 +434,6 @@
   <string name="browser_error_title">瀏覽器錯誤</string>
   <string name="dialog_dismiss">忽略</string>
   <string name="error_permissions">應用程式沒有運行所需的關鍵權限，請檢查權限設定。</string>
+
+    <string name="info" msgid="1357564480946178121">"資訊"</string>
 </resources>

@@ -434,4 +434,6 @@
   <string name="browser_error_title">เบราว์เซอร์ผิดพลาด</string>
   <string name="dialog_dismiss">ปิด</string>
   <string name="error_permissions">แอปไม่ได้รับอนุญาตให้เข้าถึงสิทธิพื้นฐานที่ต้องใช้ กรุณาตรวจสอบที่การตั้งค่าการอนุญาต</string>
+
+    <string name="info" msgid="1357564480946178121">"ข้อมูล"</string>
 </resources>

@@ -420,4 +420,6 @@
   <!-- FullScreen -->
   <!-- OneHand -->
   <!-- Permission check -->
+
+    <string name="info" msgid="1357564480946178121">"資訊"</string>
 </resources>

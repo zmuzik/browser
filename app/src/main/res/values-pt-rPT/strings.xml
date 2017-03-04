@@ -434,4 +434,6 @@
   <string name="browser_error_title">Erro do navegador</string>
   <string name="dialog_dismiss">Descartar</string>
   <string name="error_permissions">A aplicação não tem permissões críticas necessárias para executar. Por favor, verifique as definições de permissões.</string>
+
+    <string name="info" msgid="1357564480946178121">"Informações"</string>
 </resources>

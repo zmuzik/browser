@@ -434,4 +434,6 @@
   <string name="browser_error_title">ブラウザエラー</string>
   <string name="dialog_dismiss">閉じる</string>
   <string name="error_permissions">アプリは実行に必要となる重要な権限が与えられていません。権限の設定を確認してください。</string>
+
+    <string name="info" msgid="1357564480946178121">"情報"</string>
 </resources>

@@ -434,4 +434,6 @@
   <string name="browser_error_title">Browser-Fehler</string>
   <string name="dialog_dismiss">Ablehnen</string>
   <string name="error_permissions">Kritische Berechtigungen für die Funktion der App wurden nicht erteilt. Bitte überprüfen Sie Ihre Berechtigungseinstellungen.</string>
+
+    <string name="info" msgid="1357564480946178121">"Details"</string>
 </resources>

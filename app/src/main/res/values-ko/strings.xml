@@ -434,4 +434,6 @@
   <string name="browser_error_title">브라우저 오류</string>
   <string name="dialog_dismiss">취소</string>
   <string name="error_permissions">앱이 실행하는 데 필요한 권한이 부여되지 않았습니다. 권한 설정을 확인해주세요.</string>
+
+    <string name="info" msgid="1357564480946178121">"정보"</string>
 </resources>

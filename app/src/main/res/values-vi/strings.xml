@@ -434,4 +434,6 @@
   <string name="browser_error_title">Lỗi trình duyệt</string>
   <string name="dialog_dismiss">Bỏ qua</string>
   <string name="error_permissions">Ứng dụng không có quyền quan trọng cần thiết để hoạt động. Hãy kiểm tra cài đặt quyền truy cập của bạn.</string>
+
+    <string name="info" msgid="1357564480946178121">"Thông tin"</string>
 </resources>

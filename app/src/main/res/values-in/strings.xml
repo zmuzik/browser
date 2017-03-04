@@ -434,4 +434,6 @@
   <string name="browser_error_title">Kesalahan pada peramban</string>
   <string name="dialog_dismiss">Abaikan</string>
   <string name="error_permissions">App tidak memiliki izin kritis yang diperlukan untuk menjalankan. Periksa pengaturan perizinana Anda.</string>
+
+    <string name="info" msgid="1357564480946178121">"Info"</string>
 </resources>

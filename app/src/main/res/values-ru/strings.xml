@@ -434,4 +434,6 @@
   <string name="browser_error_title">Ошибка браузера</string>
   <string name="dialog_dismiss">Отменить</string>
   <string name="error_permissions">У приложения нет разрешений, необходимых для запуска. Проверьте настройки разрешений.</string>
+
+    <string name="info" msgid="1357564480946178121">"Детали"</string>
 </resources>

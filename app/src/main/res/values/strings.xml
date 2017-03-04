@@ -1028,4 +1028,6 @@
     <string name="dialog_dismiss">Dismiss</string>
     <string name="error_permissions">The app does not have critical permissions needed to run. Please check your permissions settings.</string>
 
+
+    <string name="info">Info</string>
 </resources>

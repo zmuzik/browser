@@ -434,4 +434,6 @@
   <string name="browser_error_title">浏览器错误</string>
   <string name="dialog_dismiss">忽略</string>
   <string name="error_permissions">应用没有运行所需的关键权限。请检查您的权限设置。</string>
+
+    <string name="info" msgid="1357564480946178121">"信息"</string>
 </resources>
