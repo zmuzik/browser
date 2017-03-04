@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_settings_general"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/pref_general_title" />
+    <item
+        android:id="@+id/action_settings_security"
+        android:enabled="true"
+        android:icon="@drawable/ic_security"
+        android:title="@string/pref_privacy_security_title" />
+    <item
+        android:id="@+id/action_settings_accessibility"
+        android:enabled="true"
+        android:icon="@drawable/ic_accessibility"
+        android:title="@string/pref_accessibility_title" />
+    <item
+        android:id="@+id/action_settings_advanced"
+        android:enabled="true"
+        android:icon="@drawable/ic_new_window"
+        android:title="@string/pref_extras_title" />
+    <item
+        android:id="@+id/action_settings_info"
+        android:enabled="true"
+        android:icon="@drawable/ic_info"
+        android:title="Info" />
+</menu>
