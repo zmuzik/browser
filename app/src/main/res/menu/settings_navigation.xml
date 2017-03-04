@@ -16,11 +16,6 @@
         android:icon="@drawable/ic_accessibility"
         android:title="@string/pref_accessibility_title" />
     <item
-        android:id="@+id/action_settings_advanced"
-        android:enabled="true"
-        android:icon="@drawable/ic_new_window"
-        android:title="@string/pref_extras_title" />
-    <item
         android:id="@+id/action_settings_info"
         android:enabled="true"
         android:icon="@drawable/ic_info"

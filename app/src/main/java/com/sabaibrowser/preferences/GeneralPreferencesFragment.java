@@ -19,25 +19,35 @@ package com.sabaibrowser.preferences;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.GeolocationPermissions;
+import android.webkit.ValueCallback;
+import android.webkit.WebStorage;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.sabaibrowser.BrowserSettingsActivity;
+import com.sabaibrowser.BrowserActivity;
 import com.sabaibrowser.BrowserSettings;
+import com.sabaibrowser.BrowserSettingsActivity;
+import com.sabaibrowser.PreferenceKeys;
 import com.sabaibrowser.R;
 import com.sabaibrowser.UrlUtils;
+
+import java.util.Map;
+import java.util.Set;
 
 public class GeneralPreferencesFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -74,6 +84,60 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         pref.setPersistent(false);
         pref.setValue(getHomepageValue());
         pref.setOnPreferenceChangeListener(this);
+
+        // imported from advanced prefs
+        PreferenceScreen websiteSettings = (PreferenceScreen) findPreference(
+                PreferenceKeys.PREF_WEBSITE_SETTINGS);
+        websiteSettings.setFragment(WebsiteSettingsFragment.class.getName());
+
+        Preference e = findPreference(PreferenceKeys.PREF_DEFAULT_ZOOM);
+        e.setOnPreferenceChangeListener(this);
+        e.setSummary(getVisualDefaultZoomName(
+                getPreferenceScreen().getSharedPreferences()
+                        .getString(PreferenceKeys.PREF_DEFAULT_ZOOM, null)));
+
+        e = findPreference(PreferenceKeys.PREF_DEFAULT_TEXT_ENCODING);
+        e.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) e);
+
+        e = findPreference(PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES);
+        e.setOnPreferenceChangeListener(this);
+
+        e = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
+        e.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) e);
+
+        e = findPreference(PreferenceKeys.PREF_PLUGIN_STATE);
+        e.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) e);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final PreferenceScreen websiteSettings = (PreferenceScreen) findPreference(
+                PreferenceKeys.PREF_WEBSITE_SETTINGS);
+        websiteSettings.setEnabled(false);
+        WebStorage.getInstance().getOrigins(new ValueCallback<Map>() {
+            @Override
+            public void onReceiveValue(Map webStorageOrigins) {
+                if ((webStorageOrigins != null) && !webStorageOrigins.isEmpty()) {
+                    websiteSettings.setEnabled(true);
+                }
+            }
+        });
+        GeolocationPermissions.getInstance().getOrigins(new ValueCallback<Set<String>>() {
+            @Override
+            public void onReceiveValue(Set<String> geolocationOrigins) {
+                if ((geolocationOrigins != null) && !geolocationOrigins.isEmpty()) {
+                    websiteSettings.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    void updateListPreferenceSummary(ListPreference e) {
+        e.setSummary(e.getEntry());
     }
 
     @Override
@@ -81,7 +145,7 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         if (getActivity() == null) {
             // We aren't attached, so don't accept preferences changes from the
             // invisible UI.
-            Log.w("PageContentPreferencesFragment", "onPreferenceChange called from detached fragment!");
+            Log.w("PreferencesFragment", "onPreferenceChange called from detached fragment!");
             return false;
         }
 
@@ -105,7 +169,26 @@ public class GeneralPreferencesFragment extends PreferenceFragment
                 return false;
             }
             pref.setSummary(getHomepageSummary());
-            ((ListPreference)pref).setValue(getHomepageValue());
+            ((ListPreference) pref).setValue(getHomepageValue());
+            return false;
+        } else if (pref.getKey().equals(PreferenceKeys.PREF_DEFAULT_ZOOM)) {
+            pref.setSummary(getVisualDefaultZoomName((String) objValue));
+            return true;
+        } else if (pref.getKey().equals(PreferenceKeys.PREF_DEFAULT_TEXT_ENCODING)) {
+            pref.setSummary((String) objValue);
+            return true;
+        } else if (pref.getKey().equals(PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES)) {
+            Boolean value = (Boolean) objValue;
+            if (value.booleanValue() == true) {
+                startActivity(new Intent(BrowserActivity.ACTION_RESTART, null,
+                        getActivity(), BrowserActivity.class));
+                return true;
+            }
+        } else if (pref.getKey().equals(PreferenceKeys.PREF_PLUGIN_STATE)
+                || pref.getKey().equals(PreferenceKeys.PREF_SEARCH_ENGINE)) {
+            ListPreference lp = (ListPreference) pref;
+            lp.setValue((String) objValue);
+            updateListPreferenceSummary(lp);
             return false;
         }
 
@@ -195,5 +278,25 @@ public class GeneralPreferencesFragment extends PreferenceFragment
             }
         }
         return null;
+    }
+
+    private CharSequence getVisualDefaultZoomName(String enumName) {
+        Resources res = getActivity().getResources();
+        CharSequence[] visualNames = res.getTextArray(R.array.pref_default_zoom_choices);
+        CharSequence[] enumNames = res.getTextArray(R.array.pref_default_zoom_values);
+
+        // Sanity check
+        if (visualNames.length != enumNames.length) {
+            return "";
+        }
+
+        int length = enumNames.length;
+        for (int i = 0; i < length; i++) {
+            if (enumNames[i].equals(enumName)) {
+                return visualNames[i];
+            }
+        }
+
+        return "";
     }
 }

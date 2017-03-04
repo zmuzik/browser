@@ -27,7 +27,6 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
 import com.sabaibrowser.preferences.AccessibilityPreferencesFragment;
-import com.sabaibrowser.preferences.AdvancedPreferencesFragment;
 import com.sabaibrowser.preferences.AppInfoFragment;
 import com.sabaibrowser.preferences.GeneralPreferencesFragment;
 import com.sabaibrowser.preferences.PrivacySecurityPreferencesFragment;
@@ -64,9 +63,6 @@ public class BrowserSettingsActivity extends Activity {
                             case R.id.action_settings_accessibility:
                                 viewPager.setCurrentItem(2);
                                 break;
-                            case R.id.action_settings_advanced:
-                                viewPager.setCurrentItem(3);
-                                break;
                             case R.id.action_settings_info:
                                 viewPager.setCurrentItem(4);
                                 break;
@@ -80,7 +76,6 @@ public class BrowserSettingsActivity extends Activity {
         adapter = new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(new GeneralPreferencesFragment(), "general");
         adapter.addFragment(new PrivacySecurityPreferencesFragment(), "security");
-        adapter.addFragment(new AdvancedPreferencesFragment(), "advanced");
         adapter.addFragment(new AccessibilityPreferencesFragment(), "accessibility");
         adapter.addFragment(new AppInfoFragment(), "info");
         viewPager.setAdapter(adapter);
