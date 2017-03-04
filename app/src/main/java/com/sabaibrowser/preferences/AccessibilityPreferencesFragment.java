@@ -43,12 +43,12 @@ public class AccessibilityPreferencesFragment extends PreferenceFragment
         BrowserSettings settings = BrowserSettings.getInstance();
         mFormat = NumberFormat.getPercentInstance();
 
-        Preference e = findPreference(PreferenceKeys.PREF_MIN_FONT_SIZE);
-        e.setOnPreferenceChangeListener(this);
-        updateMinFontSummary(e, settings.getMinimumFontSize());
-        e = findPreference(PreferenceKeys.PREF_TEXT_ZOOM);
-        e.setOnPreferenceChangeListener(this);
-        updateTextZoomSummary(e, settings.getTextZoom());
+        Preference pref = findPreference(PreferenceKeys.PREF_MIN_FONT_SIZE);
+        pref.setOnPreferenceChangeListener(this);
+        updateMinFontSummary(pref, settings.getMinimumFontSize());
+        pref = findPreference(PreferenceKeys.PREF_TEXT_ZOOM);
+        pref.setOnPreferenceChangeListener(this);
+        updateTextZoomSummary(pref, settings.getTextZoom());
     }
 
     @Override
@@ -79,14 +79,6 @@ public class AccessibilityPreferencesFragment extends PreferenceFragment
         pref.setSummary(mFormat.format(textZoom / 100.0));
     }
 
-    void updateDoubleTapZoomSummary(Preference pref, int doubleTapZoom) {
-        pref.setSummary(mFormat.format(doubleTapZoom / 100.0));
-    }
-
-    void updateInvertedContrastSummary(Preference pref, int contrast) {
-        pref.setSummary(mFormat.format(contrast / 100.0));
-    }
-
     @Override
     public boolean onPreferenceChange(Preference pref, Object objValue) {
         if (getActivity() == null) {
@@ -96,13 +88,11 @@ public class AccessibilityPreferencesFragment extends PreferenceFragment
         }
 
         if (PreferenceKeys.PREF_MIN_FONT_SIZE.equals(pref.getKey())) {
-            updateMinFontSummary(pref, BrowserSettings
-                    .getAdjustedMinimumFontSize((Integer) objValue));
+            updateMinFontSummary(pref, BrowserSettings.getAdjustedMinimumFontSize((Integer) objValue));
         }
         if (PreferenceKeys.PREF_TEXT_ZOOM.equals(pref.getKey())) {
             BrowserSettings settings = BrowserSettings.getInstance();
-            updateTextZoomSummary(pref, settings
-                    .getAdjustedTextZoom((Integer) objValue));
+            updateTextZoomSummary(pref, settings.getAdjustedTextZoom((Integer) objValue));
         }
         return true;
     }
