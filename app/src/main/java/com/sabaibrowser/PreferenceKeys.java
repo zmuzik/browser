@@ -66,19 +66,6 @@ public interface PreferenceKeys {
 
     // ------------------------- "invisible settings" start here -------------------------
 
-    static final String PREF_DEBUG_MENU = "debug_menu";
-
-    // ----------------------
-    // Keys for hidden_debug_preferences.xml
-    // ----------------------
-    static final String PREF_ENABLE_LIGHT_TOUCH = "enable_light_touch";
-    static final String PREF_ENABLE_NAV_DUMP = "enable_nav_dump";
-    static final String PREF_JAVASCRIPT_CONSOLE = "javascript_console";
-    static final String PREF_JS_ENGINE_FLAGS = "js_engine_flags";
-    static final String PREF_NORMAL_LAYOUT = "normal_layout";
-    static final String PREF_WIDE_VIEWPORT = "wide_viewport";
-    static final String PREF_RESET_PRELOGIN = "reset_prelogin";
-
     // ----------------------
     // Keys for bandwidth_preferences.xml
     // ----------------------

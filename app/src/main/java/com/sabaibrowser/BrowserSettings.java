@@ -164,9 +164,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
                     new WebStorageSizeManager.WebKitAppCacheInfo(getAppCachePath()));
             // Workaround b/5254577
             mPrefs.registerOnSharedPreferenceChangeListener(BrowserSettings.this);
-            if (!BuildConfig.DEBUG) {
-                setDebugEnabled(false);
-            }
+
             if (mPrefs.contains(PREF_TEXT_SIZE)) {
                 /*
                  * Update from TextSize enum to zoom percent
@@ -219,8 +217,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     private void syncSetting(WebSettings settings) {
         settings.setGeolocationEnabled(enableGeolocation());
         settings.setJavaScriptEnabled(enableJavascript());
-        settings.setLightTouchEnabled(enableLightTouch());
-        //settings.setNavDump(enableNavDump());
         settings.setDefaultTextEncodingName(getDefaultTextEncoding());
         settings.setDefaultZoom(getDefaultZoom());
         settings.setMinimumFontSize(getMinimumFontSize());
@@ -233,7 +229,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setSavePassword(rememberPasswords());
         settings.setSaveFormData(saveFormdata());
-        settings.setUseWideViewPort(isWideViewport());
+        settings.setUseWideViewPort(true);
 
         String ua = mCustomUserAgents.get(settings);
         if (ua != null) {
@@ -337,11 +333,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return layoutAlgorithm;
     }
 
-    public int getPageCacheCapacity() {
-        requireInitialization();
-        return mPageCacheCapacity;
-    }
-
     public WebStorageSizeManager getWebStorageSizeManager() {
         requireInitialization();
         return mWebStorageSizeManager;
@@ -370,12 +361,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     }
 
     public boolean isDebugEnabled() {
-        requireInitialization();
-        return mPrefs.getBoolean(PREF_DEBUG_MENU, false);
-    }
-
-    public void setDebugEnabled(boolean debugEnabled) {
-        mPrefs.edit().putBoolean(PREF_DEBUG_MENU, debugEnabled).apply();
+        return BuildConfig.DEBUG;
     }
 
     public void clearCache() {
@@ -595,45 +581,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     // -----------------------------
 
     public boolean enableJavascriptConsole() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_JAVASCRIPT_CONSOLE, true);
-    }
-
-    public boolean isWideViewport() {
-        if (!isDebugEnabled()) {
-            return true;
-        }
-        return mPrefs.getBoolean(PREF_WIDE_VIEWPORT, true);
+        return isDebugEnabled();
     }
 
     public boolean isNormalLayout() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_NORMAL_LAYOUT, false);
-    }
-
-    public boolean enableLightTouch() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_LIGHT_TOUCH, false);
-    }
-
-    public boolean enableNavDump() {
-        if (!isDebugEnabled()) {
-            return false;
-        }
-        return mPrefs.getBoolean(PREF_ENABLE_NAV_DUMP, false);
-    }
-
-    public String getJsEngineFlags() {
-        if (!isDebugEnabled()) {
-            return "";
-        }
-        return mPrefs.getString(PREF_JS_ENGINE_FLAGS, "");
+        // XXX possible cause of problems with cropped pictures on fb
+        return false;
     }
 
     // -----------------------------
@@ -644,7 +597,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         //return HomeProvider.MOST_VISITED.equals(getHomePage());
         return false;
     }
-
 
     // -----------------------------
     // getter/setters for privacy_security_preferences.xml

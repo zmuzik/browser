@@ -325,7 +325,6 @@ public class Controller
             }
         }
         // Read JavaScript flags if it exists.
-        String jsFlags = getSettings().getJsEngineFlags();
         if (intent != null
                 && BrowserActivity.ACTION_SHOW_BOOKMARKS.equals(intent.getAction())) {
             bookmarksOrHistoryPicker(ComboViews.Bookmarks);
@@ -1415,11 +1414,6 @@ public class Controller
                 PackageManager.MATCH_DEFAULT_ONLY);
         menu.findItem(R.id.share_page_menu_id).setVisible(ri != null);
 
-        boolean isNavDump = mSettings.enableNavDump();
-        final MenuItem nav = menu.findItem(R.id.dump_nav_menu_id);
-        nav.setVisible(isNavDump);
-        nav.setEnabled(isNavDump);
-
         final MenuItem uaSwitcher = menu.findItem(R.id.ua_desktop_menu_id);
         uaSwitcher.setChecked(isDesktopUa);
 
@@ -1527,10 +1521,6 @@ public class Controller
                     return false;
                 }
                 shareCurrentPage(currentTab);
-                break;
-
-            case R.id.dump_nav_menu_id:
-                //getCurrentTopWebView().debugDump();
                 break;
 
             case R.id.zoom_in_menu_id:

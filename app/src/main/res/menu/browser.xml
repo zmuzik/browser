@@ -96,10 +96,6 @@
             android:icon="@drawable/ic_settings"
             android:alphabeticShortcut="p" />
         <!-- followings are debug only -->
-        <item
-            android:id="@+id/dump_nav_menu_id"
-            android:title="@string/dump_nav"
-            android:visible="false" />
     </group>
     <group android:id="@+id/MAIN_SHORTCUT_MENU" android:visible="false">
         <item android:id="@+id/view_downloads_menu_id"
