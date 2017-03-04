@@ -59,28 +59,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         "Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) " +
         "Chrome/37.0.2049.0 Safari/537.36";
 
-    private static final String IPHONE_USERAGENT = "Mozilla/5.0 (iPhone; U; " +
-        "CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 " +
-        "(KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
-
-    private static final String IPAD_USERAGENT = "Mozilla/5.0 (iPad; U; " +
-        "CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 " +
-        "(KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10";
-
-    private static final String FROYO_USERAGENT = "Mozilla/5.0 (Linux; U; " +
-        "Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 " +
-        "(KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
-
-    private static final String HONEYCOMB_USERAGENT = "Mozilla/5.0 (Linux; U; " +
-        "Android 3.1; en-us; Xoom Build/HMJ25) AppleWebKit/534.13 " +
-        "(KHTML, like Gecko) Version/4.0 Safari/534.13";
-
     private static final String USER_AGENTS[] = { null,
             DESKTOP_USERAGENT,
-            IPHONE_USERAGENT,
-            IPAD_USERAGENT,
-            FROYO_USERAGENT,
-            HONEYCOMB_USERAGENT,
     };
 
     // The minimum min font size
@@ -493,15 +473,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return (percent - 100) / TEXT_ZOOM_STEP + TEXT_ZOOM_START_VAL;
     }
 
-    public int getAdjustedDoubleTapZoom(int rawValue) {
-        rawValue = (rawValue - DOUBLE_TAP_ZOOM_START_VAL) * DOUBLE_TAP_ZOOM_STEP;
-        return (int) ((rawValue + 100) * mFontSizeMult);
-    }
-
-    static int getRawDoubleTapZoom(int percent) {
-        return (percent - 100) / DOUBLE_TAP_ZOOM_STEP + DOUBLE_TAP_ZOOM_START_VAL;
-    }
-
     public SharedPreferences getPreferences() {
         return mPrefs;
     }
@@ -571,7 +542,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     }
 
     public int getUserAgent() {
-        return Integer.parseInt(mPrefs.getString(PREF_USER_AGENT, "0"));
+        return 0;
     }
 
     public boolean allowAppTabs() {

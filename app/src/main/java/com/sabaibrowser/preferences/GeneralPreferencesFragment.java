@@ -79,37 +79,37 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         // Load the XML preferences file
         addPreferencesFromResource(R.xml.general_preferences);
 
-        ListPreference pref = (ListPreference) findPreference(PREF_HOMEPAGE_PICKER);
-        pref.setSummary(getHomepageSummary());
-        pref.setPersistent(false);
-        pref.setValue(getHomepageValue());
-        pref.setOnPreferenceChangeListener(this);
+        ListPreference listPref = (ListPreference) findPreference(PREF_HOMEPAGE_PICKER);
+        listPref.setSummary(getHomepageSummary());
+        listPref.setPersistent(false);
+        listPref.setValue(getHomepageValue());
+        listPref.setOnPreferenceChangeListener(this);
 
         // imported from advanced prefs
         PreferenceScreen websiteSettings = (PreferenceScreen) findPreference(
                 PreferenceKeys.PREF_WEBSITE_SETTINGS);
         websiteSettings.setFragment(WebsiteSettingsFragment.class.getName());
 
-        Preference e = findPreference(PreferenceKeys.PREF_DEFAULT_ZOOM);
-        e.setOnPreferenceChangeListener(this);
-        e.setSummary(getVisualDefaultZoomName(
+        Preference pref = findPreference(PreferenceKeys.PREF_DEFAULT_ZOOM);
+        pref.setOnPreferenceChangeListener(this);
+        pref.setSummary(getVisualDefaultZoomName(
                 getPreferenceScreen().getSharedPreferences()
                         .getString(PreferenceKeys.PREF_DEFAULT_ZOOM, null)));
 
-        e = findPreference(PreferenceKeys.PREF_DEFAULT_TEXT_ENCODING);
-        e.setOnPreferenceChangeListener(this);
-        updateListPreferenceSummary((ListPreference) e);
+        pref = findPreference(PreferenceKeys.PREF_DEFAULT_TEXT_ENCODING);
+        pref.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) pref);
 
-        e = findPreference(PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES);
-        e.setOnPreferenceChangeListener(this);
+        pref = findPreference(PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES);
+        pref.setOnPreferenceChangeListener(this);
 
-        e = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
-        e.setOnPreferenceChangeListener(this);
-        updateListPreferenceSummary((ListPreference) e);
+        pref = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
+        pref.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) pref);
 
-        e = findPreference(PreferenceKeys.PREF_PLUGIN_STATE);
-        e.setOnPreferenceChangeListener(this);
-        updateListPreferenceSummary((ListPreference) e);
+        pref = findPreference(PreferenceKeys.PREF_PLUGIN_STATE);
+        pref.setOnPreferenceChangeListener(this);
+        updateListPreferenceSummary((ListPreference) pref);
     }
 
     @Override
@@ -161,9 +161,6 @@ public class GeneralPreferencesFragment extends PreferenceFragment
                 settings.setHomePage(BrowserSettings.getFactoryResetHomeUrl(
                         getActivity()));
             }
-//            if (MOST_VISITED.equals(objValue)) {
-//                settings.setHomePage(HomeProvider.MOST_VISITED);
-//            }
             if (OTHER.equals(objValue)) {
                 promptForHomepage((ListPreference) pref);
                 return false;
@@ -245,9 +242,6 @@ public class GeneralPreferencesFragment extends PreferenceFragment
         if (TextUtils.isEmpty(homepage) || BLANK_URL.endsWith(homepage)) {
             return BLANK;
         }
-//        if (HomeProvider.MOST_VISITED.equals(homepage)) {
-//            return MOST_VISITED;
-//        }
         String defaultHomepage = BrowserSettings.getFactoryResetHomeUrl(
                 getActivity());
         if (TextUtils.equals(defaultHomepage, homepage)) {
