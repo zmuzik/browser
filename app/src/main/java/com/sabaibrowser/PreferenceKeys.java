@@ -64,9 +64,9 @@ public interface PreferenceKeys {
     // ----------------------
     // Keys for info_preferences.xml
     // ----------------------
-    static final String PREF_VERSION = "version";
-    static final String PREF_BUILD = "build";
-    static final String PREF_LICENSES = "licenses";
+    static final String PREF_VERSION = "pref_version";
+    static final String PREF_BUILD = "pref_build";
+    static final String PREF_LICENSES = "pref_licenses";
 
     // ------------------------- "invisible settings" start here -------------------------
 
