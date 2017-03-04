@@ -438,4 +438,8 @@
     <string name="info" msgid="1357564480946178121">"Thông tin"</string>
 
     <string name="application_version_title">Phiên bản ứng dụng</string>
+
+    <string name="build_number" msgid="3075795840572241758">"Số phiên bản"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"Giấy phép nguồn mở"</string>
 </resources>

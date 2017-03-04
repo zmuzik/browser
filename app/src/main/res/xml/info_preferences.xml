@@ -21,10 +21,10 @@
 
     <Preference
         android:key="pref_build"
-        android:title="Build" />
+        android:title="@string/build_number" />
 
     <Preference
         android:key="pref_licenses"
-        android:title="Open Source Licenses" />
+        android:title="@string/open_source_licenses" />
 
 </PreferenceScreen>

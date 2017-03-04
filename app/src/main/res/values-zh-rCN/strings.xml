@@ -438,4 +438,8 @@
     <string name="info" msgid="1357564480946178121">"信息"</string>
 
     <string name="application_version_title">应用版本</string>
+
+    <string name="build_number" msgid="3075795840572241758">"版本号"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"开放源代码许可"</string>
 </resources>

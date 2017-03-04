@@ -424,4 +424,8 @@
     <string name="info" msgid="1357564480946178121">"Maklumat"</string>
 
     <string name="application_version_title">Application version</string>
+
+    <string name="build_number" msgid="3075795840572241758">"Nombor binaan"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"Lesen sumber terbuka"</string>
 </resources>

@@ -438,4 +438,8 @@
     <string name="info" msgid="1357564480946178121">"정보"</string>
 
     <string name="application_version_title">애플리케이션 버전</string>
+
+    <string name="build_number" msgid="3075795840572241758">"빌드 번호"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"오픈소스 라이선스"</string>
 </resources>

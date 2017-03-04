@@ -438,4 +438,8 @@
     <string name="info" msgid="1357564480946178121">"Informace"</string>
 
     <string name="application_version_title">Verze aplikace</string>
+
+    <string name="build_number" msgid="3075795840572241758">"Číslo sestavení"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"Licence open source"</string>
 </resources>

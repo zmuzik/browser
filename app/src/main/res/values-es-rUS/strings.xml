@@ -438,4 +438,8 @@
     <string name="info" msgid="1357564480946178121">"Información"</string>
 
     <string name="application_version_title">Versión de la aplicación</string>
+
+    <string name="build_number" msgid="3075795840572241758">"Número de compilación"</string>
+
+    <string name="open_source_licenses" msgid="1890541368064108592">"Licencias de código abierto"</string>
 </resources>
