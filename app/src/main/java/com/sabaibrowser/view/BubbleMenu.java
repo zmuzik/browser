@@ -129,6 +129,10 @@ public class BubbleMenu extends ViewGroup implements View.OnTouchListener {
         setOnTouchListener(this);
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
+
     private void toggleOpenMenu() {
         if (!isOpen) {
             openMenu();

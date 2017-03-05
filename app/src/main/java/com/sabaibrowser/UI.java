@@ -281,7 +281,7 @@ public class UI {
 
     public void onConfigurationChanged(Configuration config) {
         hideBlockedInfo();
-        if (mBubbleMenu!= null) mBubbleMenu.closeMenu();
+        if (mBubbleMenu != null) mBubbleMenu.closeMenu();
     }
 
     public Activity getActivity() {
@@ -295,6 +295,14 @@ public class UI {
         }
         if (mCustomView != null) {
             mUiController.hideCustomView();
+            return true;
+        }
+        if (mBlockedElementsDialog != null) {
+            hideBlockedInfo();
+            return true;
+        }
+        if (mBubbleMenu != null && mBubbleMenu.isOpen()) {
+            mBubbleMenu.closeMenu();
             return true;
         }
         return false;
