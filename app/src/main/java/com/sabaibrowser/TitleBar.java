@@ -316,7 +316,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void onTabDataChanged(Tab tab) {
-        mNavBar.setVisibility(VISIBLE);
+        //mNavBar.setVisibility(VISIBLE);
     }
 
     public void onScrollChanged() {
