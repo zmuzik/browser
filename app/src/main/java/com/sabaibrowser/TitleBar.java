@@ -178,12 +178,16 @@ public class TitleBar extends RelativeLayout {
         if (mNavBar == null) return;
         mNavBar.setVisibility(View.GONE);
         mShrank = true;
+        if (getUi().mBubbleMenu == null) return;
+        getUi().mBubbleMenu.setVisibility(View.GONE);
     }
 
     public void unShrink() {
         if (mNavBar == null) return;
         mNavBar.setVisibility(View.VISIBLE);
         mShrank = false;
+        if (getUi().mBubbleMenu == null) return;
+        getUi().mBubbleMenu.setVisibility(View.VISIBLE);
     }
 
     public boolean isShrank() {
