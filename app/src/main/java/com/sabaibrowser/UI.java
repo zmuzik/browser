@@ -117,6 +117,8 @@ public class UI {
     private NavigationBar mNavigationBar;
     private BlockedElementsDialog mBlockedElementsDialog;
 
+    private int mLastWebViewScrollY;
+
     public static enum ComboViews {
         History,
         Bookmarks,
@@ -163,11 +165,28 @@ public class UI {
                 new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
                     public void onScrollChanged() {
-                        if (getWebView() != null && getWebView().getScrollY() == 0) {
+                        if (getWebView() == null) return;
+                        int scrollY = getWebView().getScrollY();
+
+                        // workaround for swipetorefresh not "stealing" the scrolling
+                        if (scrollY == 0) {
                             mSwipeContainer.setEnabled(true);
                         } else {
                             mSwipeContainer.setEnabled(false);
                         }
+
+                        if (mLastWebViewScrollY < scrollY && mLastWebViewScrollY != 0
+                                && mTitleBar.getVisibility() == View.VISIBLE) {
+                            mTitleBar.setVisibility(View.GONE);
+                            mBubbleMenu.setVisibility(View.GONE);
+                            //hideTitleBar();
+                        } else if (mLastWebViewScrollY > scrollY
+                                && mTitleBar.getVisibility() == View.GONE) {
+                            mTitleBar.setVisibility(View.VISIBLE);
+                            mBubbleMenu.setVisibility(View.VISIBLE);
+                            //showTitleBar();
+                        }
+                        mLastWebViewScrollY = scrollY;
                     }
                 }
         );
@@ -410,6 +429,7 @@ public class UI {
         // update nav bar state
         mNavigationBar.onStateChanged(UrlInputView.StateListener.STATE_NORMAL);
         mTitleBar.setSkipTitleBarAnimations(false);
+        mLastWebViewScrollY = 0;
     }
 
     protected void updateUrlBarAutoShowManagerTarget() {

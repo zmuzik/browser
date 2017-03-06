@@ -70,8 +70,6 @@ public class NavigationBar extends LinearLayout implements
     private Bubble mFab;
     private TextView mBlockedCountIndicator;
     private ImageView mShieldIcon;
-
-    private ImageView mFavicon;
     private ImageView mLockIcon;
 
     public NavigationBar(Context context) {
@@ -91,7 +89,6 @@ public class NavigationBar extends LinearLayout implements
         super.onFinishInflate();
         //XXX
         //mLockIcon = (ImageView) findViewById(R.id.lock);
-        //mFavicon = (ImageView) findViewById(R.id.favicon);
         mUrlInput = (UrlInputView) findViewById(R.id.url);
         mUrlInput.setUrlInputListener(this);
         mUrlInput.setOnFocusChangeListener(this);
