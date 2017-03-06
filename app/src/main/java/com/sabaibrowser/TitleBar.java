@@ -48,7 +48,6 @@ public class TitleBar extends RelativeLayout {
     private UI mUi;
     private FrameLayout mContentView;
     private PageProgressView mProgress;
-    private AccessibilityManager mAccessibilityManager;
 
     private NavigationBar mNavBar;
 
@@ -59,6 +58,7 @@ public class TitleBar extends RelativeLayout {
     private boolean mSkipTitleBarAnimations;
     private Animator mTitleBarAnimator;
     private boolean mIsFixedTitleBar;
+    private boolean mShrank;
 
     public TitleBar(Context context, UiController controller, UI ui,
                     FrameLayout contentView) {
@@ -66,7 +66,6 @@ public class TitleBar extends RelativeLayout {
         mUiController = controller;
         mUi = ui;
         mContentView = contentView;
-        mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         initLayout(context);
         setFixedTitleBar();
     }
@@ -126,14 +125,6 @@ public class TitleBar extends RelativeLayout {
         return mUiController;
     }
 
-    void setShowProgressOnly(boolean progress) {
-        if (progress) {
-            mNavBar.setVisibility(View.GONE);
-        } else {
-            mNavBar.setVisibility(View.VISIBLE);
-        }
-    }
-
     void setSkipTitleBarAnimations(boolean skip) {
         mSkipTitleBarAnimations = skip;
     }
@@ -181,6 +172,22 @@ public class TitleBar extends RelativeLayout {
             onScrollChanged();
         }
         mShowing = false;
+    }
+
+    public void shrink() {
+        if (mNavBar == null) return;
+        mNavBar.setVisibility(View.GONE);
+        mShrank = true;
+    }
+
+    public void unShrink() {
+        if (mNavBar == null) return;
+        mNavBar.setVisibility(View.VISIBLE);
+        mShrank = false;
+    }
+
+    public boolean isShrank() {
+        return mShrank;
     }
 
     boolean isShowing() {

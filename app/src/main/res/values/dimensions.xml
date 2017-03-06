@@ -42,4 +42,8 @@
     <dimen name="bubble_menu_fade_length">24dp</dimen>
     <dimen name="bubble_menu_bubble_border">2dp</dimen>
 
+    <!-- bottom bar -->
+    <dimen name="title_bar_shrank_size">20dp</dimen>
+    <dimen name="title_bar_shrank_text_size">14dp</dimen>
+
 </resources>

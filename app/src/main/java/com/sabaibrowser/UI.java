@@ -175,16 +175,16 @@ public class UI {
                             mSwipeContainer.setEnabled(false);
                         }
 
-                        if (mLastWebViewScrollY < scrollY && mLastWebViewScrollY != 0
-                                && mTitleBar.getVisibility() == View.VISIBLE) {
-                            mTitleBar.setVisibility(View.GONE);
-                            mBubbleMenu.setVisibility(View.GONE);
-                            //hideTitleBar();
-                        } else if (mLastWebViewScrollY > scrollY
-                                && mTitleBar.getVisibility() == View.GONE) {
-                            mTitleBar.setVisibility(View.VISIBLE);
-                            mBubbleMenu.setVisibility(View.VISIBLE);
-                            //showTitleBar();
+                        if (mLastWebViewScrollY < scrollY && mLastWebViewScrollY != 0 && !mTitleBar.isShrank()) {
+                            mTitleBar.shrink();
+//                            mTitleBar.setVisibility(View.GONE);
+//                            mBubbleMenu.setVisibility(View.GONE);
+//                            hideTitleBar();
+                        } else if (mLastWebViewScrollY > scrollY && mTitleBar.isShrank()) {
+                            mTitleBar.unShrink();
+//                            mTitleBar.setVisibility(View.VISIBLE);
+//                            mBubbleMenu.setVisibility(View.VISIBLE);
+//                            showTitleBar();
                         }
                         mLastWebViewScrollY = scrollY;
                     }

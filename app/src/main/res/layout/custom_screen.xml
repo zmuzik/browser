@@ -33,6 +33,7 @@
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/title_bar_shrank_size"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <FrameLayout
