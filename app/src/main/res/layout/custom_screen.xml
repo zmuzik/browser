@@ -33,13 +33,13 @@
             android:id="@+id/fixed_titlebar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentBottom="true" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/fixed_titlebar_container"
+            android:layout_above="@id/fixed_titlebar_container"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <FrameLayout
