@@ -175,16 +175,14 @@ public class UI {
                             mSwipeContainer.setEnabled(false);
                         }
 
-                        if (mLastWebViewScrollY < scrollY && mLastWebViewScrollY != 0 && !mTitleBar.isShrank()) {
+                        if (mLastWebViewScrollY < scrollY
+                                && mLastWebViewScrollY != 0
+                                && !mTitleBar.isShrank()) {
                             mTitleBar.shrink();
-//                            mTitleBar.setVisibility(View.GONE);
-//                            mBubbleMenu.setVisibility(View.GONE);
-//                            hideTitleBar();
-                        } else if (mLastWebViewScrollY > scrollY && mTitleBar.isShrank()) {
+                        } else if (mLastWebViewScrollY > scrollY
+                                && scrollY != 0
+                                && mTitleBar.isShrank()) {
                             mTitleBar.unShrink();
-//                            mTitleBar.setVisibility(View.VISIBLE);
-//                            mBubbleMenu.setVisibility(View.VISIBLE);
-//                            showTitleBar();
                         }
                         mLastWebViewScrollY = scrollY;
                     }
