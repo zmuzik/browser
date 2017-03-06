@@ -116,7 +116,7 @@ public class NavigationBar extends LinearLayout implements
         mUrlInput.setStateListener(this);
         mIncognitoIcon = findViewById(R.id.incognito_icon);
         mUrlInput.setOnTouchListener(new SwipeListener(getContext()) {
-            public void onSwipeDown() {
+            public void onSwipeDown(float velocity) {
                 stopEditingUrl();
                 mUi.showNavScreen();
             }

@@ -20,7 +20,7 @@ public class SwipeListener implements View.OnTouchListener {
 
     private final class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-        private static final int DIST_THRESHOLD = 50;
+        private static final int DIST_THRESHOLD = 32;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -39,15 +39,15 @@ public class SwipeListener implements View.OnTouchListener {
 
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (diffX > 0) {
-                        onSwipeRight();
+                        onSwipeRight(velocityX);
                     } else {
-                        onSwipeLeft();
+                        onSwipeLeft(velocityX);
                     }
                 } else {
                     if (diffY > 0) {
-                        onSwipeDown();
+                        onSwipeDown(velocityY);
                     } else {
-                        onSwipeUp();
+                        onSwipeUp(velocityY);
                     }
                 }
             } catch (Exception e) {
@@ -58,15 +58,15 @@ public class SwipeListener implements View.OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
+    public void onSwipeRight(float velocity) {
     }
 
-    public void onSwipeLeft() {
+    public void onSwipeLeft(float velocity) {
     }
 
-    public void onSwipeUp() {
+    public void onSwipeUp(float velocity) {
     }
 
-    public void onSwipeDown() {
+    public void onSwipeDown(float velocity) {
     }
 }
