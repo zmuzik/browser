@@ -16,12 +16,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/titlebar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/toolbar_height"
     android:elevation="8dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_shrank_size"
+        android:layout_alignParentBottom="true"
         android:background="@color/light_gray"
         android:paddingLeft="32dp"
         android:text="title"
@@ -30,7 +31,6 @@
 
     <com.sabaibrowser.NavigationBar
         android:id="@+id/taburlbar"
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/light_gray"
@@ -143,6 +143,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_alignBottom="@+id/taburlbar"
+        android:layout_alignParentBottom="true"
         android:background="@null"
         android:elevation="10dp"
         android:src="@color/primary"
