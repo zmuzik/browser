@@ -84,7 +84,7 @@ public class NavigationBar extends LinearLayout implements
     protected void onFinishInflate() {
         super.onFinishInflate();
         PADDING_SIDE = Utils.dpToPx(getContext(), 8);
-        PADDING_RIGHT_WITH_FAB = Utils.dpToPx(getContext(), 80);
+        PADDING_RIGHT_WITH_FAB = Utils.dpToPx(getContext(), 76);
         //XXX
         //mLockIcon = (ImageView) findViewById(R.id.lock);
         mUrlInput = (UrlInputView) findViewById(R.id.url);
