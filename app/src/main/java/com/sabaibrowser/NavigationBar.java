@@ -60,7 +60,6 @@ public class NavigationBar extends LinearLayout implements
     private Drawable mRefreshDrawable;
     private String mStopDescription;
     private String mRefreshDescription;
-    private View mTitleContainer;
     private Drawable mTextfieldBgDrawable;
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
@@ -97,7 +96,6 @@ public class NavigationBar extends LinearLayout implements
         mStopButton.setOnClickListener(this);
         mClearButton = (ImageView) findViewById(R.id.clear);
         mClearButton.setOnClickListener(this);
-        mTitleContainer = findViewById(R.id.title_bg);
         setFocusState(false);
         Resources res = getContext().getResources();
         mStopDrawable = res.getDrawable(R.drawable.ic_stop);
@@ -353,7 +351,6 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_NORMAL:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.GONE);
-                mTitleContainer.setBackgroundDrawable(null);
                 if (mFab != null) {
                     mFab.setVisibility(View.VISIBLE);
                 }
