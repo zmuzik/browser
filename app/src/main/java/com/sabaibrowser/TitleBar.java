@@ -58,8 +58,7 @@ public class TitleBar extends RelativeLayout {
     private boolean mShrank;
     private TextView mSmallBar;
 
-    public TitleBar(Context context, UiController controller, UI ui,
-                    FrameLayout contentView) {
+    public TitleBar(Context context, UiController controller, UI ui, FrameLayout contentView) {
         super(context, null);
         mUiController = controller;
         mUi = ui;
@@ -89,22 +88,7 @@ public class TitleBar extends RelativeLayout {
         setFixedTitleBar();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        if (mIsFixedTitleBar) {
-//            int margin = getMeasuredHeight() - calculateEmbeddedHeight();
-//            mUi.setContentViewMarginTop(-margin);
-//        } else {
-//            mUi.setContentViewMarginTop(0);
-//        }
-    }
-
     private void setFixedTitleBar() {
-//        boolean isFixed = !mUseQuickControls
-//                && !getContext().getResources().getBoolean(R.bool.hide_title);
-//        isFixed |= mAccessibilityManager.isEnabled();
-        // If getParent() returns null, we are initializing
         ViewGroup parent = (ViewGroup)getParent();
         if (mIsFixedTitleBar && parent != null) return;
         mIsFixedTitleBar = true;
@@ -235,10 +219,6 @@ public class TitleBar extends RelativeLayout {
     };
 
     private int getVisibleTitleHeight() {
-        //getVisibleTitleHeight should always return 0
-        //Tab tab = mUi.getActiveTab();
-        //WebView webview = tab != null ? tab.getWebView() : null;
-        //return webview != null ? webview.getVisibleTitleHeight() : 0;
         return 0;
     }
 
@@ -287,10 +267,6 @@ public class TitleBar extends RelativeLayout {
         } else {
             return null;
         }
-    }
-
-    public PageProgressView getProgressView() {
-        return mProgress;
     }
 
     public NavigationBar getNavigationBar() {
@@ -343,5 +319,4 @@ public class TitleBar extends RelativeLayout {
             return tab.getTitleToDisplay();
         }
     }
-
 }

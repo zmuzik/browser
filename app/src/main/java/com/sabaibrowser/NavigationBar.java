@@ -59,7 +59,6 @@ public class NavigationBar extends LinearLayout implements
 
     private ImageView mStopButton;
     private ImageView mClearButton;
-    private String mStopDescription;
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
@@ -98,8 +97,6 @@ public class NavigationBar extends LinearLayout implements
         mClearButton = (ImageView) findViewById(R.id.clear);
         mClearButton.setOnClickListener(this);
         setFocusState(false);
-        Resources res = getContext().getResources();
-        mStopDescription = res.getString(R.string.accessibility_button_stop);
         mUrlInput.setContainer(this);
         mUrlInput.setStateListener(this);
         mIncognitoIcon = findViewById(R.id.incognito_icon);
