@@ -43,6 +43,7 @@ import com.sabaibrowser.UrlInputView.StateListener;
 import com.sabaibrowser.UrlInputView.UrlInputListener;
 import com.sabaibrowser.os.Search;
 import com.sabaibrowser.view.Bubble;
+import com.sabaibrowser.view.BubbleMenu;
 
 public class NavigationBar extends LinearLayout implements
         StateListener, OnMenuItemClickListener, OnClickListener, UrlInputListener,
@@ -63,7 +64,7 @@ public class NavigationBar extends LinearLayout implements
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
-    private Bubble mFab;
+    private BubbleMenu mFabMenu;
     private TextView mBlockedCountIndicator;
     private ImageView mShieldIcon;
     private ImageView mLockIcon;
@@ -343,8 +344,8 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_NORMAL:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.GONE);
-                if (mFab != null) {
-                    mFab.setVisibility(View.VISIBLE);
+                if (mFabMenu != null) {
+                    mFabMenu.setVisibility(View.VISIBLE);
                 }
                 setPadding(PADDING_SIDE, 0, PADDING_RIGHT_WITH_FAB, 0);
                 mBlockedElementsIcon.setVisibility(View.VISIBLE);
@@ -352,7 +353,7 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
                 mStopButton.setVisibility(View.VISIBLE);
                 mClearButton.setVisibility(View.GONE);
-                mFab.setVisibility(View.GONE);
+                mFabMenu.setVisibility(View.GONE);
                 setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
                 mBlockedElementsIcon.setVisibility(View.GONE);
                 break;
@@ -360,7 +361,7 @@ public class NavigationBar extends LinearLayout implements
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
                 setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
-                mFab.setVisibility(View.GONE);
+                mFabMenu.setVisibility(View.GONE);
                 mBlockedElementsIcon.setVisibility(View.GONE);
                 break;
         }
@@ -406,8 +407,8 @@ public class NavigationBar extends LinearLayout implements
         return mUiController.onOptionsItemSelected(item);
     }
 
-    public void setFab(Bubble fab) {
-        mFab = fab;
+    public void setFabMenu(BubbleMenu fabMenu) {
+        mFabMenu = fabMenu;
     }
 
     @Override

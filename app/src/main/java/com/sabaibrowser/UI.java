@@ -82,7 +82,6 @@ public class UI {
     private static final int MSG_HIDE_CUSTOM_VIEW = 2;
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
     public static final int HIDE_CUSTOM_VIEW_DELAY = 200; // in ms
-    Bubble mFab;
     BubbleMenu mBubbleMenu;
 
     Activity mActivity;
@@ -144,7 +143,6 @@ public class UI {
                 R.id.fullscreen_custom_content);
         mBlockedElementsContainer = (FrameLayout)
                 frameLayout.findViewById(R.id.blocked_dialog_container);
-        mFab = (Bubble) frameLayout.findViewById(R.id.main_fab);
         mBubbleMenu = (BubbleMenu) frameLayout.findViewById(R.id.bubble_menu);
         setImmersiveFullscreen(false);
         mTitleBar = new TitleBar(mActivity, mUiController, this,
@@ -190,7 +188,7 @@ public class UI {
         );
 
         mNavigationBar = mTitleBar.getNavigationBar();
-        mNavigationBar.setFab(mFab);
+        mNavigationBar.setFabMenu(mBubbleMenu);
         initBubbleMenu();
         TypedValue heightValue = new TypedValue();
         browser.getTheme().resolveAttribute(
