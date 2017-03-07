@@ -211,12 +211,6 @@ public class WebsiteSettingsFragment extends ListFragment implements OnClickList
             mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mDefaultIcon = BitmapFactory.decodeResource(getResources(),
                     R.drawable.app_web_browser_sm);
-            mUsageEmptyIcon = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.ic_list_data_off);
-            mUsageLowIcon = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.ic_list_data_small);
-            mUsageHighIcon = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.ic_list_data_large);
             mLocationAllowedIcon = BitmapFactory.decodeResource(getResources(),
                     R.drawable.ic_location_on);
             mLocationDisallowedIcon = BitmapFactory.decodeResource(getResources(),
@@ -347,18 +341,18 @@ public class WebsiteSettingsFragment extends ListFragment implements OnClickList
          * Set the icon according to the usage
          */
         public void setIconForUsage(ImageView usageIcon, long usageInBytes) {
-            float usageInMegabytes = (float) usageInBytes / (1024.0F * 1024.0F);
+//            float usageInMegabytes = (float) usageInBytes / (1024.0F * 1024.0F);
             // We set the correct icon:
             // 0 < empty < 0.1MB
             // 0.1MB < low < 5MB
             // 5MB < high
-            if (usageInMegabytes <= 0.1) {
-                usageIcon.setImageBitmap(mUsageEmptyIcon);
-            } else if (usageInMegabytes > 0.1 && usageInMegabytes <= 5) {
-                usageIcon.setImageBitmap(mUsageLowIcon);
-            } else if (usageInMegabytes > 5) {
-                usageIcon.setImageBitmap(mUsageHighIcon);
-            }
+//            if (usageInMegabytes <= 0.1) {
+//                usageIcon.setImageBitmap(mUsageEmptyIcon);
+//            } else if (usageInMegabytes > 0.1 && usageInMegabytes <= 5) {
+//                usageIcon.setImageBitmap(mUsageLowIcon);
+//            } else if (usageInMegabytes > 5) {
+//                usageIcon.setImageBitmap(mUsageHighIcon);
+//            }
         }
 
         @Override
@@ -416,16 +410,16 @@ public class WebsiteSettingsFragment extends ListFragment implements OnClickList
                 view.setTag(site);
 
                 String origin = site.getOrigin();
-                if (site.hasFeature(Site.FEATURE_WEB_STORAGE)) {
-                    WebStorage.getInstance().getUsageForOrigin(origin, new ValueCallback<Long>() {
-                        public void onReceiveValue(Long value) {
-                            if (value != null) {
-                                setIconForUsage(usageIcon, value.longValue());
-                                usageIcon.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                }
+//                if (site.hasFeature(Site.FEATURE_WEB_STORAGE)) {
+//                    WebStorage.getInstance().getUsageForOrigin(origin, new ValueCallback<Long>() {
+//                        public void onReceiveValue(Long value) {
+//                            if (value != null) {
+//                                setIconForUsage(usageIcon, value.longValue());
+//                                usageIcon.setVisibility(View.VISIBLE);
+//                            }
+//                        }
+//                    });
+//                }
 
                 if (site.hasFeature(Site.FEATURE_GEOLOCATION)) {
                     locationIcon.setVisibility(View.VISIBLE);
@@ -456,7 +450,7 @@ public class WebsiteSettingsFragment extends ListFragment implements OnClickList
                                     title.setText(R.string.webstorage_clear_data_title);
                                     subtitle.setText(usage);
                                     subtitle.setVisibility(View.VISIBLE);
-                                    setIconForUsage(featureIcon, value.longValue());
+                                    //setIconForUsage(featureIcon, value.longValue());
                                 }
                             }
                         });
