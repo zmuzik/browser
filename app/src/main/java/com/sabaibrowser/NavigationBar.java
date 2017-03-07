@@ -55,7 +55,6 @@ public class NavigationBar extends LinearLayout implements
 
 
     private ImageView mStopButton;
-    private ImageView mMagnify;
     private ImageView mClearButton;
     private Drawable mStopDrawable;
     private Drawable mRefreshDrawable;
@@ -98,7 +97,6 @@ public class NavigationBar extends LinearLayout implements
         mStopButton.setOnClickListener(this);
         mClearButton = (ImageView) findViewById(R.id.clear);
         mClearButton.setOnClickListener(this);
-        mMagnify = (ImageView) findViewById(R.id.magnify);
         mTitleContainer = findViewById(R.id.title_bg);
         setFocusState(false);
         Resources res = getContext().getResources();
@@ -355,7 +353,6 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_NORMAL:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.GONE);
-                mMagnify.setVisibility(View.GONE);
                 mTitleContainer.setBackgroundDrawable(null);
                 if (mFab != null) {
                     mFab.setVisibility(View.VISIBLE);
@@ -365,14 +362,12 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
                 mStopButton.setVisibility(View.VISIBLE);
                 mClearButton.setVisibility(View.GONE);
-                mMagnify.setVisibility(View.GONE);
                 mFab.setVisibility(View.GONE);
                 setPadding(0, 0, 0, 0);
                 break;
             case UrlInputView.StateListener.STATE_EDITED:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
-                mMagnify.setVisibility(View.VISIBLE);
                 setPadding(0, 0, 0, 0);
                 mFab.setVisibility(View.GONE);
                 break;
