@@ -108,6 +108,9 @@ public class NavigationBar extends LinearLayout implements
                 stopEditingUrl();
                 mUi.showNavScreen();
             }
+            public void onSwipeDown(float velocity) {
+                mTitleBar.shrink();
+            }
         });
         mBlockedCountIndicator = (TextView) findViewById(R.id.blocked_count_indicator);
         mShieldIcon = (ImageView) findViewById(R.id.shield);

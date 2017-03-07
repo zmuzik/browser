@@ -75,6 +75,12 @@ public class TitleBar extends RelativeLayout {
         mNavBar = (NavigationBar) findViewById(R.id.taburlbar);
         mNavBar.setTitleBar(this);
         mSmallBar = (TextView) findViewById(R.id.smallBar);
+        mSmallBar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                unShrink();
+            }
+        });
     }
 
     @Override
@@ -174,7 +180,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void shrink() {
-        if (mNavBar == null) return;
+        if (mShrank || mNavBar == null) return;
         mNavBar.setVisibility(View.GONE);
         mShrank = true;
         if (getUi().mBubbleMenu == null) return;
@@ -182,7 +188,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void unShrink() {
-        if (mNavBar == null) return;
+        if (!mShrank || mNavBar == null) return;
         mNavBar.setVisibility(View.VISIBLE);
         mShrank = false;
         if (getUi().mBubbleMenu == null) return;
