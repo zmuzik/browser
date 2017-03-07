@@ -130,7 +130,7 @@ public class TabCard extends ViewGroup {
     public void setTab(Tab tab) {
         if (tab == null) return;
         mTab = tab;
-        mTitle.setText((tab.getTitle() != null) ? tab.getTitle() : tab.getUrl());
+        mTitle.setText(tab.getTitleToDisplay());
         boolean isPrivate = tab.isPrivateBrowsingEnabled();
 
         int backgroundColor = (isPrivate)
