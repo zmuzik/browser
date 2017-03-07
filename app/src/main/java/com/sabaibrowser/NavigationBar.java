@@ -59,11 +59,7 @@ public class NavigationBar extends LinearLayout implements
 
     private ImageView mStopButton;
     private ImageView mClearButton;
-    private Drawable mStopDrawable;
-    private Drawable mRefreshDrawable;
     private String mStopDescription;
-    private String mRefreshDescription;
-    private Drawable mTextfieldBgDrawable;
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
@@ -103,11 +99,7 @@ public class NavigationBar extends LinearLayout implements
         mClearButton.setOnClickListener(this);
         setFocusState(false);
         Resources res = getContext().getResources();
-        mStopDrawable = res.getDrawable(R.drawable.ic_stop);
-        mRefreshDrawable = res.getDrawable(R.drawable.ic_refresh);
         mStopDescription = res.getString(R.string.accessibility_button_stop);
-        mRefreshDescription = res.getString(R.string.accessibility_button_refresh);
-        //mTextfieldBgDrawable = res.getDrawable(R.drawable.textfield_active_holo_dark);
         mUrlInput.setContainer(this);
         mUrlInput.setStateListener(this);
         mIncognitoIcon = findViewById(R.id.incognito_icon);
@@ -335,18 +327,11 @@ public class NavigationBar extends LinearLayout implements
     }
 
     public void onProgressStarted() {
-        if (mStopButton.getDrawable() != mStopDrawable) {
-            mStopButton.setImageDrawable(mStopDrawable);
-            mStopButton.setContentDescription(mStopDescription);
-            if (mStopButton.getVisibility() != View.VISIBLE) {
-                mStopButton.setVisibility(View.VISIBLE);
-            }
-        }
+        mStopButton.setVisibility(View.VISIBLE);
     }
 
     public void onProgressStopped() {
-        mStopButton.setImageDrawable(mRefreshDrawable);
-        mStopButton.setContentDescription(mRefreshDescription);
+        mStopButton.setVisibility(View.GONE);
         onStateChanged(mUrlInput.getState());
     }
 
