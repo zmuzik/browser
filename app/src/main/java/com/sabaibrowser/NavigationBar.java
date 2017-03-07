@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,7 +41,6 @@ import android.widget.TextView;
 import com.sabaibrowser.UrlInputView.StateListener;
 import com.sabaibrowser.UrlInputView.UrlInputListener;
 import com.sabaibrowser.os.Search;
-import com.sabaibrowser.view.Bubble;
 import com.sabaibrowser.view.BubbleMenu;
 
 public class NavigationBar extends LinearLayout implements
@@ -68,6 +66,7 @@ public class NavigationBar extends LinearLayout implements
     private TextView mBlockedCountIndicator;
     private ImageView mShieldIcon;
     private ImageView mLockIcon;
+    private int mUrlInputState;
 
     public NavigationBar(Context context) {
         super(context);
@@ -108,6 +107,7 @@ public class NavigationBar extends LinearLayout implements
                 stopEditingUrl();
                 mUi.showNavScreen();
             }
+
             public void onSwipeDown(float velocity) {
                 mTitleBar.shrink();
             }
@@ -152,7 +152,11 @@ public class NavigationBar extends LinearLayout implements
                 }
             }
         } else if (mClearButton == v) {
-            mUrlInput.setText("");
+            if (mUrlInput.getText().length() == 0) {
+                mUrlInput.clearFocus();
+            } else {
+                mUrlInput.setText("");
+            }
         }
     }
 
@@ -340,6 +344,7 @@ public class NavigationBar extends LinearLayout implements
 
     @Override
     public void onStateChanged(int state) {
+        mUrlInputState = state;
         switch (state) {
             case UrlInputView.StateListener.STATE_NORMAL:
                 mStopButton.setVisibility(View.GONE);
@@ -417,6 +422,13 @@ public class NavigationBar extends LinearLayout implements
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+//        if (mUrlInputState != UrlInputView.StateListener.STATE_NORMAL) {
+//            if (s.length() == 0) {
+//                mClearButton.setVisibility(View.GONE);
+//            } else {
+//                mClearButton.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     @Override
