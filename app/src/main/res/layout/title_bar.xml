@@ -20,12 +20,12 @@
     android:elevation="8dp">
 
     <TextView
+        android:id="@+id/smallBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_shrank_size"
         android:layout_alignParentBottom="true"
         android:background="@color/light_gray"
-        android:paddingLeft="32dp"
-        android:text="title"
+        android:paddingLeft="8dp"
         android:textSize="@dimen/title_bar_shrank_text_size" />
 
 

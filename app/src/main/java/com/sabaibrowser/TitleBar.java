@@ -25,15 +25,12 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.accessibility.AccessibilityManager;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 
 
 /**
@@ -59,6 +56,7 @@ public class TitleBar extends RelativeLayout {
     private Animator mTitleBarAnimator;
     private boolean mIsFixedTitleBar;
     private boolean mShrank;
+    private TextView mSmallBar;
 
     public TitleBar(Context context, UiController controller, UI ui,
                     FrameLayout contentView) {
@@ -76,6 +74,7 @@ public class TitleBar extends RelativeLayout {
         mProgress = (PageProgressView) findViewById(R.id.progress);
         mNavBar = (NavigationBar) findViewById(R.id.taburlbar);
         mNavBar.setTitleBar(this);
+        mSmallBar = (TextView) findViewById(R.id.smallBar);
     }
 
     @Override
@@ -316,6 +315,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void onTabDataChanged(Tab tab) {
+        mSmallBar.setText(getTitleToDisplay());
         //mNavBar.setVisibility(VISIBLE);
     }
 
@@ -327,6 +327,15 @@ public class TitleBar extends RelativeLayout {
 
     public void onResume() {
         setFixedTitleBar();
+    }
+
+    public String getTitleToDisplay() {
+        Tab tab = getUiController().getCurrentTab();
+        if (tab == null) {
+            return "";
+        } else {
+            return tab.getTitleToDisplay();
+        }
     }
 
 }

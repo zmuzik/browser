@@ -1411,6 +1411,14 @@ public class Tab implements PictureListener {
         return mCurrentState.mTitle;
     }
 
+    public String getTitleToDisplay() {
+        if (mCurrentState.mTitle == null) {
+            return UrlUtils.stripUrl(mCurrentState.mUrl);
+        } else {
+            return mCurrentState.mTitle;
+        }
+    }
+
     /**
      * Get the favicon of this tab.
      */

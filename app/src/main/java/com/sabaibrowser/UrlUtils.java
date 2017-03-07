@@ -44,7 +44,7 @@ public class UrlUtils {
     // Regular expression to strip http:// and optionally
     // the trailing slash
     private static final Pattern STRIP_URL_PATTERN =
-            Pattern.compile("^http://(.*?)/?$");
+            Pattern.compile("^https?://(.*?)/?$");
 
     private UrlUtils() { /* cannot be instantiated */ }
 
@@ -172,5 +172,4 @@ public class UrlUtils {
         }
         return inUrl;
     }
-
 }
