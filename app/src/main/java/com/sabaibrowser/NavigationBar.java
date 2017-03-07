@@ -349,7 +349,7 @@ public class NavigationBar extends LinearLayout implements
             case UrlInputView.StateListener.STATE_NORMAL:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.GONE);
-                if (mFabMenu != null) {
+                if (mFabMenu != null && !mTitleBar.isShrank()) {
                     mFabMenu.setVisibility(View.VISIBLE);
                 }
                 setPadding(PADDING_SIDE, 0, PADDING_RIGHT_WITH_FAB, 0);
