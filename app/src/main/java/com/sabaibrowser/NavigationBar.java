@@ -221,7 +221,7 @@ public class NavigationBar extends LinearLayout implements
     }
 
     void setDisplayTitle(Tab tab) {
-        mUrlInput.setTag(tab.mCurrentState.mTitle);
+        mUrlInput.setTag(UrlUtils.stripUrl(tab.mCurrentState.mUrl));
         if (!isEditingUrl()) {
             mUrlInput.setText(tab.getTitleToDisplay());
             mUrlInput.setSelection(0);

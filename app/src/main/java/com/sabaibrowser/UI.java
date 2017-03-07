@@ -643,7 +643,7 @@ public class UI {
 
     protected void setUrlTitle(Tab tab) {
         if (tab.inForeground()) {
-            mNavigationBar.setDisplayTitle(tab.getTitleToDisplay());
+            mNavigationBar.setDisplayTitle(tab);
         }
     }
 
