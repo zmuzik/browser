@@ -351,8 +351,8 @@ public class NavigationBar extends LinearLayout implements
                 mBlockedElementsIcon.setVisibility(View.VISIBLE);
                 break;
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
-                mStopButton.setVisibility(View.VISIBLE);
-                mClearButton.setVisibility(View.GONE);
+                mStopButton.setVisibility(View.GONE);
+                mClearButton.setVisibility(View.VISIBLE);
                 mFabMenu.setVisibility(View.GONE);
                 setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
                 mBlockedElementsIcon.setVisibility(View.GONE);
