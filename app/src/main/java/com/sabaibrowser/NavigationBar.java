@@ -48,6 +48,9 @@ public class NavigationBar extends LinearLayout implements
         StateListener, OnMenuItemClickListener, OnClickListener, UrlInputListener,
         OnDismissListener, OnFocusChangeListener, TextWatcher {
 
+    private int PADDING_SIDE;
+    private int PADDING_RIGHT_WITH_FAB;
+
     protected UI mUi;
     protected TitleBar mTitleBar;
     protected UiController mUiController;
@@ -84,6 +87,8 @@ public class NavigationBar extends LinearLayout implements
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        PADDING_SIDE = Utils.dpToPx(getContext(), 8);
+        PADDING_RIGHT_WITH_FAB = Utils.dpToPx(getContext(), 80);
         //XXX
         //mLockIcon = (ImageView) findViewById(R.id.lock);
         mUrlInput = (UrlInputView) findViewById(R.id.url);
@@ -354,18 +359,18 @@ public class NavigationBar extends LinearLayout implements
                 if (mFab != null) {
                     mFab.setVisibility(View.VISIBLE);
                 }
-                setPadding(0, 0, Utils.dpToPx(getContext(), 80), 0);
+                setPadding(PADDING_SIDE, 0, PADDING_RIGHT_WITH_FAB, 0);
                 break;
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
                 mStopButton.setVisibility(View.VISIBLE);
                 mClearButton.setVisibility(View.GONE);
                 mFab.setVisibility(View.GONE);
-                setPadding(0, 0, 0, 0);
+                setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
                 break;
             case UrlInputView.StateListener.STATE_EDITED:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
-                setPadding(0, 0, 0, 0);
+                setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
                 mFab.setVisibility(View.GONE);
                 break;
         }

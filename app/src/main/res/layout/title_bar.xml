@@ -35,94 +35,86 @@
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/light_gray"
         android:elevation="8dp"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip">
 
-        <LinearLayout
-            android:id="@+id/title_bg"
+        <com.sabaibrowser.UrlInputView
+            android:id="@+id/url"
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dip"
-            android:layout_marginRight="8dip"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1.0"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:background="@color/white"
+            android:ellipsize="end"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="24dip"
+            android:focusable="true"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+            android:inputType="textUri"
+            android:lines="1"
+            android:padding="4dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/primary_text"
+            android:theme="@style/Widget.UrlInputView" />
 
-            <com.sabaibrowser.UrlInputView
-                android:id="@+id/url"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1.0"
-                android:background="@color/white"
-                android:ellipsize="end"
-                android:fadingEdge="horizontal"
-                android:fadingEdgeLength="24dip"
-                android:focusable="true"
-                android:hint="@string/search_hint"
-                android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-                android:inputType="textUri"
-                android:lines="1"
-                android:padding="4dp"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:textColor="@color/primary_text"
-                android:theme="@style/Widget.UrlInputView" />
+        <ImageView
+            android:id="@+id/stop"
+            style="@style/BrowserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/accessibility_button_stop"
+            android:paddingRight="4dip"
+            android:src="@drawable/ic_stop" />
+
+        <ImageView
+            android:id="@+id/clear"
+            style="@style/BrowserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_clear"
+            android:paddingRight="4dip"
+            android:src="@drawable/ic_close_window"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/stop"
-                style="@style/BrowserButton"
+                android:id="@+id/shield"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/accessibility_button_stop"
-                android:paddingRight="4dip"
-                android:src="@drawable/ic_stop" />
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:src="@drawable/ic_shield" />
 
-            <ImageView
-                android:id="@+id/clear"
-                style="@style/BrowserButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/blocked_count_indicator"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/accessibility_button_clear"
-                android:paddingRight="4dip"
-                android:src="@drawable/ic_close_window"
-                android:visibility="gone" />
+                android:layout_gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="0"
+                android:textSize="11dp" />
+        </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/shield"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:src="@drawable/ic_shield" />
-
-                <TextView
-                    android:id="@+id/blocked_count_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="0"
-                    android:textSize="11dp" />
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/incognito_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="0dip"
-                android:paddingLeft="8dip"
-                android:paddingRight="0dip"
-                android:src="@drawable/ic_incognito_dark"
-                android:visibility="gone" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/incognito_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0dip"
+            android:paddingLeft="8dip"
+            android:paddingRight="0dip"
+            android:src="@drawable/ic_incognito_dark"
+            android:visibility="gone" />
 
     </com.sabaibrowser.NavigationBar>
 
