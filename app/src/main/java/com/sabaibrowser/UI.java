@@ -642,13 +642,8 @@ public class UI {
     }
 
     protected void setUrlTitle(Tab tab) {
-        String url = tab.getUrl();
-        String title = tab.getTitle();
-        if (TextUtils.isEmpty(title)) {
-            title = url;
-        }
         if (tab.inForeground()) {
-            mNavigationBar.setDisplayTitle(url);
+            mNavigationBar.setDisplayTitle(tab.getTitleToDisplay());
         }
     }
 

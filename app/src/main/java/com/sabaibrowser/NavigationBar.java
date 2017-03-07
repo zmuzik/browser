@@ -220,6 +220,14 @@ public class NavigationBar extends LinearLayout implements
         }
     }
 
+    void setDisplayTitle(Tab tab) {
+        mUrlInput.setTag(tab.mCurrentState.mTitle);
+        if (!isEditingUrl()) {
+            mUrlInput.setText(tab.getTitleToDisplay());
+            mUrlInput.setSelection(0);
+        }
+    }
+
     void setIncognitoMode(boolean incognito) {
         mUrlInput.setIncognitoMode(incognito);
     }
