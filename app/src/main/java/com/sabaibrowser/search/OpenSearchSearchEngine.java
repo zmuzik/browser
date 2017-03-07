@@ -252,8 +252,8 @@ public class OpenSearchSearchEngine implements SearchEngine {
                     } catch (JSONException e) {
                         Log.w(TAG, "Error", e);
                     }
-                } else if (column == COLUMN_INDEX_ICON) {
-                    return String.valueOf(R.drawable.magnifying_glass);
+//                } else if (column == COLUMN_INDEX_ICON) {
+//                    return String.valueOf(R.drawable.magnifying_glass);
                 }
             }
             return null;
