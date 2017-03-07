@@ -16,21 +16,15 @@
 
 package com.sabaibrowser;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 
 /**
@@ -39,7 +33,6 @@ import android.widget.TextView;
 public class TitleBar extends RelativeLayout {
 
     private static final int PROGRESS_MAX = 100;
-    private static final float ANIM_TITLEBAR_DECELERATE = 2.5f;
 
     private UiController mUiController;
     private UI mUi;
@@ -52,8 +45,6 @@ public class TitleBar extends RelativeLayout {
     private boolean mShowing;
     private boolean mHideLoad;
     private boolean mInLoad;
-    private boolean mSkipTitleBarAnimations;
-    private Animator mTitleBarAnimator;
     private boolean mIsFixedTitleBar;
     private boolean mShrank;
     private TextView mSmallBar;
@@ -89,12 +80,10 @@ public class TitleBar extends RelativeLayout {
     }
 
     private void setFixedTitleBar() {
-        ViewGroup parent = (ViewGroup)getParent();
+        ViewGroup parent = (ViewGroup) getParent();
         if (mIsFixedTitleBar && parent != null) return;
         mIsFixedTitleBar = true;
-        setSkipTitleBarAnimations(true);
         show();
-        setSkipTitleBarAnimations(false);
         if (parent != null) {
             parent.removeView(this);
         }
@@ -114,52 +103,15 @@ public class TitleBar extends RelativeLayout {
         return mUiController;
     }
 
-    void setSkipTitleBarAnimations(boolean skip) {
-        mSkipTitleBarAnimations = skip;
-    }
-
-    void setupTitleBarAnimator(Animator animator) {
-        Resources res = getContext().getResources();
-        int duration = res.getInteger(R.integer.titlebar_animation_duration);
-        animator.setInterpolator(new DecelerateInterpolator(
-                ANIM_TITLEBAR_DECELERATE));
-        animator.setDuration(duration);
-    }
-
     void show() {
-        cancelTitleBarAnimation(false);
-        if (mSkipTitleBarAnimations) {
-            this.setVisibility(View.VISIBLE);
-            this.setTranslationY(0);
-        } else {
-            int visibleHeight = getVisibleTitleHeight();
-            float startPos = (-getEmbeddedHeight() + visibleHeight);
-            if (getTranslationY() != 0) {
-                startPos = Math.max(startPos, getTranslationY());
-            }
-            mTitleBarAnimator = ObjectAnimator.ofFloat(this,
-                    "translationY",
-                    startPos, 0);
-            setupTitleBarAnimator(mTitleBarAnimator);
-            mTitleBarAnimator.start();
-        }
+        setVisibility(View.VISIBLE);
+        setTranslationY(0);
         mShowing = true;
     }
 
     void hide() {
         if (mIsFixedTitleBar) return;
-        if (!mSkipTitleBarAnimations) {
-            cancelTitleBarAnimation(false);
-            int visibleHeight = getVisibleTitleHeight();
-            mTitleBarAnimator = ObjectAnimator.ofFloat(this,
-                    "translationY", getTranslationY(),
-                    (-getEmbeddedHeight() + visibleHeight));
-            mTitleBarAnimator.addListener(mHideTileBarAnimatorListener);
-            setupTitleBarAnimator(mTitleBarAnimator);
-            mTitleBarAnimator.start();
-        } else {
-            onScrollChanged();
-        }
+        onScrollChanged();
         mShowing = false;
     }
 
@@ -187,37 +139,6 @@ public class TitleBar extends RelativeLayout {
         return mShowing;
     }
 
-    void cancelTitleBarAnimation(boolean reset) {
-        if (mTitleBarAnimator != null) {
-            mTitleBarAnimator.cancel();
-            mTitleBarAnimator = null;
-        }
-        if (reset) {
-            setTranslationY(0);
-        }
-    }
-
-    private AnimatorListener mHideTileBarAnimatorListener = new AnimatorListener() {
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            // update position
-            onScrollChanged();
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-        }
-    };
-
     private int getVisibleTitleHeight() {
         return 0;
     }
@@ -230,7 +151,7 @@ public class TitleBar extends RelativeLayout {
             mProgress.setProgress(PageProgressView.MAX_PROGRESS);
             mProgress.setVisibility(View.GONE);
             mInLoad = false;
-            mHideLoad=false;
+            mHideLoad = false;
             mNavBar.onProgressStopped();
         } else {
             if (!mInLoad) {
@@ -242,7 +163,7 @@ public class TitleBar extends RelativeLayout {
                     / PROGRESS_MAX);
             if (!isHideLoad()) {
                 hide();
-                mHideLoad=true;
+                mHideLoad = true;
             }
         }
     }
@@ -297,8 +218,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void onTabDataChanged(Tab tab) {
-        mSmallBar.setText(getTitleToDisplay());
-        //mNavBar.setVisibility(VISIBLE);
+        mSmallBar.setText(tab.getTitleToDisplay());
     }
 
     public void onScrollChanged() {
@@ -309,14 +229,5 @@ public class TitleBar extends RelativeLayout {
 
     public void onResume() {
         setFixedTitleBar();
-    }
-
-    public String getTitleToDisplay() {
-        Tab tab = getUiController().getCurrentTab();
-        if (tab == null) {
-            return "";
-        } else {
-            return tab.getTitleToDisplay();
-        }
     }
 }

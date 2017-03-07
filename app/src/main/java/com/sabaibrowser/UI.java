@@ -383,8 +383,6 @@ public class UI {
     }
 
     public void setActiveTab(final Tab tab) {
-        mTitleBar.cancelTitleBarAnimation(true);
-        mTitleBar.setSkipTitleBarAnimations(true);
         if (tab == null) return;
         // block unnecessary focus change animations during tab switch
         mHandler.removeMessages(MSG_HIDE_TITLEBAR);
@@ -426,7 +424,6 @@ public class UI {
         view.setTitleBar(mTitleBar);
         // update nav bar state
         mNavigationBar.onStateChanged(UrlInputView.StateListener.STATE_NORMAL);
-        mTitleBar.setSkipTitleBarAnimations(false);
         mLastWebViewScrollY = 0;
     }
 
