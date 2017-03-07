@@ -218,9 +218,9 @@ public class WebsiteSettingsFragment extends ListFragment implements OnClickList
             mUsageHighIcon = BitmapFactory.decodeResource(getResources(),
                     R.drawable.ic_list_data_large);
             mLocationAllowedIcon = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.ic_gps_on);
+                    R.drawable.ic_location_on);
             mLocationDisallowedIcon = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.ic_gps_denied);
+                    R.drawable.ic_location_off);
             mCurrentSite = site;
             if (mCurrentSite == null) {
                 askForOrigins();
