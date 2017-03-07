@@ -83,6 +83,7 @@
             android:visibility="gone" />
 
         <FrameLayout
+            android:id="@+id/blocked_elements_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

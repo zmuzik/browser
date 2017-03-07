@@ -59,6 +59,7 @@ public class NavigationBar extends LinearLayout implements
 
     private ImageView mStopButton;
     private ImageView mClearButton;
+    private View mBlockedElementsIcon;
     private PopupMenu mPopupMenu;
     private boolean mOverflowMenuShowing;
     private View mIncognitoIcon;
@@ -96,6 +97,7 @@ public class NavigationBar extends LinearLayout implements
         mStopButton.setOnClickListener(this);
         mClearButton = (ImageView) findViewById(R.id.clear);
         mClearButton.setOnClickListener(this);
+        mBlockedElementsIcon = findViewById(R.id.blocked_elements_icon);
         setFocusState(false);
         mUrlInput.setContainer(this);
         mUrlInput.setStateListener(this);
@@ -345,18 +347,21 @@ public class NavigationBar extends LinearLayout implements
                     mFab.setVisibility(View.VISIBLE);
                 }
                 setPadding(PADDING_SIDE, 0, PADDING_RIGHT_WITH_FAB, 0);
+                mBlockedElementsIcon.setVisibility(View.VISIBLE);
                 break;
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
                 mStopButton.setVisibility(View.VISIBLE);
                 mClearButton.setVisibility(View.GONE);
                 mFab.setVisibility(View.GONE);
                 setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
+                mBlockedElementsIcon.setVisibility(View.GONE);
                 break;
             case UrlInputView.StateListener.STATE_EDITED:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
                 setPadding(PADDING_SIDE, 0, PADDING_SIDE, 0);
                 mFab.setVisibility(View.GONE);
+                mBlockedElementsIcon.setVisibility(View.GONE);
                 break;
         }
     }
