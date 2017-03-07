@@ -57,7 +57,6 @@ public class NavigationBar extends LinearLayout implements
     private ImageView mStopButton;
     private ImageView mMagnify;
     private ImageView mClearButton;
-    private ImageView mFabFilling;
     private Drawable mStopDrawable;
     private Drawable mRefreshDrawable;
     private String mStopDescription;
@@ -101,7 +100,6 @@ public class NavigationBar extends LinearLayout implements
         mClearButton.setOnClickListener(this);
         mMagnify = (ImageView) findViewById(R.id.magnify);
         mTitleContainer = findViewById(R.id.title_bg);
-        mFabFilling = (ImageView) findViewById(R.id.fab_filling);
         setFocusState(false);
         Resources res = getContext().getResources();
         mStopDrawable = res.getDrawable(R.drawable.ic_stop);
@@ -359,23 +357,23 @@ public class NavigationBar extends LinearLayout implements
                 mClearButton.setVisibility(View.GONE);
                 mMagnify.setVisibility(View.GONE);
                 mTitleContainer.setBackgroundDrawable(null);
-                mFabFilling.setVisibility(View.VISIBLE);
                 if (mFab != null) {
                     mFab.setVisibility(View.VISIBLE);
                 }
+                setPadding(0, 0, Utils.dpToPx(getContext(), 80), 0);
                 break;
             case UrlInputView.StateListener.STATE_HIGHLIGHTED:
                 mStopButton.setVisibility(View.VISIBLE);
                 mClearButton.setVisibility(View.GONE);
                 mMagnify.setVisibility(View.GONE);
-                mFabFilling.setVisibility(View.GONE);
                 mFab.setVisibility(View.GONE);
+                setPadding(0, 0, 0, 0);
                 break;
             case UrlInputView.StateListener.STATE_EDITED:
                 mStopButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
                 mMagnify.setVisibility(View.VISIBLE);
-                mFabFilling.setVisibility(View.GONE);
+                setPadding(0, 0, 0, 0);
                 mFab.setVisibility(View.GONE);
                 break;
         }
