@@ -26,7 +26,7 @@ import android.webkit.WebView;
 /**
  * Web view factory class for creating {@link BrowserWebView}'s.
  */
-public class BrowserWebViewFactory implements WebViewFactory {
+public class BrowserWebViewFactory {
 
     private final Context mContext;
 
@@ -38,7 +38,6 @@ public class BrowserWebViewFactory implements WebViewFactory {
         return new BrowserWebView(mContext, attrs, defStyle, privateBrowsing);
     }
 
-    @Override
     public WebView createWebView(boolean privateBrowsing) {
         WebView w = instantiateWebView(null, android.R.attr.webViewStyle, privateBrowsing);
         initWebViewSettings(w);
@@ -46,7 +45,7 @@ public class BrowserWebViewFactory implements WebViewFactory {
         return w;
     }
 
-    protected void initWebViewSettings(WebView w) {
+    private void initWebViewSettings(WebView w) {
         w.setScrollbarFadingEnabled(true);
         w.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         w.getSettings().setBuiltInZoomControls(true);

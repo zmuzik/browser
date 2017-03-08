@@ -62,7 +62,7 @@ public class PreloadController implements WebViewController {
     }
 
     @Override
-    public WebViewFactory getWebViewFactory() {
+    public BrowserWebViewFactory getWebViewFactory() {
         if (LOGD_ENABLED) Log.d(LOGTAG, "getWebViewFactory()");
         return null;
     }

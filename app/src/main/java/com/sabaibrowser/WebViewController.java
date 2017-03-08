@@ -44,7 +44,7 @@ public interface WebViewController {
 
     TabControl getTabControl();
 
-    WebViewFactory getWebViewFactory();
+    BrowserWebViewFactory getWebViewFactory();
 
     void onSetWebView(Tab tab, WebView view);
 

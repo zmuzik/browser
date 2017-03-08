@@ -141,7 +141,7 @@ public class Controller
     private UI mUi;
     private TabControl mTabControl;
     private BrowserSettings mSettings;
-    private WebViewFactory mFactory;
+    private BrowserWebViewFactory mFactory;
 
     private UrlHandler mUrlHandler;
     private UploadHandler mUploadHandler;
@@ -333,7 +333,7 @@ public class Controller
     }
 
     @Override
-    public WebViewFactory getWebViewFactory() {
+    public BrowserWebViewFactory getWebViewFactory() {
         return mFactory;
     }
 
