@@ -1036,4 +1036,9 @@
     <string name="build_number">Build number</string>
 
     <string name="open_source_licenses">Open source licenses</string>
+
+    <!-- content blocker related strings -->
+    <string name="content_blocker_title">Content blocker</string>
+    <string name="content_blocker_subtitle">Block trackers and other malicious content</string>
+
 </resources>

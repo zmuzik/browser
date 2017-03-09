@@ -39,6 +39,7 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 
+import com.sabaibrowser.blocker.Blocker;
 import com.sabaibrowser.preferences.GeneralPreferencesFragment;
 import com.sabaibrowser.search.SearchEngine;
 import com.sabaibrowser.search.SearchEngines;
@@ -308,6 +309,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
             updateSearchEngine(false);
         } else if (PREF_LINK_PREFETCH.equals(key)) {
             updateConnectionType();
+        }
+        if (PREF_CONTENT_BLOCKER_ENABLED.equals(key)) {
+            Blocker.setEnabled(isBlockerEnabled());
         }
     }
 
@@ -592,6 +596,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     // -----------------------------
     // getter/setters for privacy_security_preferences.xml
     // -----------------------------
+
+    public boolean isBlockerEnabled() {
+        return mPrefs.getBoolean(PREF_CONTENT_BLOCKER_ENABLED, true);
+    }
 
     public boolean showSecurityWarnings() {
         return mPrefs.getBoolean(PREF_SHOW_SECURITY_WARNINGS, true);

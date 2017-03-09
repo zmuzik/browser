@@ -3,6 +3,7 @@ package com.sabaibrowser.blocker;
 import android.content.Context;
 import android.util.Log;
 
+import com.sabaibrowser.BrowserSettings;
 import com.sabaibrowser.BuildConfig;
 import com.sabaibrowser.blocker.disconnect.DisconnectContentBlocker;
 
@@ -10,6 +11,7 @@ public class Blocker {
     private static final String TAG = "Blocker";
     private static boolean logBlockedItems = BuildConfig.DEBUG;
     private static ContentBlocker mContentBlocker;
+    private static boolean enabled;
 
     public static void init(final Context ctx) {
         new Thread(new Runnable() {
@@ -17,6 +19,7 @@ public class Blocker {
                 mContentBlocker = new DisconnectContentBlocker(ctx);
             }
         }).start();
+        setEnabled(BrowserSettings.getInstance().isBlockerEnabled());
     }
 
     public static boolean isAvailable() {
@@ -24,7 +27,8 @@ public class Blocker {
     }
 
     public static boolean isBlocked(String url, String pageHost) {
-        boolean blocked = (mContentBlocker != null && mContentBlocker.isBlocked(url, pageHost));
+        boolean blocked = (enabled && mContentBlocker != null
+                && mContentBlocker.isBlocked(url, pageHost));
         if (blocked && logBlockedItems) {
             Log.d(TAG, "blocked: " + url);
         }
@@ -32,12 +36,16 @@ public class Blocker {
     }
 
     public static Tracker getTracker(String url, String pageHost) {
-        if (mContentBlocker == null) return null;
+        if (!enabled || mContentBlocker == null || "".equals(pageHost)) return null;
         Tracker tracker = mContentBlocker.getTracker(url, pageHost);
         if (tracker != null && logBlockedItems) {
             Log.d(TAG, "blocked: " + url);
         }
         return tracker;
+    }
+
+    public static void setEnabled(boolean yesno) {
+        enabled = yesno;
     }
 
     public interface ContentBlocker {
