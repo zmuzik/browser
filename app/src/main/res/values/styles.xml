@@ -24,6 +24,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
     <style name="BrowserTheme" parent="BaseTheme">
     </style>
